@@ -1,0 +1,357 @@
+.chatBody{
+  width: 800px;
+   margin: 0 auto;
+   margin-top: 150px;
+   position: relative;
+}
+
+div{
+    font-family: 'Raleway', sans-serif;
+}
+.inline-block{
+    display: inline-block;
+}
+
+
+.chat{
+  width: 600px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 50px 50px 50px;
+  border: 1px solid black;
+  box-shadow: 0px 0px 0px rgb(138, 213, 226);
+  animation:showLogin2 2s linear;
+  transform-origin: top left;
+  transition: all 0.5s;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.chatSwitch{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1240px;
+    height: 100%;
+    transition: all 1s;
+}
+.chatSwitchRight,.chatSwitchLeft{
+    width: 560px;
+    height: 560px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 20px;
+    padding-left: 20px;
+    overflow: hidden;
+}
+
+@keyframes showLogin2
+{
+0% {border: 1px solid transparent;}
+50% { border: 1px solid transparent;}
+80% { border: 1px solid black;}
+100% {border: 1px solid black;}
+}
+
+
+.cover2{
+  background-color: rgb(133, 231, 250);
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 30;
+  line-height: 670px;
+  text-align: center;
+  animation:hide2 1.8s linear;
+  transform-origin: top left;
+  clip-path: inset(100% 0px 0px 0px);
+}
+
+@keyframes hide2
+{
+0% {clip-path: inset(0% 0px 0px 0px);}
+60% {clip-path: inset(0% 0px 0px 0px);}
+100% {clip-path: inset(100% 0px 0px 0px); }
+}
+
+.chatbox{
+    height: 480px;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0 40px 20px 20px;
+}
+
+.chatInputContiner{
+    width:85%;
+  height:46px;
+  border:1.5px solid black;
+  border-radius: 100px;
+  padding:2px;
+  transition: all 0.5s;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.chatSubmitContiner{
+    width:46px;
+  height:46px;
+  border:1.5px solid black;
+  border-radius: 100px;
+  padding:2px;
+  transition: all 0.5s;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  display: inline-block;
+}
+
+.chatLeft{
+  width: 70px;
+  height: 70px;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 50px 0px 50px 50px;
+  margin-right: 10px;
+  text-align: center;
+  padding: 5px;
+  border:1px solid black;
+  position: relative;
+  overflow: hidden;
+}
+
+.chatLeftIn{
+   position: absolute;
+   width: 180px;
+   transition: all 1s;
+   left: 5px;
+}
+.backOut,.backOut2{
+    width: 70px;
+    height: 70px;
+    background-color: rgb(133, 231, 250);
+    border-radius: 100px;
+    display: inline-block;
+    margin-right: 20px;
+}
+.back{
+    height: 100%;
+    position: relative;
+}
+
+.icon{
+    height: 100%;
+    position: relative;
+    border-radius: 100px;
+    display: inline-block;
+    margin-right: 10px;
+}
+.backOut2{
+    margin-left: -12px;
+    margin-top: -15px;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 20px;
+    padding: 3px;
+}
+
+.searchContainer{
+    border:  1px solid black;
+    border-radius: 100px;
+    width: 470px;
+    height: 44px;
+    padding: 4px;
+    padding-left: 6px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.searchIcon{
+    height: 34px;
+    width: 34px;
+    border-radius: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    padding: 5px;
+    background-color: rgb(133, 231, 250);
+}
+
+.searchInput{
+    width: 410px;
+    display: inline-block;
+    height: 42px;
+    vertical-align: middle;
+    border-radius: 100px;
+    border: none;
+    font-size: 30px;
+    font-family: 'Raleway', sans-serif;
+
+}
+.searchInput:focus{
+     outline: none;
+}
+
+.waitLine{
+    width: 470px;
+    height: 2px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 10px;
+}
+
+.friendList{
+    width: 100%;
+    height: 70px;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.friendIcon{
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    background-color: rgb(184, 255, 185);
+    border: 1px solid rgb(0, 0, 0);
+    padding: 3px;
+    display: inline-block;
+    vertical-align: top;
+    transition: all 0.5s;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 20px;
+}
+
+.friendIcon:hover{
+    width: 130px;
+}
+.showBtn{
+    opacity: 1;
+    transition: all 0.8s;
+}
+
+/* .friendIcon:hover>.showBtn{
+    opacity: 1;
+} */
+
+
+.friendNameAndWord{
+    font-size: 30px;
+    font-family: 'Raleway', sans-serif;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+
+.friendName{
+    font-size: 30px;
+}
+
+.friendWord{
+    font-size: 20px;
+    margin-top: 5px;
+    color: rgb(104, 104, 104);
+}
+
+.listSwitch{
+    width: 12%;
+    display:inline-block;
+    height: 86%;
+    vertical-align: middle;
+    border-radius: 0 0 0 20px;
+    margin-right: 2%;
+}
+.friendLists{
+    width: 86%;
+    display:inline-block;
+    height: 86%;
+    vertical-align: middle;
+    border-radius: 0 0 20px 0;
+}
+
+.friendInfo,.deleteInfo{
+    position: absolute;
+    width: 70px;
+    height: 62px;
+    background-color: rgba(133, 230, 250);
+    border-radius: 100px 0 0 100px;
+    top: 0px;
+    padding: 3px;
+    right: -100px;
+    opacity: 1;
+    transition: all 0.8s;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.friendName2{
+    color: white;
+    font-size: 25px;
+}
+
+.friendName3{
+    color: white;
+    font-weight: 200;
+}
+
+.btn01{
+    margin-left: 90px;
+}
+
+.icon02{
+    height: 100%;
+    margin-right: 0;
+}
+
+.imgBorder{
+    border: 1px solid red;
+    border-radius: 130px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 76%;
+    padding: 2px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 10px;
+}
+
+.btn02{
+    transition: all 0.5s;
+}
+.btn02:hover{
+    background-color: rgb(255, 255, 255);
+}
+
+.deleteInfo{
+    background-color: rgb(256, 106, 116);
+}
+
+.deleteInfoWord{
+    font-size: 26px;
+    vertical-align: middle;
+    color: white;
+    margin-left: 20px;
+    margin-right: 30px;
+    margin-top: 6px;
+    font-weight: 200;
+    display: inline-block;
+}
+
+.whireBorder{
+    border-color: white;
+}
+
+.btn03{
+    background-color: white;
+}
