@@ -62,6 +62,7 @@ module.exports.getFriends = async (req, res, next) => {
               $match: {
                 recipient: mongoose.Types.ObjectId(_id),
                 $expr: { $in: ["$_id", "$$friends"] },
+                status: 3,
               },
             },
             { $project: { status: 1 } },
@@ -76,7 +77,8 @@ module.exports.getFriends = async (req, res, next) => {
           },
         },
       },
-      { $project: { username: 1, avatarImage: 1 ,friendsStatus: 1} }
+      { $project: { username: 1, avatarImage: 1, friendsStatus: 1 } },
+      {$match: {friendsStatus: 3}}
     ]);
     if (test)
       return res
@@ -99,6 +101,10 @@ module.exports.searchUser = async(req, res, next) =>{
         _id:findByUsername._id, 
         avatarImage:findByUsername.avatarImage
       }
+    });
+    else return res.json({
+      status: false,
+      msg:"cannot find the user"
     });
   } catch (error) {
     next(error);
@@ -134,7 +140,7 @@ module.exports.friendRequest = async (req, res, next) => {
         return res.status(200).json({ msg: "Friend request sended" });
     }
     else{
-      return res.status(400).json({ msg: "Duplicate friend request" });
+      return res.status(200).json({ msg: "Duplicate friend request" });
     }
   } catch (error) {
     next(error);

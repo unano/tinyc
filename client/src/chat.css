@@ -1,3 +1,7 @@
+*{
+    font-family: 'Raleway', sans-serif;
+}
+
 .chatBody{
   width: 800px;
    margin: 0 auto;
@@ -11,7 +15,23 @@ div{
 .inline-block{
     display: inline-block;
 }
+.fright{
+    float: right;
+}
 
+input:focus{
+    outline: none;
+}
+textarea{
+    resize: none;
+}
+textarea:focus{
+    outline: none;
+}
+
+.inline{
+    display: inline-block;
+}
 
 .chat{
   width: 600px;
@@ -47,6 +67,7 @@ div{
     padding: 20px;
     padding-left: 20px;
     overflow: hidden;
+    position: relative;
 }
 
 @keyframes showLogin2
@@ -89,30 +110,32 @@ div{
 }
 
 .chatInputContiner{
-    width:85%;
-  height:46px;
-  border:1.5px solid black;
-  border-radius: 100px;
+  width:80%;
+  border:1px solid black;
+  border-radius: 28px;
   padding:2px;
   transition: all 0.5s;
   overflow: hidden;
   white-space: nowrap;
-  position: relative;
+  position: absolute;
   display: inline-block;
   margin-right: 20px;
+  bottom: 20px;
 }
 
 .chatSubmitContiner{
-    width:46px;
+  width:46px;
   height:46px;
-  border:1.5px solid black;
+  border:1px solid black;
   border-radius: 100px;
   padding:2px;
   transition: all 0.5s;
   overflow: hidden;
   white-space: nowrap;
-  position: relative;
+  position: absolute;
   display: inline-block;
+  bottom: 20px;
+  right: 20px;
 }
 
 .chatLeft{
@@ -148,7 +171,7 @@ div{
     position: relative;
 }
 
-.icon{
+.icon,.icon2{
     height: 100%;
     position: relative;
     border-radius: 100px;
@@ -218,7 +241,7 @@ div{
     position: relative;
 }
 
-.friendIcon{
+.friendIcon,.searchFriendIcon,.addFriendIcon{
     width: 60px;
     height: 60px;
     border-radius: 100px;
@@ -354,4 +377,79 @@ div{
 
 .btn03{
     background-color: white;
+}
+
+.chatInput{
+  display: inline-block;
+  height: 40px;
+  vertical-align: middle;
+  width: 410px;
+  margin-left: 10px;
+  font-size: 32px;
+  padding-left: 5px;
+  font-family: 'Raleway', sans-serif;
+  transition: all 0.5s;
+  border: 0px;
+  overflow: scroll;
+}
+.chatInput::-webkit-scrollbar {
+   display: none;
+ }
+
+.chatInputName{
+    width: 43px;
+    height: 43px;
+    border-radius: 100px;
+    border:1.5px solid rgb(133, 231, 250);
+    background-color: rgb(133, 231, 250);
+    transition: all 0.5s;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 40px;
+    text-align: center;
+    color: transparent;
+    overflow: hidden;
+    font-family: 'Raleway', sans-serif;
+    user-select: none;
+}
+
+.searchUser{
+    color: rgb(78, 205, 230);
+    cursor: default;
+}
+
+.searchUser:hover{
+    color: rgb(44, 150, 171);
+}
+
+.searchFriendIcon{
+    background-color: transparent;
+    border: none;
+    vertical-align: middle;
+}
+
+.searchedUser{
+    margin-top: 15px;
+    width: 98%;
+    background-color: azure;
+    border-radius: 100px;
+    padding: 2px;
+    vertical-align: middle;
+}
+
+.searchedUsername{
+    vertical-align: middle;
+    font-size: 30px;
+    position: relative;
+}
+.addFriendIcon{
+    margin: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.smallName{
+    font-size: 16px;
+    position: absolute;
+    right: 100px;
 }

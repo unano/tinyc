@@ -40,8 +40,12 @@ const Friend =({friend, switchs}) => {
           ></img>
         </div>
         <div className="friendNameAndWord">
-          <div className="friendName">{friend.username}</div>
-          <div className="friendWord">cafafasfsafafhika</div>
+          <div className="friendName" onClick={switchs}>
+            {friend.username}
+          </div>
+          <div className="friendWord" onClick={switchs}>
+            cafafasfsafafhika
+          </div>
         </div>
         <div className="friendInfo" style={friendInfo}>
           <img
