@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+var Schema = mongoose.Schema;
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  friends: [
+    {
+      unique: true,
+      type: Schema.Types.ObjectId,
+      ref: "Friends",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Users", userSchema);
