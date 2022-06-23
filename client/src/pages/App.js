@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import './App.css';
-import Logo from "./imgs/tinyc.png"
-import LogoPure from "./imgs/tinycPure.png";
+import Logo from "../imgs/tinyc.png"
+import LogoPure from "../imgs/tinycPure.png";
 import { useNavigate} from "react-router-dom";
-import { login, register } from "./api/api";
+import { login, register } from "../api/api";
 
 function App() {
   const navigate = useNavigate();

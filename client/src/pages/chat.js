@@ -1,18 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import './chat.css';
-import Back from "./imgs/back2.png"
-import Search from "./imgs/search.png";
-import AddFriend from "./imgs/addFriend.png";
-import testIcon from "./imgs/testIcon.jpg";
-import LogoPure from "./imgs/tinycPure.png";
-import User from "./imgs/user.png";
+import Back from "../imgs/back2.png"
+import Search from "../imgs/search.png";
+import AddFriend from "../imgs/addFriend.png";
+import testIcon from "../imgs/testIcon.jpg";
+import LogoPure from "../imgs/tinycPure.png";
+import User from "../imgs/user.png";
 import { useNavigate } from "react-router-dom";
-import { getFriends, searchUser, applyFriends } from "./api/api";
-import FriendList from './components/friendList';
+import { getFriends, searchUser, applyFriends, receiveMsg, sendMsg } from "../api/api";
+import FriendList from '../components/friendList';
+import Messages from "../components/messages";
 function Chat() {
     const [chatSwitch, setChatSwitch] = useState();
     const [chatBtnSwitch, setChatBtnSwitch] = useState();
-    const [currentUser, setCurrentUser] = useState();
+    const [currentUser, setCurrentUser] = useState({});
     const [friends, setFriends] =useState([]);
     const [shownFriends, setShownFriends] = useState([]);
     const [switched, setSwitched] = useState(false);
@@ -22,7 +23,20 @@ function Chat() {
     const [searchedUser, setSearchedUser] = useState({});
     const [hasSearchedUser, setHasSearchedUser] = useState(false);
     const [applyResult, setApplyResult] = useState();
+    const [msg, setMsg] = useState("");
+    const [messages, setMessages] = useState([]);
     const navigate = useNavigate();
+    const [currentChat, setCurrentChat] = useState({});
+
+    useEffect(() => {
+      const loadChat = async()=>{
+        const response = await receiveMsg(currentUser._id, currentChat._id);
+        setMessages(response.data);
+      }
+      loadChat();
+      }, [currentChat]);
+      
+
 
     useEffect(()=>{
       const result = async () => {
@@ -55,7 +69,8 @@ function Chat() {
       getFriendsFunc();
     },[currentUser])
 
-    const switchs = () => {
+    const switchs = (index) => {
+        setCurrentChat(index);
         setChatSwitch({left:"-610px"})
         setChatBtnSwitch({ left: "-85px"});
     };
@@ -65,7 +80,6 @@ function Chat() {
     };
 
     const expandInputbox = () =>{
-      console.log("dd")
       chatInputStyle.height === "300px"
         ? setChatInputStyle({ height: "40px" })
         : setChatInputStyle({ height: "300px" });
@@ -104,6 +118,17 @@ function Chat() {
     //   console.log(inputAreaRef.current.scrollHeight);
     //   inputAreaRef.current.scrollTop = 40;
     // })
+
+    const sendChat = async() => {
+      if (msg.length > 0) {
+        await sendMsg(currentUser._id, currentChat._id, msg);
+        const msgs = [...messages];
+        msgs.push({ fromSelf: true, message: msg });
+        setMessages(msgs);
+        setMsg("");
+      }
+    };
+    
     
       return (
         <div className="chatBody">
@@ -183,7 +208,9 @@ function Chat() {
                 </div>
               </div>
               <div className="chatSwitchRight">
-                <div className="chatbox"></div>
+                <div className="chatbox">
+                  <Messages messages={messages}/>
+                </div>
                 <div className="chatInputContiner">
                   <div
                     // ref={inputAreaRef}
@@ -193,9 +220,11 @@ function Chat() {
                   <textarea
                     className="chatInput"
                     style={chatInputStyle}
+                    onChange={(e) => setMsg(e.target.value)}
+                    value={msg}
                   ></textarea>
                 </div>
-                <div className="chatSubmitContiner">
+                <div className="chatSubmitContiner" onClick={sendChat}>
                   <div className="chatInputName"></div>
                   <input className="chatInput"></input>
                 </div>

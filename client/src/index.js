@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import Chat from "./chat";
+import App from './pages/App';
+import Chat from "./pages/chat";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

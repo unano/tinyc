@@ -6,6 +6,9 @@ const registerRoute = `${host}/api/user/register`;
 const getFriendsRoute = `${host}/api/user/getFriends`;
 const searchUserRoute = `${host}/api/user/searchUser`;
 const applyFriendrRoute = `${host}/api/user/applyFriend`;
+const sendMessageRoute = `${host}/api/message/addmsg`;
+const recieveMessageRoute = `${host}/api/message/getmsg`;
+
 export const login = (username, password) => {
   return axios
     .post(loginRoute, {username, password})
@@ -28,4 +31,12 @@ export const getFriends = (_id) => {
 
 export const applyFriends = (sender, receiver) => {
   return axios.post(applyFriendrRoute, { sender, receiver }).then((res) => res);
+};
+
+export const sendMsg = (from, to , message) => {
+  return axios.post(sendMessageRoute, {from, to, message}).then((res) => res);
+};
+
+export const receiveMsg = (from, to) => {
+  return axios.post(recieveMessageRoute, { from, to }).then((res) => res);
 };

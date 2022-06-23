@@ -1,0 +1,30 @@
+.message{
+    display: flex;
+    align-items: center;
+}
+
+.sended {
+    justify-content: flex-end;
+}
+.recieved {
+    justify-content: flex-start;
+}
+
+.content{
+    max-width: 40%;
+    overflow-wrap: break-word;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 4rem;
+    color: #ffffff;
+    border: 2px solid rgba(90, 212, 236, 0.739);
+}
+
+.sended .content{
+    background-color: rgba(90, 212, 236, 0.739);
+}
+
+.recieved .content{
+    background-color: white;
+    color: black;
+}

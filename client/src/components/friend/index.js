@@ -6,22 +6,26 @@ import Star from "../../imgs/star.png";
 import Tick from "../../imgs/tick.png";
 import testIcon from "../../imgs/testIcon.jpg";
 
-const Friend =({friend, switchs}) => {
-    const [friendInfo, setFriendInfo] = useState();
-    const [deleteInfo, setDeleteInfo] = useState();
-    const showInfo = () => {
-        setFriendInfo({ width: "506px" });
-    };
-    const closeInfo = () => {
-        setFriendInfo({ width: "70px" });
-    };
+const Friend = ({ friend, switchs }) => {
+  const [friendInfo, setFriendInfo] = useState();
+  const [deleteInfo, setDeleteInfo] = useState();
+  const showInfo = () => {
+    setFriendInfo({ width: "506px" });
+  };
+  const closeInfo = () => {
+    setFriendInfo({ width: "70px" });
+  };
 
-    const deleteAlert = () => {
-        setDeleteInfo({ width: "506px" });
-    };
-    const cancelDeleteAlert = () => {
-        setDeleteInfo({ width: "70px" });
-    };
+  const deleteAlert = () => {
+    setDeleteInfo({ width: "506px" });
+  };
+  const cancelDeleteAlert = () => {
+    setDeleteInfo({ width: "70px" });
+  };
+
+  const switchChat = () =>{
+      switchs(friend);
+  }
   return (
     <>
       <div className="friendList">
@@ -30,7 +34,7 @@ const Friend =({friend, switchs}) => {
             src={testIcon}
             alt="logo"
             className="icon"
-            onClick={switchs}
+            onClick={switchChat}
           ></img>
           <img
             src={Info}
@@ -40,10 +44,10 @@ const Friend =({friend, switchs}) => {
           ></img>
         </div>
         <div className="friendNameAndWord">
-          <div className="friendName" onClick={switchs}>
+          <div className="friendName" onClick={switchChat}>
             {friend.username}
           </div>
-          <div className="friendWord" onClick={switchs}>
+          <div className="friendWord" onClick={switchChat}>
             cafafasfsafafhika
           </div>
         </div>
@@ -90,6 +94,6 @@ const Friend =({friend, switchs}) => {
       </div>
     </>
   );
-}
+};
 
 export default Friend;
