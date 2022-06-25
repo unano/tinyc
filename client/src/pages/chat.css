@@ -102,15 +102,19 @@ textarea:focus{
 }
 
 .chatbox{
-    height: 480px;
+    height: 450px;
     width: 90%;
     margin-bottom: 20px;
     background-color: rgb(255, 255, 255);
-    border-radius: 0 40px 20px 20px;
+    /* border-radius: 0 40px 20px 20px; */
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow: scroll;
 }
+.chatbox::-webkit-scrollbar {
+   display: none;
+ }
 
 .chatInputContiner{
   width:80%;
@@ -124,6 +128,7 @@ textarea:focus{
   display: inline-block;
   margin-right: 20px;
   bottom: 20px;
+  background-color: white;
 }
 
 .chatSubmitContiner{
@@ -139,6 +144,7 @@ textarea:focus{
   display: inline-block;
   bottom: 20px;
   right: 20px;
+  background-color: white;
 }
 
 .chatLeft{
@@ -236,61 +242,16 @@ textarea:focus{
     margin-top: 10px;
 }
 
-.friendList{
-    width: 100%;
-    height: 70px;
-    background-color: rgb(255, 255, 255);
-    margin-bottom: 10px;
-    position: relative;
-}
-
-.friendIcon,.searchFriendIcon,.addFriendIcon{
-    width: 60px;
-    height: 60px;
-    border-radius: 100px;
-    background-color: rgb(184, 255, 185);
-    border: 1px solid rgb(0, 0, 0);
-    padding: 3px;
-    display: inline-block;
-    vertical-align: top;
-    transition: all 0.5s;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-right: 20px;
-}
-
-.friendIcon:hover{
-    width: 130px;
-}
 .showBtn{
     opacity: 1;
     transition: all 0.8s;
+    box-shadow: 0 0 4px  rgba(112, 112, 112, 0.574);
 }
 
 /* .friendIcon:hover>.showBtn{
     opacity: 1;
 } */
 
-
-.friendNameAndWord{
-    font-size: 30px;
-    font-family: 'Raleway', sans-serif;
-    display: inline-block;
-    position: relative;
-    vertical-align: top;
-}
-
-.friendName{
-    font-size: 30px;
-    cursor: default;
-}
-
-.friendWord{
-    font-size: 20px;
-    margin-top: 5px;
-    color: rgb(104, 104, 104);
-    cursor: default;
-}
 
 .listSwitch{
     width: 12%;
@@ -308,30 +269,6 @@ textarea:focus{
     border-radius: 0 0 20px 0;
 }
 
-.friendInfo,.deleteInfo{
-    position: absolute;
-    width: 70px;
-    height: 62px;
-    background-color: rgba(133, 230, 250);
-    border-radius: 100px 0 0 100px;
-    top: 0px;
-    padding: 3px;
-    right: -100px;
-    opacity: 1;
-    transition: all 0.8s;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.friendName2{
-    color: white;
-    font-size: 25px;
-}
-
-.friendName3{
-    color: white;
-    font-weight: 200;
-}
 
 .btn01{
     margin-left: 90px;
@@ -361,20 +298,6 @@ textarea:focus{
     background-color: rgb(255, 255, 255);
 }
 
-.deleteInfo{
-    background-color: rgb(256, 106, 116);
-}
-
-.deleteInfoWord{
-    font-size: 26px;
-    vertical-align: middle;
-    color: white;
-    margin-left: 20px;
-    margin-right: 30px;
-    margin-top: 6px;
-    font-weight: 200;
-    display: inline-block;
-}
 
 .whireBorder{
     border-color: white;
@@ -385,8 +308,8 @@ textarea:focus{
 }
 
 .chatInput{
+  max-height: 310px;
   display: inline-block;
-  height: 40px;
   vertical-align: middle;
   width: 410px;
   margin-left: 10px;
@@ -396,6 +319,7 @@ textarea:focus{
   transition: all 0.5s;
   border: 0px;
   overflow: scroll;
+  margin-bottom: -16px;
 }
 .chatInput::-webkit-scrollbar {
    display: none;
@@ -457,4 +381,10 @@ textarea:focus{
     font-size: 16px;
     position: absolute;
     right: 100px;
+}
+
+.currentChatName{
+    font-size: 2rem;
+    margin-top: -8px;
+    margin-bottom: 8px;
 }

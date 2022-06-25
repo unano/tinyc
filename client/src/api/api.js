@@ -6,8 +6,12 @@ const registerRoute = `${host}/api/user/register`;
 const getFriendsRoute = `${host}/api/user/getFriends`;
 const searchUserRoute = `${host}/api/user/searchUser`;
 const applyFriendrRoute = `${host}/api/user/applyFriend`;
-const sendMessageRoute = `${host}/api/message/addmsg`;
+// const sendMessageRoute = `${host}/api/message/addmsg`;
 const recieveMessageRoute = `${host}/api/message/getmsg`;
+const getChatsRoute = `${host}/api/chat/allChat`;
+const sendMessageRoute = `${host}/api/message/sendmsg`;
+const getMessagesRoute = `${host}/api/message/allmsg`;
+
 
 export const login = (username, password) => {
   return axios
@@ -33,10 +37,26 @@ export const applyFriends = (sender, receiver) => {
   return axios.post(applyFriendrRoute, { sender, receiver }).then((res) => res);
 };
 
-export const sendMsg = (from, to , message) => {
-  return axios.post(sendMessageRoute, {from, to, message}).then((res) => res);
-};
+// export const sendMsg = (from, to , message) => {
+//   return axios.post(sendMessageRoute, {from, to, message}).then((res) => res);
+// };
 
 export const receiveMsg = (from, to) => {
   return axios.post(recieveMessageRoute, { from, to }).then((res) => res);
+};
+
+export const getChats = (presentUserId) => {
+  return axios.post(getChatsRoute, { presentUserId }).then((res) => res);
+};
+
+export const sendMsg = (sender, content, chatId) => {
+  return axios
+    .post(sendMessageRoute, { sender, content, chatId })
+    .then((res) => res);
+};
+
+export const getMsgs = (chatId) => {
+  return axios
+    .post(getMessagesRoute, { chatId })
+    .then((res) => res);
 };

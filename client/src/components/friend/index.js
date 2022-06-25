@@ -5,6 +5,7 @@ import Info from "../../imgs/info.png";
 import Star from "../../imgs/star.png";
 import Tick from "../../imgs/tick.png";
 import testIcon from "../../imgs/testIcon.jpg";
+import './friend.css'
 
 const Friend = ({ friend, switchs }) => {
   const [friendInfo, setFriendInfo] = useState();
@@ -39,7 +40,7 @@ const Friend = ({ friend, switchs }) => {
           <img
             src={Info}
             alt="logo"
-            className="icon showBtn"
+            className="icon showBtn "
             onClick={showInfo}
           ></img>
         </div>

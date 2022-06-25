@@ -7,8 +7,17 @@ import testIcon from "../imgs/testIcon.jpg";
 import LogoPure from "../imgs/tinycPure.png";
 import User from "../imgs/user.png";
 import { useNavigate } from "react-router-dom";
-import { getFriends, searchUser, applyFriends, receiveMsg, sendMsg } from "../api/api";
+import {
+  getFriends,
+  searchUser,
+  applyFriends,
+  receiveMsg,
+  sendMsg,
+  getChats,
+  getMsgs,
+} from "../api/api";
 import FriendList from '../components/friendList';
+import Chats from "../components/chats";
 import Messages from "../components/messages";
 function Chat() {
     const [chatSwitch, setChatSwitch] = useState();
@@ -27,16 +36,33 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const navigate = useNavigate();
     const [currentChat, setCurrentChat] = useState({});
+    const scrollRef = useRef();
+    const inputRef = useRef();
+    const [chats, setChats] = useState([]);
+    // const [shownchats, setShownChats] = useState([]);
 
     useEffect(() => {
-      const loadChat = async()=>{
-        const response = await receiveMsg(currentUser._id, currentChat._id);
-        setMessages(response.data);
-      }
-      loadChat();
-      }, [currentChat]);
-      
+      const scrollHeight = scrollRef.current.scrollHeight;
+      const height = scrollRef.current.clientHeight; 
+      const maxScrollTop = scrollHeight - height;
+      scrollRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }, [messages]);
 
+    useEffect(() => {
+      inputRef.current.style.height = "inherit";
+      const scrollHeight = inputRef.current.scrollHeight;
+      inputRef.current.style.height = scrollHeight + "px";
+    }, [msg]);
+    
+
+    // useEffect(() => {
+    //   const loadChat = async()=>{
+    //     const response = await getMsgs(currentChat);
+    //     console.log(response)
+    //     setMessages(response.data);
+    //   }
+    //   loadChat();
+    //   }, [currentChat]);
 
     useEffect(()=>{
       const result = async () => {
@@ -69,8 +95,22 @@ function Chat() {
       getFriendsFunc();
     },[currentUser])
 
-    const switchs = (index) => {
+    useEffect(() => {
+      const getFriendsFunc = async () => {
+        if (currentUser) {
+          let chatsList = await getChats(currentUser._id);
+          let chats  = chatsList.data;
+          setChats(chats);
+          // setShownChats(chats);
+        }
+      };
+      getFriendsFunc();
+    }, [currentUser]);
+
+    const switchs = async (index) => {
         setCurrentChat(index);
+        const response = await getMsgs(index);
+        setMessages(response.data);
         setChatSwitch({left:"-610px"})
         setChatBtnSwitch({ left: "-85px"});
     };
@@ -113,22 +153,15 @@ function Chat() {
       if (msg) setApplyResult(msg);
     }
 
-    // const inputAreaRef = useRef();
-    // useEffect(()=>{
-    //   console.log(inputAreaRef.current.scrollHeight);
-    //   inputAreaRef.current.scrollTop = 40;
-    // })
-
     const sendChat = async() => {
       if (msg.length > 0) {
-        await sendMsg(currentUser._id, currentChat._id, msg);
+        await sendMsg(currentUser._id, msg, currentChat);
         const msgs = [...messages];
-        msgs.push({ fromSelf: true, message: msg });
+        msgs.push({ sender: {_id:currentUser._id}, message: msg });
         setMessages(msgs);
         setMsg("");
       }
     };
-    
     
       return (
         <div className="chatBody">
@@ -204,20 +237,20 @@ function Chat() {
                       ) : null}
                     </div>
                   ) : null}
-                  <FriendList friends={shownFriends} switchs={switchs} />
+                  {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
+                  <Chats chats={chats} switchs={switchs} user={currentUser._id}/>
                 </div>
               </div>
               <div className="chatSwitchRight">
-                <div className="chatbox">
-                  <Messages messages={messages}/>
+                <div className="currentChatName">{currentChat.username}</div>
+                <div className="chatbox" ref={scrollRef}>
+                  <Messages messages={messages} user={currentUser._id}/>
                 </div>
                 <div className="chatInputContiner">
-                  <div
-                    // ref={inputAreaRef}
-                    className="chatInputName"
-                    onClick={expandInputbox}
-                  ></div>
+                  <div className="chatInputName" onClick={expandInputbox}></div>
                   <textarea
+                    rows="1"
+                    ref={inputRef}
                     className="chatInput"
                     style={chatInputStyle}
                     onChange={(e) => setMsg(e.target.value)}

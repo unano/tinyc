@@ -1,4 +1,6 @@
 const Messages = require("../models/messageModel");
+const Users = require("../models/userModel");
+const Chat = require("../models/chatModel");
 
 module.exports.getMessages = async (req, res, next) => {
   try {
@@ -37,3 +39,49 @@ module.exports.addMessage = async (req, res, next) => {
     next(ex);
   }
 };
+
+module.exports.allMessages = async (req, res) => {
+  try {
+    const messages = await Messages.find({ chat: req.body.chatId })
+      .populate("sender", "username avatarImage")
+      .populate("chat");
+    res.json(messages);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
+
+module.exports.sendMessage = async (req, res) => {
+  console.log(req.body)
+  const { sender, content, chatId } = req.body;
+
+  if (!content || !chatId) {
+    console.log("Invalid data passed into request");
+    return res.sendStatus(400);
+  }
+
+  var newMessage = {
+    sender: sender,
+    message: content,
+    chat: chatId,
+  };
+
+  try {
+    var message = await Messages.create(newMessage);
+
+      message = await message.populate("sender", "username avatarImage");
+      message = await message.populate("chat");
+      message = await Users.populate(message, {
+        path: "chat.users",
+        select: "username avatarImage",
+      });
+
+      await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+    res.json(message);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
+

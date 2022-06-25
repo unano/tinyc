@@ -11,20 +11,21 @@
 }
 
 .content{
-    max-width: 40%;
+    max-width: 70%;
     overflow-wrap: break-word;
     padding: 1rem;
     font-size: 1.1rem;
-    border-radius: 4rem;
+    border-radius: 2rem  0 2rem 2rem;
     color: #ffffff;
     border: 2px solid rgba(90, 212, 236, 0.739);
 }
 
 .sended .content{
-    background-color: rgba(90, 212, 236, 0.739);
+    background-color: rgba(53, 196, 225, 0.739);
 }
 
 .recieved .content{
     background-color: white;
     color: black;
+        border-radius: 0 2rem  2rem 2rem ;
 }

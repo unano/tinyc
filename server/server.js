@@ -7,6 +7,7 @@ const app = express();
 const mongoose = require("mongoose");
 const userRoutes = require('./routes/userRoute');
 const messageRoutes = require("./routes/messageRoute");
+const chatRoutes = require("./routes/chatRoute");
 app.use(cors());
 app.use(express.json());
 
@@ -29,5 +30,6 @@ try {
 const PORT = process.env.port || 8080;
 app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
