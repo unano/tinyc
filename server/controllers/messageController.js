@@ -1,7 +1,6 @@
 const Messages = require("../models/messageModel");
 const Users = require("../models/userModel");
 const Chat = require("../models/chatModel");
-
 module.exports.getMessages = async (req, res, next) => {
   try {
     const { from, to } = req.body;
@@ -53,7 +52,6 @@ module.exports.allMessages = async (req, res) => {
 };
 
 module.exports.sendMessage = async (req, res) => {
-  console.log(req.body)
   const { sender, content, chatId } = req.body;
 
   if (!content || !chatId) {

@@ -159,9 +159,6 @@ module.exports.acceptFriend = async(req, res, next) => {
         { recipient: sender, requester: receiver },
         { $set: { status: 3 }}
     )
-    console.log(
-      
-    );
     if (acceptStep1 && acceptStep2)
       return res.status(200).json({ msg: "Friend request accepted" });
 

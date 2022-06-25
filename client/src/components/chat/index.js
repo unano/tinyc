@@ -9,7 +9,6 @@ import testIcon from "../../imgs/testIcon.jpg";
 import "./friend.css";
 
 const Chat = ({ chat, switchs, user }) => {
-    console.log(chat)
   const chatUser = chat.users.filter((u)=>{
       return u._id!==user
   });

@@ -148,17 +148,23 @@ textarea:focus{
 }
 
 .chatLeft{
-  width: 70px;
-  height: 70px;
   display: inline-block;
   vertical-align: top;
-  border-radius: 50px 0px 50px 50px;
   margin-right: 10px;
+}
+.chatLeftIcon{
+  width: 70px;
+  height: 70px;
+  border-radius: 50px 0px 50px 50px;
   text-align: center;
   padding: 5px;
   border:1px solid black;
   position: relative;
   overflow: hidden;
+  margin-bottom: 10px;
+}
+.iconShrink{
+    transform: scale(0.8);
 }
 
 .chatLeftIn{

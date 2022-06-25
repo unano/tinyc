@@ -160,4 +160,3 @@ module.exports.removeFromGroup = async (req, res) => {
       res.json(removed);
     }
   };
-

@@ -19,6 +19,12 @@ import {
 import FriendList from '../components/friendList';
 import Chats from "../components/chats";
 import Messages from "../components/messages";
+import io from 'socket.io-client'
+import NewMsgs from '../components/newMsgs'
+
+const ENDPOINT = "http://localhost:8080";
+var socket, selectedChatCompare;
+
 function Chat() {
     const [chatSwitch, setChatSwitch] = useState();
     const [chatBtnSwitch, setChatBtnSwitch] = useState();
@@ -39,7 +45,25 @@ function Chat() {
     const scrollRef = useRef();
     const inputRef = useRef();
     const [chats, setChats] = useState([]);
+    const [socketConnected, setScoketConnected] =useState(false);
+    const [typing, setTyping] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
+    const [notification, setNotification] = useState([]);
     // const [shownchats, setShownChats] = useState([]);
+    const [reFetch, setReFetch] = useState(false);
+
+    useEffect(() => {
+      socket = io(ENDPOINT);
+      if (currentUser._id){
+        socket.emit("setup", currentUser);
+        socket.on("connected", () => {
+          setScoketConnected(true);
+        });
+        socket.on("typingBro", () => setIsTyping(true));
+        socket.on("stop typingBro", () => setIsTyping(false));
+      } 
+    }, [currentUser]);
+    
 
     useEffect(() => {
       const scrollHeight = scrollRef.current.scrollHeight;
@@ -64,7 +88,7 @@ function Chat() {
     //   loadChat();
     //   }, [currentChat]);
 
-    useEffect(()=>{
+    useEffect(() => {
       const result = async () => {
         if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
           navigate("/login");
@@ -75,9 +99,9 @@ function Chat() {
             )
           );
         }
-      }
+      };
       result();
-      }, []);
+    }, [reFetch]);
     useEffect(()=>{
       setSearchedUser({});
       setHasSearchedUser(false);
@@ -106,13 +130,34 @@ function Chat() {
       };
       getFriendsFunc();
     }, [currentUser]);
+    useEffect(() => {
+      socket.on("message received", newMsgReceived =>{
+        if(!selectedChatCompare || selectedChatCompare !== newMsgReceived.chat._id){
+          if(!notification.includes(newMsgReceived)){
+            setNotification([newMsgReceived, ...notification]);
+            setTimeout(() => {
+              let arr = [...notification];
+              arr.shift();
+              setNotification(arr);
+            }, 4000);
+            setReFetch(!reFetch);
+          }
+        }
+        else{
+          setMessages([...messages, newMsgReceived])
+        }
+      });
+    })
+
 
     const switchs = async (index) => {
         setCurrentChat(index);
         const response = await getMsgs(index);
         setMessages(response.data);
+        socket.emit('join chat', index)
         setChatSwitch({left:"-610px"})
         setChatBtnSwitch({ left: "-85px"});
+        selectedChatCompare = index;
     };
     const switchsBack = () => {
       setChatSwitch({ left: "0px"});
@@ -153,12 +198,34 @@ function Chat() {
       if (msg) setApplyResult(msg);
     }
 
+    const handleType = (e) =>{
+      setMsg(e.target.value);
+      if(!socketConnected) return;
+      if(!typing){
+        setTyping(true);
+        socket.emit("typing", currentChat);
+      }
+      let lastTypingTime = new Date().getTime();
+      var timerLength = 2000;
+      setTimeout(()=>{
+        var timeNow = new Date().getTime();
+        var timeDiff = timeNow - lastTypingTime;
+        if(timeDiff >=timerLength && typing){
+          socket.emit("stop typing", currentChat);
+          setTyping(false);
+        }
+      },timerLength)
+    }
+
     const sendChat = async() => {
       if (msg.length > 0) {
-        await sendMsg(currentUser._id, msg, currentChat);
-        const msgs = [...messages];
-        msgs.push({ sender: {_id:currentUser._id}, message: msg });
-        setMessages(msgs);
+        const {data} = await sendMsg(currentUser._id, msg, currentChat);
+        socket.emit("stop typing", currentChat);
+        console.log(data)
+        socket.emit("new message",data);
+        // const msgs = [...messages];
+        // msgs.push({ sender: {_id:currentUser._id}, message: msg });
+        setMessages([...messages,data]);
         setMsg("");
       }
     };
@@ -166,14 +233,17 @@ function Chat() {
       return (
         <div className="chatBody">
           <div className="chatLeft">
-            <div className="chatLeftIn" style={chatBtnSwitch}>
-              <div className="backOut" onClick={switchsBack}>
-                <img src={testIcon} alt="logo" className="icon"></img>
-              </div>
-              <div className="backOut" onClick={switchsBack}>
-                <img src={Back} alt="logo" className="back"></img>
+            <div className="chatLeftIcon">
+              <div className="chatLeftIn" style={chatBtnSwitch}>
+                <div className="backOut" onClick={switchsBack}>
+                  <img src={testIcon} alt="logo" className="icon"></img>
+                </div>
+                <div className="backOut" onClick={switchsBack}>
+                  <img src={Back} alt="logo" className="back"></img>
+                </div>
               </div>
             </div>
+            <NewMsgs newMsgs ={notification}/>
           </div>
           <div className="chat">
             <div className="cover2">
@@ -238,14 +308,19 @@ function Chat() {
                     </div>
                   ) : null}
                   {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
-                  <Chats chats={chats} switchs={switchs} user={currentUser._id}/>
+                  <Chats
+                    chats={chats}
+                    switchs={switchs}
+                    user={currentUser._id}
+                  />
                 </div>
               </div>
               <div className="chatSwitchRight">
                 <div className="currentChatName">{currentChat.username}</div>
                 <div className="chatbox" ref={scrollRef}>
-                  <Messages messages={messages} user={currentUser._id}/>
+                  <Messages messages={messages} user={currentUser._id} />
                 </div>
+                {isTyping ? <div>The other side is typing...</div> : <></>}
                 <div className="chatInputContiner">
                   <div className="chatInputName" onClick={expandInputbox}></div>
                   <textarea
@@ -253,7 +328,7 @@ function Chat() {
                     ref={inputRef}
                     className="chatInput"
                     style={chatInputStyle}
-                    onChange={(e) => setMsg(e.target.value)}
+                    onChange={handleType}
                     value={msg}
                   ></textarea>
                 </div>

@@ -1,0 +1,19 @@
+.informOutside{
+    animation:shows 1s normal;
+}
+
+.informAnime{
+    animation:flick 2s infinite;
+}
+
+@keyframes shows
+{
+    0% {transform: translateX(-200px); opacity: 0;}
+    100% {transform: translateX(0px); opacity: 1;}
+}
+@keyframes flick
+{
+	0% {background-color: white;}
+	67% {background-color: rgb(172, 254, 227);}
+    100% {background-color: white;}
+}
