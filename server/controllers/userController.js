@@ -3,6 +3,7 @@ const Friend = require("../models/friendModel");
 const bcrypt = require("bcrypt");
 const { stringify } = require("nodemon/lib/utils");
 const mongoose = require("mongoose");
+let fs = require("fs");
 
 module.exports.login = async (req, res, next) => {
   try {
@@ -41,6 +42,7 @@ module.exports.register = async (req, res, next) => {
     const user = await User.create({
       username,
       password: hashedPassword,
+      avatarImage: "default.png",
     });
     delete user.password;
     return res.status(200).json({ status: true, user });
@@ -193,4 +195,21 @@ module.exports.denyFriend = async (req, res, next) => {
   }
 };
 
+
+module.exports.uploadAvatar = async (req, res, next) => {
+  try {
+    const path = "./client/src/images/";
+    const {_id } = req.body;
+    const user = await User.findOne({ _id: _id });
+    if (user.avatarImage !== "defalut.png")
+        fs.unlinkSync(path + user.avatarImage);
+    const upload = await User.findOneAndUpdate(
+      { _id:_id },
+      { $set: { avatarImage: req.file.filename } }
+    );
+    return res.json({ status: true, upload });
+  } catch (ex) {
+    next(ex);
+  }
+};
 

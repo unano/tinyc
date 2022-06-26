@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './pages/App';
 import Chat from "./pages/chat";
+import User from "./pages/user";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -12,6 +13,7 @@ root.render(
       <Routes>
         <Route path="/login" element={<App />} />
         <Route path="/home" element={<Chat />} />
+        <Route path="/user" element={<User />} />
         <Route path="/" element={<Navigate replace to="/login" />} />
       </Routes>
     </BrowserRouter>

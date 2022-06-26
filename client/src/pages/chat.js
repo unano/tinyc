@@ -5,6 +5,8 @@ import Search from "../imgs/search.png";
 import AddFriend from "../imgs/addFriend.png";
 import testIcon from "../imgs/testIcon.jpg";
 import LogoPure from "../imgs/tinycPure.png";
+import Settings from "../imgs/settings.png";
+import Modify from "../imgs/modify.png";
 import User from "../imgs/user.png";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,12 +17,13 @@ import {
   sendMsg,
   getChats,
   getMsgs,
+  uploadAvatar
 } from "../api/api";
 import FriendList from '../components/friendList';
 import Chats from "../components/chats";
 import Messages from "../components/messages";
-import io from 'socket.io-client'
-import NewMsgs from '../components/newMsgs'
+import io from 'socket.io-client';
+import NewMsgs from '../components/newMsgs';
 
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
@@ -51,6 +54,7 @@ function Chat() {
     const [notification, setNotification] = useState([]);
     // const [shownchats, setShownChats] = useState([]);
     const [reFetch, setReFetch] = useState(false);
+    const [image, setImage] = useState("");
 
     useEffect(() => {
       socket = io(ENDPOINT);
@@ -229,21 +233,65 @@ function Chat() {
         setMsg("");
       }
     };
+
+        const uploadImage = (e) => {
+          setImage(e.target.files[0]);
+        };
+
+        const submitAvatar =()=>{
+          const formData = new FormData();
+          const previousImage = currentUser.avatarImage;
+          console.log(previousImage)
+
+          formData.append("_id", currentUser._id);
+          formData.append("image", image);
+          uploadAvatar(formData)
+        }
     
+        const navigateToUser=()=>{
+          navigate("/user");
+        }
       return (
         <div className="chatBody">
+          {/* <button onClick={submitAvatar}>dd</button> */}
           <div className="chatLeft">
             <div className="chatLeftIcon">
               <div className="chatLeftIn" style={chatBtnSwitch}>
                 <div className="backOut" onClick={switchsBack}>
-                  <img src={testIcon} alt="logo" className="icon"></img>
+                  <img
+                    src={
+                      currentUser.avatarImage
+                        ? require(`../images/${currentUser.avatarImage}`)
+                        : require(`../images/default.png`)
+                    }
+                    alt="logo"
+                    className="icon"
+                    onClick={navigateToUser}
+                  ></img>
                 </div>
+                {/* <label for="inputTag">
+                  <div className="backOut" onClick={switchsBack}>
+                    <img src={Modify} alt="logo" className="back"></img>
+                  </div>
+                  <input
+                    type="file"
+                    name="image"
+                    filename="image"
+                    id="inputTag"
+                    onChange={uploadImage}
+                  />
+                </label> */}
                 <div className="backOut" onClick={switchsBack}>
                   <img src={Back} alt="logo" className="back"></img>
                 </div>
               </div>
             </div>
-            <NewMsgs newMsgs ={notification}/>
+            <div className="chatLeftIcon">
+              <div className="backOut borderBackout" onClick={switchsBack}>
+                <img src={Settings} alt="logo" className="back"></img>
+              </div>
+            </div>
+            <NewMsgs newMsgs={notification} />
           </div>
           <div className="chat">
             <div className="cover2">

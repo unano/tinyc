@@ -11,6 +11,7 @@ const recieveMessageRoute = `${host}/api/message/getmsg`;
 const getChatsRoute = `${host}/api/chat/allChat`;
 const sendMessageRoute = `${host}/api/message/sendmsg`;
 const getMessagesRoute = `${host}/api/message/allmsg`;
+const uploadAvatarRoute = `${host}/api/user/uploadAvatar`;
 
 
 export const login = (username, password) => {
@@ -59,4 +60,8 @@ export const getMsgs = (chatId) => {
   return axios
     .post(getMessagesRoute, { chatId })
     .then((res) => res);
+};
+
+export const uploadAvatar = (data) => {
+  return axios.post(uploadAvatarRoute, data).then((res) => res);
 };

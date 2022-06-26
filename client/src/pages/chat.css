@@ -180,18 +180,26 @@ textarea:focus{
     border-radius: 100px;
     display: inline-block;
     margin-right: 20px;
+    box-sizing: border-box;
 }
 .back{
     height: 100%;
     position: relative;
 }
+.borderBackout{
+    border: 1px solid rgb(202, 202, 202);
+    background-color: white;
+
+}
 
 .icon,.icon2{
     height: 100%;
+    width: 100%;
     position: relative;
     border-radius: 100px;
     display: inline-block;
     margin-right: 10px;
+    border-radius: 50%;
 }
 .backOut2{
     margin-left: -12px;
@@ -393,4 +401,14 @@ textarea:focus{
     font-size: 2rem;
     margin-top: -8px;
     margin-bottom: 8px;
+}
+
+#inputTag{
+    display: none;
+}
+.label{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-color: black;
 }
