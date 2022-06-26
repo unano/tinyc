@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Delete from "../../imgs/delete.png";
 import Close from "../../imgs/close.png";
 import Info from "../../imgs/info.png";
@@ -7,10 +7,12 @@ import Star from "../../imgs/star.png";
 import Tick from "../../imgs/tick.png";
 import testIcon from "../../imgs/testIcon.jpg";
 import "./friend.css";
+import {AuthContext} from '../../contexts/authContext';
 
-const Chat = ({ chat, switchs, user }) => {
+const Chat = ({ chat, switchs }) => {
+  const { currentUser } = useContext(AuthContext);
   const chatUser = chat.users.filter((u)=>{
-      return u._id!==user
+      return u._id !== currentUser;
   });
   const currentChatUser =  chatUser[0].username;
 

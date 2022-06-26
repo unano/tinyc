@@ -6,7 +6,6 @@ import Star from "../../imgs/star.png";
 import Tick from "../../imgs/tick.png";
 import testIcon from "../../imgs/testIcon.jpg";
 import './friend.css'
-
 const Friend = ({ friend, switchs }) => {
   const [friendInfo, setFriendInfo] = useState();
   const [deleteInfo, setDeleteInfo] = useState();

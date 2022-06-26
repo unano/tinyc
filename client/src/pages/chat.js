@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import './chat.css';
 import Back from "../imgs/back2.png"
 import Search from "../imgs/search.png";
@@ -24,6 +24,7 @@ import Chats from "../components/chats";
 import Messages from "../components/messages";
 import io from 'socket.io-client';
 import NewMsgs from '../components/newMsgs';
+import {AuthContext} from '../contexts/authContext';
 
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
@@ -31,7 +32,6 @@ var socket, selectedChatCompare;
 function Chat() {
     const [chatSwitch, setChatSwitch] = useState();
     const [chatBtnSwitch, setChatBtnSwitch] = useState();
-    const [currentUser, setCurrentUser] = useState({});
     const [friends, setFriends] =useState([]);
     const [shownFriends, setShownFriends] = useState([]);
     const [switched, setSwitched] = useState(false);
@@ -55,6 +55,7 @@ function Chat() {
     // const [shownchats, setShownChats] = useState([]);
     const [reFetch, setReFetch] = useState(false);
     const [image, setImage] = useState("");
+    const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {
       socket = io(ENDPOINT);
@@ -82,30 +83,6 @@ function Chat() {
       inputRef.current.style.height = scrollHeight + "px";
     }, [msg]);
     
-
-    // useEffect(() => {
-    //   const loadChat = async()=>{
-    //     const response = await getMsgs(currentChat);
-    //     console.log(response)
-    //     setMessages(response.data);
-    //   }
-    //   loadChat();
-    //   }, [currentChat]);
-
-    useEffect(() => {
-      const result = async () => {
-        if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-          navigate("/login");
-        } else {
-          setCurrentUser(
-            await JSON.parse(
-              localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-            )
-          );
-        }
-      };
-      result();
-    }, [reFetch]);
     useEffect(()=>{
       setSearchedUser({});
       setHasSearchedUser(false);
@@ -359,14 +336,13 @@ function Chat() {
                   <Chats
                     chats={chats}
                     switchs={switchs}
-                    user={currentUser._id}
                   />
                 </div>
               </div>
               <div className="chatSwitchRight">
                 <div className="currentChatName">{currentChat.username}</div>
                 <div className="chatbox" ref={scrollRef}>
-                  <Messages messages={messages} user={currentUser._id} />
+                  <Messages messages={messages} />
                 </div>
                 {isTyping ? <div>The other side is typing...</div> : <></>}
                 <div className="chatInputContiner">
