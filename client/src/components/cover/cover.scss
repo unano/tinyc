@@ -1,0 +1,27 @@
+@import '../../styleVariables/variables.scss';
+.cover{
+    background-color: $mainColor;
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 30;
+    line-height: 670px;
+    text-align: center;
+    animation:hide 1.8s linear;
+    transform-origin: top left;
+    clip-path: inset(100% 0px 0px 0px);
+    .logoBig{
+        width: 400px;
+        animation:enlarge 0.5s cubic-bezier(.13,.41,.5,.87);
+        transform-origin: middle middle;
+    }
+}
+
+@keyframes hide
+{
+0% {clip-path: inset(0% 0px 0px 0px);}
+60% {clip-path: inset(0% 0px 0px 0px);}
+100% {clip-path: inset(100% 0px 0px 0px); }
+}

@@ -1,82 +1,67 @@
 @import '../styleVariables/variables.scss';
 
-.logo{
-  width: 220px;
-}
-
-.logoBig{
-  width: 400px;
-  animation:enlarge 0.5s cubic-bezier(.13,.41,.5,.87);
-  transform-origin: middle middle;
-}
 @keyframes enlarge
 {
 0% {transform: scale(60%); opacity: 0.4;}
 100% {transform: scale(100%); opacity: 1;}
 }
 
+.loginContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
 .loginBody{
-  width: 600px;
-   margin: 0 auto;
-   margin-top: 150px;
-}
-.loginAndRegister{
-  width: 500px;
-  height: 470px;
-  padding: 50px;
-  padding-top: 80px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0 50px 50px 50px;
-  border: 1px solid transparent;
-  box-shadow: 0px 0px 0px $mainColor;
-  animation:showLogin 2s linear;
-  transform-origin: top left;
-  transition: all 0.5s;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-}
-
-.loginAndRegisterLeft{
-  width: 100px;
-  height: 100px;
-  background-color: $mainColor;
-  display: inline-block;
-  vertical-align: top;
-  border-radius: 50px 0px 50px 50px;
-  margin-right: 20px;
-}
-
-
-.loginAndRegister:hover{
-  border: 1px solid black;
-}
-
-.loginAndRegister:hover + .loginAndRegisterLeft{
-  border: 1px solid black;
-}
-
-.cover{
-  background-color: $mainColor;
-  width: 600px;
-  height: 600px;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 30;
-  line-height: 670px;
-  text-align: center;
-  animation:hide 1.8s linear;
-  transform-origin: top left;
-  clip-path: inset(100% 0px 0px 0px);
-}
-
-@keyframes hide
-{
-0% {clip-path: inset(0% 0px 0px 0px);}
-60% {clip-path: inset(0% 0px 0px 0px);}
-100% {clip-path: inset(100% 0px 0px 0px); }
+    width: 700px;
+    height: 700px;
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 1rem;
+    .loginAndRegister{
+      width: 600px;
+      height: 600px;
+      box-sizing: border-box;
+      padding: 50px;
+      padding-top: 80px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0 50px 50px 50px;
+      border: 1px solid transparent;
+      box-shadow: 0px 0px 0px $mainColor;
+      animation:showLogin 2s linear;
+      transform-origin: top left;
+      transition: all 0.5s;
+      position: relative;
+      overflow: hidden;
+      &:hover{
+        border: 1px solid black;
+      }
+      .head{
+        margin-bottom: 80px;
+        .logo{
+          width: 220px;
+        }
+      }
+      .body{
+        display: flex;
+        flex-direction: row;
+        .login{
+          width: 103px;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          transition: all 0.5s;
+          margin-right: 30px;
+          position: relative;
+          padding-left: 2px;
+          flex-shrink: 0;
+        }
+      }
+      
+    }
 }
 
 @keyframes showLogin
@@ -87,17 +72,6 @@
 100% {border: 1px solid transparent;}
 }
 
-/* @keyframes showLogin
-{
-0% {transform: rotate(-20deg) translatey(-20%); border: 1px solid black;}
-70% {transform: rotate(10deg); border: 1px solid black;}
-100% {transform: rotate(0deg); border: 1px solid transparent;}
-} */
-
-
-.head{
-  margin-bottom: 80px;
-}
 .simpWordIntro{
   font-family: 'Raleway', sans-serif;
   display: inline-block;
@@ -108,18 +82,6 @@
 .body{
   display: flex;
   flex-direction: row;
-}
-
-.login{
-  width: 103px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transition: all 0.5s;
-  margin-right: 30px;
-  position: relative;
-  padding-left: 2px;
-  flex-shrink: 0;
 }
 
 .loginForm{

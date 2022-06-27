@@ -1,10 +1,6 @@
 
-import { useState, useContext } from "react";
-import Delete from "../../imgs/delete.png";
-import Close from "../../imgs/close.png";
+import { useContext } from "react";
 import Info from "../../imgs/info.png";
-import Star from "../../imgs/star.png";
-import Tick from "../../imgs/tick.png";
 import testIcon from "../../imgs/testIcon.jpg";
 import "./friend.css";
 import {AuthContext} from '../../contexts/authContext';

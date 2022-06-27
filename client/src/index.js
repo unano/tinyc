@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './pages/App';
+import LoginRegister from './pages/loginRegister';
 import Chat from "./pages/chat";
 import User from "./pages/user";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -11,13 +11,13 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <AuthProvider>
-      <Routes>
-        <Route path="/login" element={<App />} />
-        <Route path="/home" element={<Chat />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/" element={<Navigate replace to="/login" />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginRegister />} />
+          <Route path="/home" element={<Chat />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/" element={<Navigate replace to="/login" />} />
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

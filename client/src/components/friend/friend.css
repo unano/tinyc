@@ -85,3 +85,40 @@
     font-weight: 200;
     display: inline-block;
 }
+
+.icon02{
+    height: 100%;
+    margin-right: 0;
+}
+
+.imgBorder{
+    border: 1px solid red;
+    border-radius: 130px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 76%;
+    padding: 2px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 10px;
+}
+
+.btn01{
+    margin-left: 90px;
+}
+
+
+.btn02{
+    transition: all 0.5s;
+}
+.btn02:hover{
+    background-color: rgb(255, 255, 255);
+}
+
+.whireBorder{
+    border-color: white;
+}
+
+.btn03{
+    background-color: white;
+}
