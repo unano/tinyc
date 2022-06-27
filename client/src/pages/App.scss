@@ -1,3 +1,5 @@
+@import '../styleVariables/variables.scss';
+
 .logo{
   width: 220px;
 }
@@ -27,7 +29,7 @@
   flex-direction: column;
   border-radius: 0 50px 50px 50px;
   border: 1px solid transparent;
-  box-shadow: 0px 0px 0px rgb(138, 213, 226);
+  box-shadow: 0px 0px 0px $mainColor;
   animation:showLogin 2s linear;
   transform-origin: top left;
   transition: all 0.5s;
@@ -39,7 +41,7 @@
 .loginAndRegisterLeft{
   width: 100px;
   height: 100px;
-  background-color: rgb(133, 231, 250);
+  background-color: $mainColor;
   display: inline-block;
   vertical-align: top;
   border-radius: 50px 0px 50px 50px;
@@ -56,7 +58,7 @@
 }
 
 .cover{
-  background-color: rgb(133, 231, 250);
+  background-color: $mainColor;
   width: 600px;
   height: 600px;
   position: absolute;
@@ -165,16 +167,16 @@
 .loginInputContiner:hover>.loginInputName{
   width: 100px;
   color: white;
-  background-color: rgb(51, 202, 232);
-  border-color: rgb(51, 202, 232);
+  background-color: $mainColorDark;
+  border-color: $mainColorDark;
 }
 
 .loginInputName,.loginInputBtn, .loginInputBtn2, .loginInputBtn3{
     width: 43px;
     height: 43px;
     border-radius: 100px;
-    border:1.5px solid rgb(133, 231, 250);
-    background-color: rgb(133, 231, 250);
+    border:1.5px solid $mainColor;
+    background-color: $mainColor;
     transition: all 0.5s;
     display: inline-block;
     vertical-align: middle;
@@ -205,9 +207,8 @@
 
 .loginInputName:hover{
   width: 100px;
-  color: white;
-  background-color: rgb(51, 202, 232);
-  border-color: rgb(51, 202, 232);
+  color: $mainColorDark;
+  border-color: $mainColorDark;
 }
 
 .loginInputBtn2{
@@ -221,8 +222,8 @@
 
 .loginInputBtn2:hover{
   width: 103px;
-  background-color: rgb(51, 202, 232);
-  border-color: rgb(51, 202, 232);
+  background-color: $mainColorDark;
+  border-color: $mainColorDark;
   color: white;
 }
 .loginInputBtn3:hover{

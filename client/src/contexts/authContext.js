@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState, } from 'react';
+import {createContext,  useEffect, useState, } from 'react';
 import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext(null);
 
@@ -6,16 +6,20 @@ const AuthContextProvider = (props) => {
   const [currentUser, setCurrentUser] = useState({});
   const [reloadStorage, setRreloadStorage] = useState();
   const navigate = useNavigate();
+
+  const resetUserData =(data)=>{
+    setCurrentUser(data);
+    localStorage.setItem(
+      "token",
+      JSON.stringify(data)
+    );
+  }
   useEffect(() => {
     const result = async () => {
-      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      if (!localStorage.getItem("token")) {
         navigate("/login");
       } else {
-        setCurrentUser(
-          await JSON.parse(
-            localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-          )
-        );
+        setCurrentUser(await JSON.parse(localStorage.getItem("token")));
       }
     };
     result();
@@ -26,6 +30,7 @@ const AuthContextProvider = (props) => {
       value={{
         currentUser,
         setRreloadStorage,
+        resetUserData,
       }}
     >
       {props.children}

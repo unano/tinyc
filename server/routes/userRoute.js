@@ -7,6 +7,9 @@ const {
   searchUser,
   getFriends,
   uploadAvatar,
+  changeUsername,
+  changePassword,
+  deleteAvatar,
 } = require("../controllers/userController");
 
 const router = require("express").Router();
@@ -29,5 +32,8 @@ router.post("/denyFriend", denyFriend);
 router.post("/searchUser", searchUser);
 router.post("/getFriends", getFriends);
 router.post("/uploadAvatar", upload.single("image"), uploadAvatar);
+router.post("/deleteAvatar", deleteAvatar);
+router.put("/changeUsername", changeUsername);
+router.put("/changePassword", changePassword);
 
 module.exports = router;

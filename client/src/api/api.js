@@ -1,40 +1,46 @@
 import axios from "axios";
 
 const host = "http://localhost:8080";
-const loginRoute = `${host}/api/user/login`;
-const registerRoute = `${host}/api/user/register`;
-const getFriendsRoute = `${host}/api/user/getFriends`;
-const searchUserRoute = `${host}/api/user/searchUser`;
-const applyFriendrRoute = `${host}/api/user/applyFriend`;
+const userRoot = `${host}/api/user`
+const messageRoot = `${host}/api/message`;
+
+const loginRoute = `${userRoot}/login`;
+const registerRoute = `${userRoot}/register`;
+const getFriendsRoute = `${userRoot}/getFriends`;
+const searchUserRoute = `${userRoot}/searchUser`;
+const applyFriendrRoute = `${userRoot}/applyFriend`;
+const uploadAvatarRoute = `${userRoot}/uploadAvatar`;
+const deleteAvatarRoute = `${userRoot}/deleteAvatar`;
+const changeUsernameRoute = `${userRoot}/changeUsername`;
+const changePasswordRoute = `${userRoot}/changePassword`;
+
 // const sendMessageRoute = `${host}/api/message/addmsg`;
-const recieveMessageRoute = `${host}/api/message/getmsg`;
+const recieveMessageRoute = `${messageRoot}/getmsg`;
+const sendMessageRoute = `${messageRoot}/sendmsg`;
+const getMessagesRoute = `${messageRoot}/allmsg`;
+
 const getChatsRoute = `${host}/api/chat/allChat`;
-const sendMessageRoute = `${host}/api/message/sendmsg`;
-const getMessagesRoute = `${host}/api/message/allmsg`;
-const uploadAvatarRoute = `${host}/api/user/uploadAvatar`;
 
 
-export const login = (username, password) => {
+export const loginAPI = (username, password) => {
   return axios
     .post(loginRoute, {username, password})
     .then(res => res);
 };
 
-export const register = (username, password) =>{
-  return axios
-  .post(registerRoute,{username,password})
-  .then(res => res);
-}
+export const registerAPI = (username, password) => {
+  return axios.post(registerRoute, { username, password }).then((res) => res);
+};
 
-export const searchUser = (username) => {
+export const searchUserAPI = (username) => {
   return axios.post(searchUserRoute, { username }).then((res) => res);
 };
 
-export const getFriends = (_id) => {
+export const getFriendsAPI = (_id) => {
   return axios.post(getFriendsRoute, { _id }).then((res) => res);
 };
 
-export const applyFriends = (sender, receiver) => {
+export const applyFriendsAPI = (sender, receiver) => {
   return axios.post(applyFriendrRoute, { sender, receiver }).then((res) => res);
 };
 
@@ -42,26 +48,36 @@ export const applyFriends = (sender, receiver) => {
 //   return axios.post(sendMessageRoute, {from, to, message}).then((res) => res);
 // };
 
-export const receiveMsg = (from, to) => {
+export const receiveMsgAPI = (from, to) => {
   return axios.post(recieveMessageRoute, { from, to }).then((res) => res);
 };
 
-export const getChats = (presentUserId) => {
+export const getChatsAPI = (presentUserId) => {
   return axios.post(getChatsRoute, { presentUserId }).then((res) => res);
 };
 
-export const sendMsg = (sender, content, chatId) => {
+export const sendMsgAPI = (sender, content, chatId) => {
   return axios
     .post(sendMessageRoute, { sender, content, chatId })
     .then((res) => res);
 };
 
-export const getMsgs = (chatId) => {
-  return axios
-    .post(getMessagesRoute, { chatId })
-    .then((res) => res);
+export const getMsgsAPI = (chatId) => {
+  return axios.post(getMessagesRoute, { chatId }).then((res) => res);
 };
 
-export const uploadAvatar = (data) => {
+export const uploadAvatarAPI = (data) => {
   return axios.post(uploadAvatarRoute, data).then((res) => res);
 };
+
+export const deleteAvatarAPI = (avatar) => {
+  return axios.post(deleteAvatarRoute, { avatar }).then((res) => res);
+};
+export const changeUsernameAPI = (_id, username) => {
+  return axios.put(changeUsernameRoute, { _id, username }).then((res) => res);
+};
+
+export const changePasswordAPI = (_id, password) => {
+  return axios.put(changeUsernameRoute, { _id, password }).then((res) => res);
+};
+

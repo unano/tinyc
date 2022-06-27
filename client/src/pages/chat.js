@@ -1,23 +1,20 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import './chat.css';
+import './chat.scss';
 import Back from "../imgs/back2.png"
 import Search from "../imgs/search.png";
 import AddFriend from "../imgs/addFriend.png";
 import testIcon from "../imgs/testIcon.jpg";
 import LogoPure from "../imgs/tinycPure.png";
 import Settings from "../imgs/settings.png";
-import Modify from "../imgs/modify.png";
 import User from "../imgs/user.png";
 import { useNavigate } from "react-router-dom";
 import {
-  getFriends,
-  searchUser,
-  applyFriends,
-  receiveMsg,
-  sendMsg,
-  getChats,
-  getMsgs,
-  uploadAvatar
+  getFriendsAPI,
+  searchUserAPI,
+  applyFriendsAPI,
+  sendMsgAPI,
+  getChatsAPI,
+  getMsgsAPI,
 } from "../api/api";
 import FriendList from '../components/friendList';
 import Chats from "../components/chats";
@@ -54,7 +51,7 @@ function Chat() {
     const [notification, setNotification] = useState([]);
     // const [shownchats, setShownChats] = useState([]);
     const [reFetch, setReFetch] = useState(false);
-    const [image, setImage] = useState("");
+
     const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {
@@ -91,7 +88,7 @@ function Chat() {
     useEffect(()=>{
       const getFriendsFunc = async () => {
         if(currentUser){
-          let friendList = await getFriends(currentUser._id);
+          let friendList = await getFriendsAPI(currentUser._id);
           let { friends }  =friendList.data;
           setFriends(friends);
           setShownFriends(friends);
@@ -103,7 +100,7 @@ function Chat() {
     useEffect(() => {
       const getFriendsFunc = async () => {
         if (currentUser) {
-          let chatsList = await getChats(currentUser._id);
+          let chatsList = await getChatsAPI(currentUser._id);
           let chats  = chatsList.data;
           setChats(chats);
           // setShownChats(chats);
@@ -133,7 +130,7 @@ function Chat() {
 
     const switchs = async (index) => {
         setCurrentChat(index);
-        const response = await getMsgs(index);
+        const response = await getMsgsAPI(index);
         setMessages(response.data);
         socket.emit('join chat', index)
         setChatSwitch({left:"-610px"})
@@ -166,7 +163,7 @@ function Chat() {
     }
 
     const searchInputUser = async() =>{
-      let user = await searchUser(searchInput);
+      let user = await searchUserAPI(searchInput);
       if(user) {
         setSearchedUser(user.data.user);
       }
@@ -174,7 +171,7 @@ function Chat() {
     }
 
     const applyFriend = async()=>{
-      let apply = await applyFriends(currentUser._id,searchedUser._id);
+      let apply = await applyFriendsAPI(currentUser._id, searchedUser._id);
       let msg = apply.data.msg;
       if (msg) setApplyResult(msg);
     }
@@ -200,7 +197,7 @@ function Chat() {
 
     const sendChat = async() => {
       if (msg.length > 0) {
-        const {data} = await sendMsg(currentUser._id, msg, currentChat);
+        const { data } = await sendMsgAPI(currentUser._id, msg, currentChat);
         socket.emit("stop typing", currentChat);
         console.log(data)
         socket.emit("new message",data);
@@ -210,20 +207,6 @@ function Chat() {
         setMsg("");
       }
     };
-
-        const uploadImage = (e) => {
-          setImage(e.target.files[0]);
-        };
-
-        const submitAvatar =()=>{
-          const formData = new FormData();
-          const previousImage = currentUser.avatarImage;
-          console.log(previousImage)
-
-          formData.append("_id", currentUser._id);
-          formData.append("image", image);
-          uploadAvatar(formData)
-        }
     
         const navigateToUser=()=>{
           navigate("/user");
@@ -246,18 +229,6 @@ function Chat() {
                     onClick={navigateToUser}
                   ></img>
                 </div>
-                {/* <label for="inputTag">
-                  <div className="backOut" onClick={switchsBack}>
-                    <img src={Modify} alt="logo" className="back"></img>
-                  </div>
-                  <input
-                    type="file"
-                    name="image"
-                    filename="image"
-                    id="inputTag"
-                    onChange={uploadImage}
-                  />
-                </label> */}
                 <div className="backOut" onClick={switchsBack}>
                   <img src={Back} alt="logo" className="back"></img>
                 </div>
@@ -366,5 +337,6 @@ function Chat() {
         </div>
       );
 }
+
 
 export default Chat;

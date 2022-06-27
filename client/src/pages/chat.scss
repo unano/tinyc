@@ -1,3 +1,5 @@
+@import '../styleVariables/variables.scss';
+
 *{
     font-family: 'Raleway', sans-serif;
 }
@@ -40,7 +42,7 @@ textarea:focus{
   flex-direction: column;
   border-radius: 0 50px 50px 50px;
   border: 1px solid black;
-  box-shadow: 0px 0px 0px rgb(138, 213, 226);
+  box-shadow: 0px 0px 0px $mainColor;
   animation:showLogin2 2s linear;
   transform-origin: top left;
   transition: all 0.5s;
@@ -80,7 +82,7 @@ textarea:focus{
 
 
 .cover2{
-  background-color: rgb(133, 231, 250);
+  background-color: $mainColor;
   width: 600px;
   height: 600px;
   position: absolute;
@@ -176,7 +178,7 @@ textarea:focus{
 .backOut,.backOut2{
     width: 70px;
     height: 70px;
-    background-color: rgb(133, 231, 250);
+    background-color: $mainColor;
     border-radius: 100px;
     display: inline-block;
     margin-right: 20px;
@@ -231,7 +233,7 @@ textarea:focus{
     vertical-align: middle;
     margin-right: 5px;
     padding: 5px;
-    background-color: rgb(133, 231, 250);
+    background-color: $mainColor;
 }
 
 .searchInput{
@@ -343,8 +345,8 @@ textarea:focus{
     width: 43px;
     height: 43px;
     border-radius: 100px;
-    border:1.5px solid rgb(133, 231, 250);
-    background-color: rgb(133, 231, 250);
+    border:1.5px solid $mainColor;
+    background-color: $mainColor;
     transition: all 0.5s;
     display: inline-block;
     vertical-align: middle;
@@ -357,12 +359,12 @@ textarea:focus{
 }
 
 .searchUser{
-    color: rgb(78, 205, 230);
+    color: $mainColor;
     cursor: default;
 }
 
 .searchUser:hover{
-    color: rgb(44, 150, 171);
+    color: $mainColorDark;
 }
 
 .searchFriendIcon{
@@ -406,9 +408,9 @@ textarea:focus{
 #inputTag{
     display: none;
 }
-.label{
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    background-color: black;
-}
+// .label{
+//     width: 40px;
+//     height: 40px;
+//     cursor: pointer;
+//     background-color: black;
+// }

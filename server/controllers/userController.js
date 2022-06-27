@@ -8,20 +8,24 @@ let fs = require("fs");
 module.exports.login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user)
+    const fetchedUser = await User.findOne({ username });
+    if (!fetchedUser)
       return res
         .status(200)
         .json({ msg: "No such user", status: false, err: "username" });
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      fetchedUser.password
+    );
     if (!isPasswordValid)
       return res.json({
         msg: "invalid password",
         status: false,
         err: "password",
       });
-    delete user.password;
-    delete user.friends;
+      let user = fetchedUser.toObject();
+      delete user.password;
+      delete user.friends;
     return res.status(200).json({ status: true, user });
   } catch (error) {
     next(error);
@@ -198,18 +202,58 @@ module.exports.denyFriend = async (req, res, next) => {
 
 module.exports.uploadAvatar = async (req, res, next) => {
   try {
-    const path = "./client/src/images/";
     const {_id } = req.body;
-    const user = await User.findOne({ _id: _id });
-    if (user.avatarImage !== "defalut.png")
-        fs.unlinkSync(path + user.avatarImage);
     const upload = await User.findOneAndUpdate(
-      { _id:_id },
-      { $set: { avatarImage: req.file.filename } }
-    );
+      { _id: _id },
+      { $set: { avatarImage: req.file.filename } },
+      { new: true }
+    ).select("-password -friends");
     return res.json({ status: true, upload });
   } catch (ex) {
     next(ex);
   }
 };
+
+
+module.exports.deleteAvatar = async (req, res, next) => {
+  try {
+    const path = "./client/src/images/";
+    const { avatar } = req.body;
+    if (avatar !== "defalut.png")
+      fs.unlinkSync(path + avatar);
+    return res.json({ status: true, result:"deleted" });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+
+module.exports.changeUsername = async (req, res, next) => {
+  try {
+    const { _id, username } = req.body;
+    const upload = await User.findOneAndUpdate(
+      { _id: _id },
+      { $set: { username: username } },
+      { new: true }
+    ).select("-password -friends");
+    return res.json({ status: true, upload });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.changePassword = async (req, res, next) => {
+  try {
+    const { _id, password } = req.body;
+    const upload = await User.findOneAndUpdate(
+      { _id: _id },
+      { $set: { password: password } },
+      { new: true }
+    ).select("-password -friends");
+    return res.json({ status: true, upload });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
 

@@ -1,11 +1,13 @@
-import { useState, useRef } from 'react';
-import './App.css';
+import { useState, useRef, useContext} from 'react';
+import './App.scss';
 import Logo from "../imgs/tinyc.png"
 import LogoPure from "../imgs/tinycPure.png";
 import { useNavigate} from "react-router-dom";
-import { login, register } from "../api/api";
+import { loginAPI, registerAPI } from "../api/api";
+import { AuthContext } from "../contexts/authContext";
 
 function App() {
+  const { resetUserData } = useContext(AuthContext);
   const navigate = useNavigate();
 
   //save login data
@@ -138,7 +140,7 @@ function App() {
     event.preventDefault();
     if (validateLoginForm()) {
       const { username, password } = loginValues;
-      const { data } = await login(username, password);
+      const { data } = await loginAPI(username, password);
       if (data.status === false && data.err === "username") {
         dealUsernameError(data.msg);
       }
@@ -146,10 +148,7 @@ function App() {
         dealPasswordError(data.msg);
       }
       if (data.status === true) {
-        localStorage.setItem(
-          process.env.REACT_APP_LOCALHOST_KEY,
-          JSON.stringify(data.user)
-        );
+        resetUserData(data.user);
         navigate("/home");
       }
     }
@@ -174,7 +173,7 @@ function App() {
     event.preventDefault();
     if (validateRegisterForm()) {
       const { username, password } = registerValues;
-      const { data } = await register(username, password);
+      const { data } = await registerAPI(username, password);
        if (data.status === false && data.err === "username") {
          dealRegistUsernameError(data.msg);
        }
