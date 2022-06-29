@@ -16,7 +16,7 @@ const AuthContextProvider = (props) => {
   }
   const logout = async () => {
     localStorage.clear();
-    navigate("/login");
+    navigate("/");
   };
   useEffect(() => {
     const result = async () => {

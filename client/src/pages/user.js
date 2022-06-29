@@ -10,6 +10,7 @@ import {
   uploadAvatarAPI,
   deleteAvatarAPI,
   changeUsernameAPI,
+  changeIntroAPI,
   getFriendsReqAPI,
   getsendedFriendRedAPI,
 } from "../api/api";
@@ -24,7 +25,9 @@ import { AiOutlineLogout } from "react-icons/ai";
 function Personal() {
   const { currentUser, resetUserData, logout } = useContext(AuthContext);
   const [showChangeInput, setShowChangeInput] = useState(false);
+    const [showChangeIntro, setShowChangeIntro] = useState(false);
   const [input, setInput] = useState("");
+  const [introInput,  setIntroInput] = useState("");
   const [image, setImage] = useState("");
   const [preview, setPreview] = useState();
   const [requests, setRequests] = useState([]);
@@ -48,6 +51,15 @@ function Personal() {
       setShowChangeInput(false);
     }
   };
+
+  const changeIntro = async () => {
+    if (introInput !== "") {
+      let result = await changeIntroAPI(currentUser._id, introInput);
+      if (result.status) resetUserData(result.data.upload);
+      setShowChangeIntro(false);
+    }
+  };
+
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -76,11 +88,9 @@ function Personal() {
   const submitAvatar = async () => {
     const formData = new FormData();
     const previousImage = currentUser.avatarImage;
-    console.log(previousImage);
     formData.append("_id", currentUser._id);
     formData.append("image", image);
     const updatedUser = await uploadAvatarAPI(formData);
-    console.log(updatedUser);
     setTimeout(() => {
       resetUserData(updatedUser.data.upload);
       setImage("");
@@ -103,7 +113,7 @@ function Personal() {
           </div>
           <div className="chatLeftIcon">
             <div className="backOut borderBackout">
-              <img src={Settings} alt="logo" className="back"></img>
+              <img src={Settings} alt="logo" className="back rotate"></img>
             </div>
           </div>
         </div>
@@ -156,7 +166,7 @@ function Personal() {
             <div className="flex">
               <div className="username">{currentUser.username}</div>
               <IoPencilOutline
-                className="modify smallModify"
+                className="modify"
                 onClick={() => setShowChangeInput(true)}
               />
             </div>
@@ -165,6 +175,7 @@ function Personal() {
               <input
                 className="changeUsername"
                 onChange={(e) => setInput(e.target.value)}
+                defaultValue={currentUser.username}
               ></input>
               <IoCheckmarkOutline
                 className="usernameBtn"
@@ -176,12 +187,34 @@ function Personal() {
               />
             </div>
           )}
+          {!showChangeIntro ? (
+            <div className="flex">
+              <div className="username intro">{currentUser.intro}</div>
+              <IoPencilOutline
+                className="modify smallModify"
+                onClick={() => setShowChangeIntro(true)}
+              />
+            </div>
+          ) : (
+            <div className="flex">
+              <input
+                className="changeIntro"
+                defaultValue={currentUser.intro}
+                onChange={(e) => setIntroInput(e.target.value)}
+              ></input>
+              <IoCheckmarkOutline className="introBtn" onClick={changeIntro} />
+              <IoCloseOutline
+                className="introBtn"
+                onClick={() => setShowChangeIntro(false)}
+              />
+            </div>
+          )}
           <div className="twoRequests">
             <Requests requests={requests} />
             <Requestings requestings={requesting} />
           </div>
           <div className="logout">
-            <AiOutlineLogout onClick={logout}/>
+            <AiOutlineLogout onClick={logout} />
           </div>
         </div>
       </div>

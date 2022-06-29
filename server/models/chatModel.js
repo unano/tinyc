@@ -17,6 +17,10 @@ const chatSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
   },
+  avatar: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("Chats", chatSchema);

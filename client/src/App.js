@@ -3,6 +3,7 @@ import LoginRegister from "./pages/loginRegister";
 import Chat from "./pages/chat";
 import User from "./pages/user";
 import Friends from "./pages/friends";
+import NewGroup from "./pages/newGroup";
 import {
   Route,
   Routes,
@@ -20,9 +21,10 @@ function App() {
         <AuthProvider>
           <Routes location={location}>
             <Route path="/login" element={<LoginRegister />} />
-            <Route path="/home" element={<Chat />}/>
-            <Route path="/friend" element={<Friends />}/>
+            <Route path="/home" element={<Chat />} />
+            <Route path="/friend" element={<Friends />} />
             <Route path="/user" element={<User />} />
+            <Route path="/newGroup" element={<NewGroup />} />
             <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>
         </AuthProvider>

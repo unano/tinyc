@@ -65,22 +65,22 @@ module.exports.fetchChat = async (req, res, next) => {
 }
 
 module.exports.createGropuChat = async (req, res, next) => {
-    const userId = req.body.presentUserId;
-    const user = await User.findById(userId).select("-password");
-    if(!req.body.users || !req.body.name){
-        return res.status(400).send({msg:"lack property"})
+    const { chatName, users, applyerId } = req.body;
+    const user = await User.findById(applyerId).select("-password");
+    if (!users || !chatName) {
+      return res.status(400).send({ msg: "lack property" });
     }
-    var users = JSON.parse(req.body.users);
-    if(users.length<2){
-        return res.status(400).send({ msg: "user >3 is required" });
+    if (users.length < 2) {
+      return res.status(400).send({ msg: "user >3 is required" });
     }
     users.push(user);
     try {
        const groupChat = await Chat.create({
-         chatName: req.body.name,
+         chatName: chatName,
          users: users,
          isGroupChat: true,
          groupAdmin: user,
+         avatar: req.file.filename,
        });
 
        const fullGroupChat = await Chat.findOne({ _id: groupChat._id })

@@ -1,0 +1,48 @@
+.friendList{
+    width: 100%;
+    height: 70px;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+    position: relative;
+    .chatIcon{
+        width: 60px;
+        height: 60px;
+        border-radius: 100px;
+        background-color: rgb(255, 255, 255);
+        border: 0.3px solid rgb(0, 0, 0);
+        padding: 3px;
+        display: inline-block;
+        vertical-align: top;
+        transition: all 0.5s;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-right: 20px;
+        .icon{
+            height: 100%;
+            width: 100%;
+            position: relative;
+            border-radius: 100px;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+    }
+    .friendNameAndWord{
+        font-size: 30px;
+        font-family: 'Raleway', sans-serif;
+        display: inline-block;
+        position: relative;
+        vertical-align: top;
+        .friendName{
+            font-size: 30px;
+            cursor: default;
+        }
+        .friendWord{
+            font-size: 20px;
+            margin-top: 5px;
+            color: rgb(104, 104, 104);
+            cursor: default;
+        }
+    }
+
+}

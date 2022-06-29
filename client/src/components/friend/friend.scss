@@ -1,3 +1,4 @@
+@import '../../styleVariables/variables.scss';
 .friendList{
     width: 100%;
     height: 70px;
@@ -9,7 +10,7 @@
         height: 60px;
         border-radius: 100px;
         background-color: rgb(184, 255, 185);
-        border: 0.3px solid rgb(144, 144, 144);
+        border: 0.3px solid rgb(185, 185, 185);
         padding: 3px;
         display: inline-block;
         vertical-align: top;
@@ -17,7 +18,7 @@
         overflow: hidden;
         white-space: nowrap;
         margin-right: 20px;
-        box-shadow: 0 0 4px  rgba(82, 82, 82, 0.633) inset;
+        box-shadow: 0 0 4px  rgba(229, 229, 229, 0.633) inset;
         .icon{
             height: 100%;
             width: 60px;
@@ -26,11 +27,16 @@
             display: inline-block;
             margin-right: 10px;
         }
+        .info{
+            width: 60px;
+            height: 60px;
+            font-size: 40px;
+        }
     }
     .friendInfo,.deleteInfo{
         position: absolute;
-        width: 70px;
         height: 62px;
+        width: 70px;
         background-color: rgba(133, 230, 250);
         border-radius: 100px 0 0 100px;
         top: 0px;
@@ -40,18 +46,19 @@
         transition: all 0.8s;
         overflow: hidden;
         white-space: nowrap;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         .icon{
             height: 100%;
             width: 60px;
             position: relative;
             border-radius: 50%;
-            display: inline-block;
             margin-right: 10px;
         }
         .friendNameAndWord{
             font-size: 30px;
             font-family: 'Raleway', sans-serif;
-            display: inline-block;
             position: relative;
             vertical-align: top;
             .friendName{
@@ -74,18 +81,55 @@
                 cursor: default;
             }
         }
+        .deleteFriend{
+            font-size: 30px;
+            color: white;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 50%;
+            margin-left: auto;
+            margin-right: 100px;
+            transition: all 0.5s;
+            &:hover{
+                border: 1px solid $warn;
+                background-color: $warn;
+            }
+        }
     }
     .deleteInfo{
-        background-color: rgb(256, 106, 116);
+        background-color: $warn;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         .deleteInfoWord{
-            font-size: 26px;
-            vertical-align: middle;
+            font-size: 20px;
             color: white;
-            margin-left: 20px;
+            margin-left: 10px;
             margin-right: 30px;
-            margin-top: 6px;
             font-weight: 200;
             display: inline-block;
+            width: 50%;
+        }
+        .chooses{
+            margin-left: auto;
+            margin-right: 14%;
+            height: 100%;
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            .choose{
+                font-size: 20px;
+                padding: 10px;
+                border: 1px solid white;
+                color: white;
+                border-radius: 50%;
+                transition: all 0.5s;
+                &:hover{
+                    padding: 20px;
+                }
+            }
         }
     }
 }
@@ -96,7 +140,6 @@
 }
 
 .imgBorder{
-    border: 1px solid red;
     border-radius: 130px;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -104,14 +147,6 @@
     padding: 2px;
     display: inline-block;
     vertical-align: top;
-    margin-right: 10px;
-}
-.icon{
-    height: 100%;
-    width: 60px;
-    position: relative;
-    border-radius: 50%;
-    display: inline-block;
     margin-right: 10px;
 }
 .icon02{

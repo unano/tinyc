@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  intro: {
+    type: String,
+    max: 50,
+  },
   friends: [
     {
       unique: true,

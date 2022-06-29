@@ -1,14 +1,15 @@
-import { useState } from "react";
-import Delete from "../../imgs/delete.png";
+import { useState, useContext } from "react";
 import Close from "../../imgs/close.png";
 import Info from "../../imgs/info.png";
-import Star from "../../imgs/star.png";
-import Tick from "../../imgs/tick.png";
-import testIcon from "../../imgs/testIcon.jpg";
-import './friend.scss'
+import "./friend.scss";
+import { TiUserDeleteOutline } from "react-icons/ti";
+import { IoCloseOutline, IoCheckmarkOutline } from "react-icons/io5";
+import { denyFriendsAPI } from "../../api/api";
+import { AuthContext } from "../../contexts/authContext";
 const Friend = ({ friend }) => {
   const [friendInfo, setFriendInfo] = useState();
   const [deleteInfo, setDeleteInfo] = useState();
+  const { currentUser } = useContext(AuthContext);
   const showInfo = () => {
     setFriendInfo({ width: "506px" });
   };
@@ -23,14 +24,22 @@ const Friend = ({ friend }) => {
     setDeleteInfo({ width: "70px" });
   };
 
+  const deleteFriend = async () => {
+    await denyFriendsAPI(currentUser._id, friend._id);
+  };
+
   return (
     <>
       <div className="friendList">
         <div className="friendIcon">
           <img
-            src={testIcon}
-            alt="logo"
-            className="icon"
+            src={
+              friend.avatarImage
+                ? require(`../../images/${friend.avatarImage}`)
+                : require(`../../images/default.png`)
+            }
+            alt="avatar"
+            className="icon showBtn"
           ></img>
           <img
             src={Info}
@@ -40,12 +49,8 @@ const Friend = ({ friend }) => {
           ></img>
         </div>
         <div className="friendNameAndWord">
-          <div className="friendName">
-            {friend.username}
-          </div>
-          <div className="friendWord">
-            cafafasfsafafhika
-          </div>
+          <div className="friendName">{friend.username}</div>
+          <div className="friendWord">{friend.intro}</div>
         </div>
         <div className="friendInfo" style={friendInfo}>
           <img
@@ -57,6 +62,7 @@ const Friend = ({ friend }) => {
           <div className="friendNameAndWord">
             <div className="friendName friendName2">{friend.username}</div>
           </div>
+          <TiUserDeleteOutline className="deleteFriend" onClick={deleteAlert} />
           {/* <div className="imgBorder btn01">
             <img src={Star} alt="logo" className="icon  icon02 "></img>
           </div>
@@ -74,7 +80,11 @@ const Friend = ({ friend }) => {
           <div className="deleteInfoWord">
             Sure to delete {friend.username}?
           </div>
-          <div className="imgBorder whireBorder btn03">
+          <div className="chooses">
+            <IoCheckmarkOutline className="choose" onClick={deleteFriend} />
+            <IoCloseOutline className="choose" onClick={cancelDeleteAlert} />
+          </div>
+          {/* <div className="imgBorder whireBorder btn03">
             <img src={Tick} alt="logo" className="icon  icon02 "></img>
           </div>
           <div className="imgBorder whireBorder btn03">
@@ -84,7 +94,7 @@ const Friend = ({ friend }) => {
               className="icon icon02 "
               onClick={cancelDeleteAlert}
             ></img>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 import { HiOutlineUsers } from "react-icons/hi";
 import { BiMessageSquareDetail } from "react-icons/bi";
+import { MdOutlineGroupAdd } from "react-icons/md";
 import {NavLink} from 'react-router-dom';
 import "./navBar.scss"
 const NavBar = () => {
@@ -12,6 +13,9 @@ const NavBar = () => {
       </NavLink>
       <NavLink className={classNameFunc} to="/home">
         <BiMessageSquareDetail />
+      </NavLink>
+      <NavLink className={classNameFunc} to="/newGroup">
+        <MdOutlineGroupAdd />
       </NavLink>
     </div>
   );

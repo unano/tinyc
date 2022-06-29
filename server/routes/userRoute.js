@@ -11,6 +11,7 @@ const {
   uploadAvatar,
   changeUsername,
   changePassword,
+  changeIntro,
   deleteAvatar,
 } = require("../controllers/userController");
 
@@ -39,4 +40,5 @@ router.post("/uploadAvatar", upload.single("image"), uploadAvatar);
 router.post("/deleteAvatar", deleteAvatar);
 router.put("/changeUsername", changeUsername);
 router.put("/changePassword", changePassword);
+router.put("/changeIntro", changeIntro);
 module.exports = router;

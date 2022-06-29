@@ -47,6 +47,7 @@ module.exports.register = async (req, res, next) => {
       username,
       password: hashedPassword,
       avatarImage: "default.png",
+      intro: ""
     });
     delete user.password;
     return res.status(200).json({ status: true, user });
@@ -82,7 +83,7 @@ module.exports.getFriends = async (req, res, next) => {
           },
         },
       },
-      { $project: { username: 1, avatarImage: 1, friendsStatus: 1 } },
+      { $project: { username: 1, avatarImage: 1, friendsStatus: 1, intro: 1 } },
       {$match: {friendsStatus: 3}}
     ]);
     if (test)
@@ -320,6 +321,20 @@ module.exports.changePassword = async (req, res, next) => {
     const upload = await User.findOneAndUpdate(
       { _id: _id },
       { $set: { password: password } },
+      { new: true }
+    ).select("-password -friends");
+    return res.json({ status: true, upload });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.changeIntro = async (req, res, next) => {
+  try {
+    const { _id, intro } = req.body;
+    const upload = await User.findOneAndUpdate(
+      { _id: _id },
+      { $set: { intro: intro } },
       { new: true }
     ).select("-password -friends");
     return res.json({ status: true, upload });

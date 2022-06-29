@@ -54,7 +54,6 @@ function Chat() {
   const [currentChatUser, setCurrentChatUser] = useState();
 
   const { currentUser } = useContext(AuthContext);
-  console.log(currentChat)
 
   useEffect(() => {
     socket = io(ENDPOINT);

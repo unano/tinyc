@@ -3,6 +3,7 @@ import axios from "axios";
 const host = "http://localhost:8080";
 const userRoot = `${host}/api/user`;
 const messageRoot = `${host}/api/message`;
+const chatRoot = `${host}/api/chat`;
 
 const loginRoute = `${userRoot}/login`;
 const registerRoute = `${userRoot}/register`;
@@ -17,13 +18,15 @@ const uploadAvatarRoute = `${userRoot}/uploadAvatar`;
 const deleteAvatarRoute = `${userRoot}/deleteAvatar`;
 const changeUsernameRoute = `${userRoot}/changeUsername`;
 const changePasswordRoute = `${userRoot}/changePassword`;
+const changeIntroRoute = `${userRoot}/changeIntro`;
 
 // const sendMessageRoute = `${host}/api/message/addmsg`;
 const recieveMessageRoute = `${messageRoot}/getmsg`;
 const sendMessageRoute = `${messageRoot}/sendmsg`;
 const getMessagesRoute = `${messageRoot}/allmsg`;
 
-const getChatsRoute = `${host}/api/chat/allChat`;
+const getChatsRoute = `${chatRoot}/allChat`;
+const createGroupChatsRoute = `${chatRoot}/createGroup`;
 
 export const loginAPI = (username, password) => {
   return axios.post(loginRoute, { username, password }).then((res) => res);
@@ -98,6 +101,14 @@ export const changeUsernameAPI = (_id, username) => {
   return axios.put(changeUsernameRoute, { _id, username }).then((res) => res);
 };
 
+export const changeIntroAPI = (_id, intro) => {
+  return axios.put(changeIntroRoute, { _id, intro }).then((res) => res);
+};
+
 export const changePasswordAPI = (_id, password) => {
   return axios.put(changeUsernameRoute, { _id, password }).then((res) => res);
+};
+
+export const createGroupChatsAPI = (formData) => {
+  return axios.post(createGroupChatsRoute, formData).then((res) => res);
 };
