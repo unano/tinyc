@@ -14,6 +14,10 @@ const AuthContextProvider = (props) => {
       JSON.stringify(data)
     );
   }
+  const logout = async () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   useEffect(() => {
     const result = async () => {
       if (!localStorage.getItem("token")) {
@@ -31,6 +35,7 @@ const AuthContextProvider = (props) => {
         currentUser,
         setRreloadStorage,
         resetUserData,
+        logout
       }}
     >
       {props.children}

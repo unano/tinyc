@@ -1,16 +1,31 @@
-import './message.css'
+import './message.scss'
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 const Message = ({ message }) => {
   const { currentUser } = useContext(AuthContext);
+  const isSender = message.sender._id === currentUser._id;
     return (
-      <div
-        className={`message ${message.sender._id===currentUser._id ? "sended" : "recieved"}`}
-      >
-        <div className="content ">
-          <div>{message.message}</div>
+      <>
+        <div className={`message ${isSender ? "sended" : "recieved"}`}>
+          {!isSender && (
+            <img
+              src={
+                currentUser.avatarImage
+                  ? require(`../../images/${message.sender.avatarImage}`)
+                  : require(`../../images/default.png`)
+              }
+              alt="logo"
+              className="avatar"
+            ></img>
+          )}
+          <div>
+            {!isSender && <div>{message.sender.username}</div>}
+            <div className="content ">
+              <div>{message.message}</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
 }
 export default Message;

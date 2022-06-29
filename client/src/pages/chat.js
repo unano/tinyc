@@ -1,11 +1,8 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import "./chat.scss";
 import Back from "../imgs/back2.png";
-import Search from "../imgs/search.png";
 import AddFriend from "../imgs/addFriend.png";
-import testIcon from "../imgs/testIcon.jpg";
 import Settings from "../imgs/settings.png";
-import User from "../imgs/user.png";
 import { useNavigate } from "react-router-dom";
 import {
   getFriendsAPI,
@@ -15,13 +12,16 @@ import {
   getChatsAPI,
   getMsgsAPI,
 } from "../api/api";
-import FriendList from "../components/friendList";
 import Chats from "../components/chats";
 import Messages from "../components/messages";
 import io from "socket.io-client";
 import NewMsgs from "../components/newMsgs";
 import { AuthContext } from "../contexts/authContext";
-import Cover from "../components/cover";
+import { BiSearch } from "react-icons/bi";
+import { GrSend } from "react-icons/gr";
+import { BsEmojiHeartEyes } from "react-icons/bs";
+import Picker from "emoji-picker-react";
+import NavBar from '../components/navBar'
 
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
@@ -51,8 +51,10 @@ function Chat() {
   const [notification, setNotification] = useState([]);
   // const [shownchats, setShownChats] = useState([]);
   const [reFetch, setReFetch] = useState(false);
+  const [currentChatUser, setCurrentChatUser] = useState();
 
   const { currentUser } = useContext(AuthContext);
+  console.log(currentChat)
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -128,24 +130,19 @@ function Chat() {
     });
   });
 
-  const switchs = async (index) => {
+  const switchs = async (index, currentChatUser) => {
     setCurrentChat(index);
+    setCurrentChatUser(currentChatUser);
     const response = await getMsgsAPI(index);
     setMessages(response.data);
     socket.emit("join chat", index);
-    setChatSwitch({ left: "-610px" });
+    setChatSwitch({ left: "-100%" });
     setChatBtnSwitch({ left: "-85px" });
     selectedChatCompare = index;
   };
   const switchsBack = () => {
     setChatSwitch({ left: "0px" });
     setChatBtnSwitch({ left: "5px" });
-  };
-
-  const expandInputbox = () => {
-    chatInputStyle.height === "300px"
-      ? setChatInputStyle({ height: "40px" })
-      : setChatInputStyle({ height: "300px" });
   };
 
   const setInput = (input) => {
@@ -181,7 +178,7 @@ function Chat() {
     if (!socketConnected) return;
     if (!typing) {
       setTyping(true);
-      socket.emit("typing", currentChat);
+      socket.emit("typing", currentChat._id);
     }
     let lastTypingTime = new Date().getTime();
     var timerLength = 2000;
@@ -189,7 +186,7 @@ function Chat() {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", currentChat);
+        socket.emit("stop typing", currentChat._id);
         setTyping(false);
       }
     }, timerLength);
@@ -197,8 +194,8 @@ function Chat() {
 
   const sendChat = async () => {
     if (msg.length > 0) {
-      const { data } = await sendMsgAPI(currentUser._id, msg, currentChat);
-      socket.emit("stop typing", currentChat);
+      const { data } = await sendMsgAPI(currentUser._id, msg, currentChat._id);
+      socket.emit("stop typing", currentChat._id);
       console.log(data);
       socket.emit("new message", data);
       // const msgs = [...messages];
@@ -207,6 +204,19 @@ function Chat() {
       setMsg("");
     }
   };
+
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const handleEmojiPickerhideShow = () => {
+      setShowEmojiPicker(!showEmojiPicker);
+    };
+
+      const handleEmojiClick = (event, emojiObject) => {
+        let message = msg;
+        message += emojiObject.emoji;
+        setMsg(message);
+      };
+
+
 
   const navigateToUser = () => {
     navigate("/user");
@@ -237,26 +247,19 @@ function Chat() {
           </div>
           <div className="chatLeftIcon">
             <div className="backOut borderBackout" onClick={switchsBack}>
-              <img src={Settings} alt="logo" className="back"></img>
+              <img src={Settings} alt="logo" className="back rotate"></img>
             </div>
           </div>
           <NewMsgs newMsgs={notification} />
         </div>
         <div className="chat">
-          <Cover />
+          {/* <Cover /> */}
           <div className="chatSwitch" style={chatSwitch}>
             <div className="chatSwitchLeft">
-              <div className="listSwitch">
-                <div className="backOut">
-                  <img src={User} alt="logo" className="back"></img>
-                </div>
-                <div className="backOut"></div>
-              </div>
+              <NavBar />
               <div className="friendLists">
                 <div className="searchContainer">
-                  <div className="searchIcon">
-                    <img src={Search} alt="logo" className="icon"></img>
-                  </div>
+                  <BiSearch className="searchIcon" />
                   <input
                     className="searchInput"
                     onChange={(e) => setInput(e.target.value)}
@@ -274,7 +277,7 @@ function Chat() {
                         <div className="searchedUser">
                           <div className="searchFriendIcon inline">
                             <img
-                              src={testIcon}
+                              src={searchedUser.avatarImage}
                               alt="logo"
                               className="icon"
                             ></img>
@@ -307,13 +310,32 @@ function Chat() {
               </div>
             </div>
             <div className="chatSwitchRight">
-              <div className="currentChatName">{currentChat.username}</div>
+              <div className="currentChatName">
+                {currentChat.isGroupChat
+                  ? currentChat.chatName
+                  : currentChatUser}
+              </div>
               <div className="chatbox" ref={scrollRef}>
                 <Messages messages={messages} />
               </div>
               {isTyping ? <div>The other side is typing...</div> : <></>}
+              {showEmojiPicker && (
+                <div className="emojiPickerContainer">
+                  <Picker
+                    onEmojiClick={handleEmojiClick}
+                    pickerStyle={{
+                      boxShasow: "none",
+                      border: "1px solid black",
+                      animation: "showEmojis 0.3s linear",
+                    }}
+                  />
+                </div>
+              )}
               <div className="chatInputContiner">
-                <div className="chatInputName" onClick={expandInputbox}></div>
+                <BsEmojiHeartEyes
+                  className="openEmoji"
+                  onClick={handleEmojiPickerhideShow}
+                />
                 <textarea
                   rows="1"
                   ref={inputRef}
@@ -324,8 +346,7 @@ function Chat() {
                 ></textarea>
               </div>
               <div className="chatSubmitContiner" onClick={sendChat}>
-                <div className="chatInputName"></div>
-                <input className="chatInput"></input>
+                  <GrSend className="sendIcon" />
               </div>
             </div>
           </div>

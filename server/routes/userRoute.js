@@ -6,6 +6,8 @@ const {
   denyFriend,
   searchUser,
   getFriends,
+  getFriendsRequest,
+  getSendedRequest,
   uploadAvatar,
   changeUsername,
   changePassword,
@@ -31,9 +33,10 @@ router.post("/acceptFriend", acceptFriend);
 router.post("/denyFriend", denyFriend);
 router.post("/searchUser", searchUser);
 router.post("/getFriends", getFriends);
+router.post("/getFriendsReq", getFriendsRequest);
+router.post("/getSendedReq", getSendedRequest);
 router.post("/uploadAvatar", upload.single("image"), uploadAvatar);
 router.post("/deleteAvatar", deleteAvatar);
 router.put("/changeUsername", changeUsername);
 router.put("/changePassword", changePassword);
-
 module.exports = router;

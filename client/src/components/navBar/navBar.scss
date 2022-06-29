@@ -1,0 +1,38 @@
+ @import '../../styleVariables/variables.scss';
+ 
+ .listSwitch{
+    width: 14%;
+    display:flex;
+    flex-direction: column;
+    height: 86%;
+    vertical-align: middle;
+    border-radius: 0 0 0 20px;
+    margin-right: 2%;
+    gap: 1rem;
+    .navLink{
+        width: 70px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        color: $mainColor;
+        border: 2px solid $mainColor;
+        border-radius: 50%;
+        transition: all 0.5s;
+        &:hover{
+            transform: scale(110%);
+            background-color: $mainColor;
+            color: white;
+        }
+    }
+    .activeNavLink{
+        background-color: $mainColor;
+        color: white;
+        transform: scale(110%);
+    }
+    .back{
+        height: 100%;
+        position: relative;
+    }
+}

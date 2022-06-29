@@ -41,6 +41,7 @@ textarea:focus{
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-end;
+    box-sizing: border-box;
     gap: 1rem;
     .chatLeft{
         display: flex;
@@ -71,6 +72,14 @@ textarea:focus{
                 .back{
                     height: 100%;
                     position: relative;
+                    border-radius: 50%;                    
+                }
+                .rotate{
+                    transition: all 1.4s;
+                    transform: rotate(0deg);
+                    &:hover{
+                        transform: rotate(360deg);
+                    }
                 }
                 .icon{
                     height: 100%;
@@ -96,96 +105,63 @@ textarea:focus{
         border-radius: 0 50px 50px 50px;
         border: 1px solid black;
         box-shadow: 0px 0px 0px $mainColor;
-        animation:showLogin2 2s linear;
         transform-origin: top left;
         transition: all 0.5s;
         display: inline-block;
         position: relative;
         overflow: hidden;
+        box-sizing: border-box;
         .chatSwitch{
             position: absolute;
             top: 0;
             left: 0;
-            width: 1240px;
+            width: 200%;
             height: 100%;
             transition: all 1s;
+            display: flex;
+            flex-direction: row;
         }
         .chatSwitchRight,.chatSwitchLeft{
-            width: 560px;
-            height: 560px;
-            margin-right: 10px;
-            display: inline-block;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
             vertical-align: middle;
-            padding: 20px;
-            padding-left: 20px;
             overflow: hidden;
             position: relative;
         }
         .chatSwitchLeft{
-            .listSwitch{
-                width: 12%;
-                display:inline-block;
-                height: 86%;
-                vertical-align: middle;
-                border-radius: 0 0 0 20px;
-                margin-right: 2%;
-                .backOut{
-                    width: 70px;
-                    height: 70px;
-                    background-color: $mainColor;
-                    border-radius: 100px;
-                    display: inline-block;
-                    margin-left: -12px;
-                    margin-top: -15px;
-                    margin-bottom: 20px;
-                    margin-right: 20px;
-                    box-sizing: border-box;
-                    vertical-align: top;
-                    padding: 3px;
-                    .back{
-                        height: 100%;
-                        position: relative;
-                    }
-                }
-            }
+            display: flex;
+            flex-direction: row;
             .friendLists{
-                width: 86%;
-                display:inline-block;
+                width: 83%;
+                display:flex;
+                flex-direction: column;
                 height: 86%;
                 vertical-align: middle;
                 border-radius: 0 0 20px 0;
                 .searchContainer{
                     border:  1px solid black;
                     border-radius: 100px;
-                    width: 470px;
+                    width: 460px;
                     height: 44px;
                     padding: 4px;
                     padding-left: 6px;
                     display: inline-block;
                     vertical-align: top;
-                    margin-top: -10px;
                     margin-bottom: 20px;
                     .searchIcon{
-                        height: 34px;
-                        width: 34px;
-                        border-radius: 100px;
+                        color: white;
+                        font-size: 30px;
+                        border-radius: 50%;
                         display: inline-block;
                         vertical-align: middle;
                         margin-right: 5px;
                         padding: 5px;
                         background-color: $mainColor;
-                        .icon{
-                            height: 100%;
-                            width: 100%;
-                            position: relative;
-                            border-radius: 100px;
-                            display: inline-block;
-                            margin-right: 10px;
-                            border-radius: 50%;
-                        }
                     }
                     .searchInput{
-                        width: 410px;
+                        width: 400px;
                         display: inline-block;
                         height: 42px;
                         vertical-align: middle;
@@ -196,7 +172,6 @@ textarea:focus{
                         &:focus{
                             outline: none;
                         }
-
                     }
                     .waitLine{
                         width: 470px;
@@ -216,24 +191,39 @@ textarea:focus{
                     .searchedUser{
                         margin-top: 15px;
                         width: 98%;
+                        display: flex;
                         background-color: azure;
+                        border: 1px solid silver;
                         border-radius: 100px;
-                        padding: 2px;
+                        padding: 4px;
                         vertical-align: middle;
-                        .searchFriendIcon{
-                            background-color: transparent;
-                            border: none;
-                            vertical-align: middle;
+                        gap: 1rem;
+                        .icon{
+                            height: 60px;
+                            width: 60px;
+                            position: relative;
+                            border-radius: 50%;
+                            display: inline-block;
                         }
                         .searchedUsername{
-                            vertical-align: middle;
-                            font-size: 30px;
-                            position: relative;
+                            font-size: 26px;
                         }
                         .addFriendIcon{
-                            margin: 0;
-                            border: none;
-                            background-color: transparent;
+                            border: 1px solid transparent;
+                            margin-left: auto;
+                            font-size: 26px;
+                            display: flex;
+                            width: 60px;
+                            height: 60px;
+                            justify-content: center;
+                            align-items: center;
+                            box-sizing: border-box;
+                            border-radius: 50%;
+                            transition: all 0.5s;
+                            &:hover{
+                                border: 1px solid black;
+                                font-size: 36px;
+                            }
                         }
                         .smallName{
                             font-size: 16px;
@@ -245,10 +235,21 @@ textarea:focus{
             }
         }
         .chatSwitchRight{
+            padding-left: 20px;
             .currentChatName{
+                width: 60%;
                 font-size: 2rem;
-                margin-top: -8px;
-                margin-bottom: 8px;
+                padding-bottom: 8px;
+                margin-bottom: 6px;
+                margin-left: -5px;
+                padding-left: 8px;
+                box-shadow: 0px 8px 6px -6px rgba(220, 220, 220, 0.621);
+                border-bottom: 1px solid $mainColor;
+            }
+            .emojiPickerContainer{
+                position: absolute;
+                bottom: 80px;
+                z-index: 10;
             }
             .chatbox{
                 height: 450px;
@@ -266,7 +267,7 @@ textarea:focus{
             }
             .chatInputContiner{
                 width:80%;
-                border:1px solid black;
+                border:1px solid silver;
                 border-radius: 28px;
                 padding:2px;
                 transition: all 0.5s;
@@ -277,6 +278,22 @@ textarea:focus{
                 margin-right: 20px;
                 bottom: 20px;
                 background-color: white;
+                .openEmoji{
+                    color: white;
+                    font-size: 43px;
+                    border-radius: 50%;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-right: 5px;
+                    padding: 2px;
+                    background-color: white;
+                    color: $mainColor;
+                    transition: all 0.5s;
+                    &:hover{
+                       background-color: $mainColor;
+                       color: white;
+                    }
+                }
                 .chatInputName{
                     width: 43px;
                     height: 43px;
@@ -297,8 +314,7 @@ textarea:focus{
                     max-height: 310px;
                     display: inline-block;
                     vertical-align: middle;
-                    width: 410px;
-                    margin-left: 10px;
+                    width: 85%;
                     font-size: 32px;
                     padding-left: 5px;
                     font-family: 'Raleway', sans-serif;
@@ -312,51 +328,31 @@ textarea:focus{
                 }
             }
             .chatSubmitContiner{
-                width:46px;
-                height:46px;
-                border:1px solid black;
-                border-radius: 100px;
-                padding:2px;
-                transition: all 0.5s;
+                width:58px;
+                height: 58px;
+                border:1px solid silver;
+                border-radius: 50%;
                 overflow: hidden;
                 white-space: nowrap;
                 position: absolute;
-                display: inline-block;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 bottom: 20px;
                 right: 20px;
                 background-color: white;
-                .chatInputName{
-                    width: 43px;
-                    height: 43px;
-                    border-radius: 100px;
-                    border:1.5px solid $mainColor;
-                    background-color: $mainColor;
-                    transition: all 0.5s;
-                    display: inline-block;
-                    vertical-align: middle;
-                    line-height: 40px;
-                    text-align: center;
-                    color: transparent;
-                    overflow: hidden;
-                    font-family: 'Raleway', sans-serif;
-                    user-select: none;
+                transition: all 0.5s;
+                font-size: 40px;
+                &:hover{
+                    border:1px solid silver;
+                    box-shadow: 0 0 3px 2px rgb(221, 221, 221) inset;
+                    font-size: 30px;
                 }
-                .chatInput{
-                    max-height: 310px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 410px;
-                    margin-left: 10px;
-                    font-size: 32px;
-                    padding-left: 5px;
-                    font-family: 'Raleway', sans-serif;
-                    transition: all 0.5s;
-                    border: 0px;
-                    overflow: scroll;
-                    margin-bottom: -16px;
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
+                &:hover>.chatSend{
+                    font-size: 30px;
+                }
+                svg path {
+                    stroke: $mainColor;
                 }
             }
 
@@ -372,6 +368,12 @@ textarea:focus{
 100% {border: 1px solid black;}
 }
 
+@keyframes showEmojis
+{
+0% { opacity: 0.3;}
+60% { opacity: 0.9;}
+100% { opacity: 1;}
+}
 
 .showBtn{
     opacity: 1;
@@ -382,3 +384,17 @@ textarea:focus{
 /* .friendIcon:hover>.showBtn{
     opacity: 1;
 } */
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+::-webkit-scrollbar-track {
+    background-color: rgb(223, 223, 223);
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(179, 179, 179);
+}

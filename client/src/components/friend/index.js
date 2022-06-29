@@ -5,8 +5,8 @@ import Info from "../../imgs/info.png";
 import Star from "../../imgs/star.png";
 import Tick from "../../imgs/tick.png";
 import testIcon from "../../imgs/testIcon.jpg";
-import './friend.css'
-const Friend = ({ friend, switchs }) => {
+import './friend.scss'
+const Friend = ({ friend }) => {
   const [friendInfo, setFriendInfo] = useState();
   const [deleteInfo, setDeleteInfo] = useState();
   const showInfo = () => {
@@ -23,9 +23,6 @@ const Friend = ({ friend, switchs }) => {
     setDeleteInfo({ width: "70px" });
   };
 
-  const switchChat = () =>{
-      switchs(friend);
-  }
   return (
     <>
       <div className="friendList">
@@ -34,7 +31,6 @@ const Friend = ({ friend, switchs }) => {
             src={testIcon}
             alt="logo"
             className="icon"
-            onClick={switchChat}
           ></img>
           <img
             src={Info}
@@ -44,10 +40,10 @@ const Friend = ({ friend, switchs }) => {
           ></img>
         </div>
         <div className="friendNameAndWord">
-          <div className="friendName" onClick={switchChat}>
+          <div className="friendName">
             {friend.username}
           </div>
-          <div className="friendWord" onClick={switchChat}>
+          <div className="friendWord">
             cafafasfsafafhika
           </div>
         </div>
@@ -59,10 +55,9 @@ const Friend = ({ friend, switchs }) => {
             onClick={closeInfo}
           ></img>
           <div className="friendNameAndWord">
-            <div className="friendName friendName2">ID: 2104569</div>
-            <div className="friendName friendName3">{friend.username}</div>
+            <div className="friendName friendName2">{friend.username}</div>
           </div>
-          <div className="imgBorder btn01">
+          {/* <div className="imgBorder btn01">
             <img src={Star} alt="logo" className="icon  icon02 "></img>
           </div>
           <div className="imgBorder btn02">
@@ -72,7 +67,7 @@ const Friend = ({ friend, switchs }) => {
               className="icon icon02 "
               onClick={deleteAlert}
             ></img>
-          </div>
+          </div> */}
           <div className="rightSpace"></div>
         </div>
         <div className="deleteInfo" style={deleteInfo}>

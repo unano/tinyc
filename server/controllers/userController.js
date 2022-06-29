@@ -68,7 +68,6 @@ module.exports.getFriends = async (req, res, next) => {
               $match: {
                 recipient: mongoose.Types.ObjectId(_id),
                 $expr: { $in: ["$_id", "$$friends"] },
-                status: 3,
               },
             },
             { $project: { status: 1 } },
@@ -90,6 +89,78 @@ module.exports.getFriends = async (req, res, next) => {
       return res
         .status(200)
         .json({ status: true, friends: test});
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getFriendsRequest = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    const test = await User.aggregate([
+      {
+        $lookup: {
+          from: Friend.collection.name,
+          let: { friends: "$friends" },
+          pipeline: [
+            {
+              $match: {
+                recipient: mongoose.Types.ObjectId(_id),
+                $expr: { $in: ["$_id", "$$friends"] },
+              },
+            },
+            { $project: { status: 1 } },
+          ],
+          as: "friends",
+        },
+      },
+      {
+        $addFields: {
+          friendsStatus: {
+            $ifNull: [{ $min: "$friends.status" }, 0],
+          },
+        },
+      },
+      { $project: { username: 1, avatarImage: 1, friendsStatus: 1 } },
+      { $match: { friendsStatus: 1 } },
+    ]);
+    if (test) return res.status(200).json({ status: true, friends: test });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getSendedRequest = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    const test = await User.aggregate([
+      {
+        $lookup: {
+          from: Friend.collection.name,
+          let: { friends: "$friends" },
+          pipeline: [
+            {
+              $match: {
+                recipient: mongoose.Types.ObjectId(_id),
+                $expr: { $in: ["$_id", "$$friends"] },
+              },
+            },
+            { $project: { status: 1 } },
+          ],
+          as: "friends",
+        },
+      },
+      {
+        $addFields: {
+          friendsStatus: {
+            $ifNull: [{ $min: "$friends.status" }, 0],
+          },
+        },
+      },
+      { $project: { username: 1, avatarImage: 1, friendsStatus: 1 } },
+      { $match: { friendsStatus: 2 } },
+    ]);
+    if (test) return res.status(200).json({ status: true, friends: test });
   } catch (error) {
     next(error);
   }
@@ -219,9 +290,10 @@ module.exports.deleteAvatar = async (req, res, next) => {
   try {
     const path = "./client/src/images/";
     const { avatar } = req.body;
-    if (avatar !== "defalut.png")
+    if (avatar !== "default.png") {
       fs.unlinkSync(path + avatar);
-    return res.json({ status: true, result:"deleted" });
+    }
+    return res.json({ status: true, result: "deleted" });
   } catch (ex) {
     next(ex);
   }

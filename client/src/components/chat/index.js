@@ -8,12 +8,12 @@ import {AuthContext} from '../../contexts/authContext';
 const Chat = ({ chat, switchs }) => {
   const { currentUser } = useContext(AuthContext);
   const chatUser = chat.users.filter((u)=>{
-      return u._id !== currentUser;
+      return u._id !== currentUser._id;
   });
   const currentChatUser =  chatUser[0].username;
 
   const switchChat = () => {
-    switchs(chat._id);
+    switchs(chat, currentChatUser);
   };
   return (
     <>
