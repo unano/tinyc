@@ -42,6 +42,7 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
   const [currentChat, setCurrentChat] = useState({});
+  const scrollRefOut = useRef();
   const scrollRef = useRef();
   const inputRef = useRef();
   const [chats, setChats] = useState([]);
@@ -57,10 +58,12 @@ function Chat() {
   const [refresh, setRefresh] = useState(false);
 
   const [rightBarStyle, setRightBarStyle] = useState({});
+  const [left, setLeft] = useState(false);
   const stretchStyle = { right: "-1%" };
   const inStyle = { right: "-16.2%" };
 
   const { currentUser } = useContext(AuthContext);
+
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -75,11 +78,20 @@ function Chat() {
   }, [currentUser]);
 
   useEffect(() => {
-    const scrollHeight = scrollRef.current.scrollHeight;
-    const height = scrollRef.current.clientHeight;
-    const maxScrollTop = scrollHeight - height;
-    scrollRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    if(!left){
+      const scrollHeight = scrollRefOut.current.scrollHeight;
+      const height = scrollRefOut.current.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      scrollRefOut.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+    }
   }, [messages]);
+
+    useEffect(() => {
+      if(left)
+      scrollRef.current?.scrollIntoView({
+        behavior: "smooth"
+      });
+    }, [messages]);
 
   useEffect(() => {
     inputRef.current.style.height = "inherit";
@@ -142,8 +154,12 @@ function Chat() {
 
     setChatSwitch({ left: "-100%" });
     setChatBtnSwitch({ left: "-85px" });
+    setTimeout(()=>{
+      setLeft(true);
+    },1000)
   };
   const switchsBack = () => {
+    setLeft(false);
     setRightBarStyle(inStyle);
     setRefresh(!refresh);
     setShowAddFriends(false);
@@ -398,8 +414,8 @@ function Chat() {
                       : currentChatUsername}
                   </div>
                 </div>
-                <div className="chatbox" ref={scrollRef}>
-                  <Messages messages={messages} />
+                <div className="chatbox" ref={scrollRefOut}>
+                  <Messages messages={messages} scrollRef={scrollRef} />
                 </div>
                 {isTyping ? <div>The other side is typing...</div> : <></>}
                 {showEmojiPicker && (
