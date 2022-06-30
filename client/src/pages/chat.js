@@ -11,6 +11,8 @@ import {
   sendMsgAPI,
   getChatsAPI,
   getMsgsAPI,
+  addGroupUserAPI,
+  removeGroupUserAPI,
 } from "../api/api";
 import Chats from "../components/chats";
 import Messages from "../components/messages";
@@ -19,9 +21,12 @@ import NewMsgs from "../components/newMsgs";
 import { AuthContext } from "../contexts/authContext";
 import { BiSearch } from "react-icons/bi";
 import { GrSend } from "react-icons/gr";
+import { IoRemoveCircleSharp, IoAddOutline } from "react-icons/io5";
 import { BsEmojiHeartEyes } from "react-icons/bs";
+import { BiLeftArrow } from "react-icons/bi";
 import Picker from "emoji-picker-react";
-import NavBar from '../components/navBar'
+import NavBar from "../components/navBar";
+import AddChatFriend from "../components/addChatFriend";
 
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
@@ -51,7 +56,13 @@ function Chat() {
   const [notification, setNotification] = useState([]);
   // const [shownchats, setShownChats] = useState([]);
   const [reFetch, setReFetch] = useState(false);
+  const [showAddFriends, setShowAddFriends] = useState(false);
   const [currentChatUser, setCurrentChatUser] = useState();
+  const [refresh,setRefresh] = useState(false);
+
+  const [rightBarStyle, setRightBarStyle] = useState({});
+  const stretchStyle = { right: "-1%" };
+  const inStyle = { right: "-16.2%" };
 
   const { currentUser } = useContext(AuthContext);
 
@@ -107,7 +118,8 @@ function Chat() {
       }
     };
     getFriendsFunc();
-  }, [currentUser]);
+  }, [currentUser, refresh, currentChat]);
+
   useEffect(() => {
     socket.on("message received", (newMsgReceived) => {
       if (
@@ -130,6 +142,7 @@ function Chat() {
   });
 
   const switchs = async (index, currentChatUser) => {
+    setRefresh(!refresh);
     setCurrentChat(index);
     setCurrentChatUser(currentChatUser);
     const response = await getMsgsAPI(index);
@@ -140,6 +153,7 @@ function Chat() {
     selectedChatCompare = index;
   };
   const switchsBack = () => {
+    setShowAddFriends(false);
     setChatSwitch({ left: "0px" });
     setChatBtnSwitch({ left: "5px" });
   };
@@ -195,7 +209,6 @@ function Chat() {
     if (msg.length > 0) {
       const { data } = await sendMsgAPI(currentUser._id, msg, currentChat._id);
       socket.emit("stop typing", currentChat._id);
-      console.log(data);
       socket.emit("new message", data);
       // const msgs = [...messages];
       // msgs.push({ sender: {_id:currentUser._id}, message: msg });
@@ -204,18 +217,35 @@ function Chat() {
     }
   };
 
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    const handleEmojiPickerhideShow = () => {
-      setShowEmojiPicker(!showEmojiPicker);
-    };
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const handleEmojiPickerhideShow = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
 
-      const handleEmojiClick = (event, emojiObject) => {
-        let message = msg;
-        message += emojiObject.emoji;
-        setMsg(message);
-      };
+  const handleEmojiClick = (event, emojiObject) => {
+    let message = msg;
+    message += emojiObject.emoji;
+    setMsg(message);
+  };
 
+  const setStretch = () => {
+    if (rightBarStyle.right !== stretchStyle.right)
+      setRightBarStyle(stretchStyle);
+    else setRightBarStyle(inStyle);
+  };
 
+  const removeUser = async (user) => {
+    let result = await removeGroupUserAPI(currentChat._id, user._id);
+    if(result){
+      setRefresh(!refresh);
+      setCurrentChatUser(currentChatUser+"");
+    }
+  };
+
+  const AddFriendsToChat = (value)=>{
+    setShowAddFriends(value);
+    setCurrentChatUser(currentChatUser + "");
+  }
 
   const navigateToUser = () => {
     navigate("/user");
@@ -227,7 +257,7 @@ function Chat() {
         <div className="chatLeft">
           <div className="chatLeftIcon">
             <div className="chatLeftIn" style={chatBtnSwitch}>
-              <div className="backOut" onClick={switchsBack}>
+              <div className="backOut">
                 <img
                   src={
                     currentUser.avatarImage
@@ -245,110 +275,160 @@ function Chat() {
             </div>
           </div>
           <div className="chatLeftIcon">
-            <div className="backOut borderBackout" onClick={switchsBack}>
+            <div className="backOut borderBackout">
               <img src={Settings} alt="logo" className="back rotate"></img>
             </div>
           </div>
           <NewMsgs newMsgs={notification} />
         </div>
         <div className="chat">
-          {/* <Cover /> */}
-          <div className="chatSwitch" style={chatSwitch}>
-            <div className="chatSwitchLeft">
-              <NavBar />
-              <div className="friendLists">
-                <div className="searchContainer">
-                  <BiSearch className="searchIcon" />
-                  <input
-                    className="searchInput"
-                    onChange={(e) => setInput(e.target.value)}
-                  ></input>
-                  <div className="waitLine"></div>
-                </div>
-                {noUser ? (
-                  <div className="searchNewFriend">
-                    no such friend,
-                    <span className="searchUser" onClick={searchInputUser}>
-                      <b> search the use with this name</b>
-                    </span>
-                    {hasSearchedUser ? (
-                      searchedUser ? (
-                        <div className="searchedUser">
-                          <div className="searchFriendIcon inline">
-                            <img
-                              src={searchedUser.avatarImage}
-                              alt="logo"
-                              className="icon"
-                            ></img>
-                          </div>
-                          <div className="searchedUsername inline">
-                            {searchedUser.username}
-                          </div>
-                          <div className="addFriendIcon inline fright">
-                            <img
-                              src={AddFriend}
-                              alt="logo"
-                              className="icon"
-                              onClick={applyFriend}
-                            ></img>
-                          </div>
-                          <div className="searchedUsername inline smallName fright">
-                            {applyResult}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="searchedUser">
-                          <div>No such user</div>
-                        </div>
-                      )
-                    ) : null}
+          <div className="chatOverflow">
+            {/* <Cover /> */}
+            <div className="chatSwitch" style={chatSwitch}>
+              <div className="chatSwitchLeft">
+                <NavBar />
+                <div className="friendLists">
+                  <div className="searchContainer">
+                    <BiSearch className="searchIcon" />
+                    <input
+                      className="searchInput"
+                      onChange={(e) => setInput(e.target.value)}
+                    ></input>
+                    <div className="waitLine"></div>
                   </div>
-                ) : null}
-                {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
-                <Chats chats={chats} switchs={switchs} />
-              </div>
-            </div>
-            <div className="chatSwitchRight">
-              <div className="currentChatName">
-                {currentChat.isGroupChat
-                  ? currentChat.chatName
-                  : currentChatUser}
-              </div>
-              <div className="chatbox" ref={scrollRef}>
-                <Messages messages={messages} />
-              </div>
-              {isTyping ? <div>The other side is typing...</div> : <></>}
-              {showEmojiPicker && (
-                <div className="emojiPickerContainer">
-                  <Picker
-                    onEmojiClick={handleEmojiClick}
-                    pickerStyle={{
-                      boxShasow: "none",
-                      border: "1px solid black",
-                      animation: "showEmojis 0.3s linear",
-                    }}
-                  />
+                  {noUser ? (
+                    <div className="searchNewFriend">
+                      no such friend,
+                      <span className="searchUser" onClick={searchInputUser}>
+                        <b> search the use with this name</b>
+                      </span>
+                      {hasSearchedUser ? (
+                        searchedUser ? (
+                          <div className="searchedUser">
+                            <div className="searchFriendIcon inline">
+                              <img
+                                src={searchedUser.avatarImage}
+                                alt="logo"
+                                className="icon"
+                              ></img>
+                            </div>
+                            <div className="searchedUsername inline">
+                              {searchedUser.username}
+                            </div>
+                            <div className="addFriendIcon inline fright">
+                              <img
+                                src={AddFriend}
+                                alt="logo"
+                                className="icon"
+                                onClick={applyFriend}
+                              ></img>
+                            </div>
+                            <div className="searchedUsername inline smallName fright">
+                              {applyResult}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="searchedUser">
+                            <div>No such user</div>
+                          </div>
+                        )
+                      ) : null}
+                    </div>
+                  ) : null}
+                  {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
+                  <Chats chats={chats} switchs={switchs} />
                 </div>
-              )}
-              <div className="chatInputContiner">
-                <BsEmojiHeartEyes
-                  className="openEmoji"
-                  onClick={handleEmojiPickerhideShow}
-                />
-                <textarea
-                  rows="1"
-                  ref={inputRef}
-                  className="chatInput"
-                  style={chatInputStyle}
-                  onChange={handleType}
-                  value={msg}
-                ></textarea>
               </div>
-              <div className="chatSubmitContiner" onClick={sendChat}>
+              <div className="chatSwitchRight">
+                {currentChat.isGroupChat && (
+                  <div className="rightBar" style={rightBarStyle}>
+                    <div className="rightBarInside">
+                      <div className="stretchBtn" onClick={setStretch}>
+                        <BiLeftArrow />
+                      </div>
+                      {currentChat.users &&
+                        currentChat.users.map((user) => {
+                          return (
+                            <div className="chatUser" key={user._id}>
+                              <img
+                                src={
+                                  user.avatarImage
+                                    ? require(`../images/${user.avatarImage}`)
+                                    : require(`../images/default.png`)
+                                }
+                                alt="logo"
+                                className="icon"
+                              ></img>
+                              <div className="chatUsername">
+                                {user.username}
+                              </div>
+                              {currentChat.groupAdmin._id === currentUser._id &&
+                                user._id !== currentUser._id && (
+                                  <IoRemoveCircleSharp
+                                    className="removeGroupMate"
+                                    onClick={() => removeUser(user)}
+                                  />
+                                )}
+                            </div>
+                          );
+                        })}
+                      <div className="newGroupMate">
+                        <IoAddOutline onClick={() => setShowAddFriends(true)} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="currentChatName">
+                  {currentChat.isGroupChat
+                    ? currentChat.chatName
+                    : currentChatUser}
+                </div>
+                <div className="chatbox" ref={scrollRef}>
+                  <Messages messages={messages} />
+                </div>
+                {isTyping ? <div>The other side is typing...</div> : <></>}
+                {showEmojiPicker && (
+                  <div className="emojiPickerContainer">
+                    <Picker
+                      onEmojiClick={handleEmojiClick}
+                      pickerStyle={{
+                        boxShasow: "none",
+                        border: "1px solid black",
+                        animation: "showEmojis 0.3s linear",
+                      }}
+                    />
+                  </div>
+                )}
+                <div className="chatInputContiner">
+                  <BsEmojiHeartEyes
+                    className="openEmoji"
+                    onClick={handleEmojiPickerhideShow}
+                  />
+                  <textarea
+                    rows="1"
+                    ref={inputRef}
+                    className="chatInput"
+                    style={chatInputStyle}
+                    onChange={handleType}
+                    value={msg}
+                  ></textarea>
+                </div>
+                <div className="chatSubmitContiner" onClick={sendChat}>
                   <GrSend className="sendIcon" />
+                </div>
               </div>
             </div>
           </div>
+          {(currentChat._id && showAddFriends) && (
+            <div className="findFriends">
+              <AddChatFriend
+                currentChat={currentChat}
+                showGPAddFriends={AddFriendsToChat}
+                refresh={refresh}  
+                setRefresh={setRefresh}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

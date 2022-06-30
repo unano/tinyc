@@ -27,6 +27,8 @@ const getMessagesRoute = `${messageRoot}/allmsg`;
 
 const getChatsRoute = `${chatRoot}/allChat`;
 const createGroupChatsRoute = `${chatRoot}/createGroup`;
+const addGroupUserRoute = `${chatRoot}/addUser`;
+const removeGroupUserRoute = `${chatRoot}/removeUser`;
 
 export const loginAPI = (username, password) => {
   return axios.post(loginRoute, { username, password }).then((res) => res);
@@ -111,4 +113,14 @@ export const changePasswordAPI = (_id, password) => {
 
 export const createGroupChatsAPI = (formData) => {
   return axios.post(createGroupChatsRoute, formData).then((res) => res);
+};
+
+export const addGroupUserAPI = (chatId, userId) => {
+  return axios.post(addGroupUserRoute, { chatId, userId }).then((res) => res);
+};
+
+export const removeGroupUserAPI = (chatId, userId) => {
+  return axios
+    .post(removeGroupUserRoute, { chatId, userId })
+    .then((res) => res);
 };

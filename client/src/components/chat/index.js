@@ -14,6 +14,9 @@ const Chat = ({ chat, switchs }) => {
   const switchChat = () => {
     switchs(chat, currentChatUser);
   };
+  // useEffect(()=>{
+  //   switchs(chat, currentChatUser);
+  // },[refresh])
 
   useEffect(()=>{
         if (chat.isGroupChat) {
