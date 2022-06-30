@@ -1,11 +1,14 @@
-import { v4 as uuidv4 } from "uuid";
 import "./addChatFriend.scss";
 import { useState, useEffect, useRef, useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { getFriendsAPI, addGroupUserAPI } from "../../api/api";
 import { BiSearch } from "react-icons/bi";
 import { IoCloseOutline, IoAddOutline } from "react-icons/io5";
-const AddChatFriend = ({ currentChat, showGPAddFriends ,refresh, setRefresh}) => {
+const AddChatFriend = ({
+  currentChat,
+  showGPAddFriends,
+  setCurrentChat,
+}) => {
   const { currentUser } = useContext(AuthContext);
   const [shownFriends, setShownFriends] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -21,7 +24,7 @@ const AddChatFriend = ({ currentChat, showGPAddFriends ,refresh, setRefresh}) =>
       }
     };
     getFriendsFunc();
-  }, [currentUser, refresh, currentChat]);
+  }, [currentUser, currentChat]);
 
   function getDifference(arr1, arr2) {
     return arr1.filter((obj1) => {
@@ -39,8 +42,9 @@ const AddChatFriend = ({ currentChat, showGPAddFriends ,refresh, setRefresh}) =>
   };
 
   const addToChat = async (friendId) => {
-    setRefresh(!refresh);
-    addGroupUserAPI(currentChat._id, friendId);
+    // setRefresh(!refresh);
+    let result = await addGroupUserAPI(currentChat._id, friendId);
+    setCurrentChat(result.data);
   };
   return (
     <>
@@ -74,7 +78,10 @@ const AddChatFriend = ({ currentChat, showGPAddFriends ,refresh, setRefresh}) =>
             onChange={(e) => setInput(e.target.value)}
           ></input>
         </div>
-        <IoCloseOutline className="close" onClick={()=>showGPAddFriends(false)}/>
+        <IoCloseOutline
+          className="close"
+          onClick={() => showGPAddFriends(false)}
+        />
       </div>
     </>
   );

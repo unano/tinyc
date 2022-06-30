@@ -114,12 +114,10 @@ function Chat() {
         let chatsList = await getChatsAPI(currentUser._id);
         let chats = chatsList.data;
         setChats(chats);
-        // setShownChats(chats);
       }
     };
     getFriendsFunc();
-  }, [currentUser, refresh, currentChat]);
-
+  }, [currentUser, refresh]);
   useEffect(() => {
     socket.on("message received", (newMsgReceived) => {
       if (
@@ -142,17 +140,18 @@ function Chat() {
   });
 
   const switchs = async (index, currentChatUser) => {
-    setRefresh(!refresh);
     setCurrentChat(index);
     setCurrentChatUser(currentChatUser);
     const response = await getMsgsAPI(index);
     setMessages(response.data);
     socket.emit("join chat", index);
-    setChatSwitch({ left: "-100%" });
-    setChatBtnSwitch({ left: "-85px" });
     selectedChatCompare = index;
+
+        setChatSwitch({ left: "-100%" });
+        setChatBtnSwitch({ left: "-85px" });
   };
   const switchsBack = () => {
+    setRefresh(!refresh);
     setShowAddFriends(false);
     setChatSwitch({ left: "0px" });
     setChatBtnSwitch({ left: "5px" });
@@ -237,7 +236,7 @@ function Chat() {
   const removeUser = async (user) => {
     let result = await removeGroupUserAPI(currentChat._id, user._id);
     if(result){
-      setRefresh(!refresh);
+      setCurrentChat(result.data)
       setCurrentChatUser(currentChatUser+"");
     }
   };
@@ -424,8 +423,7 @@ function Chat() {
               <AddChatFriend
                 currentChat={currentChat}
                 showGPAddFriends={AddFriendsToChat}
-                refresh={refresh}  
-                setRefresh={setRefresh}
+                setCurrentChat={setCurrentChat}
               />
             </div>
           )}
