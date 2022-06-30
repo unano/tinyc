@@ -1,10 +1,9 @@
-import './newMsg.css'
+import "./newMsg.css";
 
 const NewMsg = ({ newMsg }) => {
-          const m = newMsg;
-          console.log(m)
+  const m = newMsg;
   return (
-    <div className='informOutside'>
+    <div className="informOutside">
       <div className="chatLeftIcon informAnime"></div>
     </div>
   );

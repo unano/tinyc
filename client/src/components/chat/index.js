@@ -9,14 +9,12 @@ const Chat = ({ chat, switchs }) => {
   const chatUser = chat.users.filter((u) => {
     return u._id !== currentUser._id;
   });
-  const currentChatUser = chatUser[0].username;
+  const currentChatUsername = chatUser[0].username;
+  const currentChatAvatar = chatUser[0].avatarImage;
 
   const switchChat = () => {
-    switchs(chat, currentChatUser);
+    switchs(chat, currentChatUsername, currentChatAvatar);
   };
-  // useEffect(()=>{
-  //   switchs(chat, currentChatUser);
-  // },[refresh])
 
   useEffect(()=>{
         if (chat.isGroupChat) {
@@ -45,7 +43,7 @@ const Chat = ({ chat, switchs }) => {
         </div>
         <div className="friendNameAndWord">
           <div className="friendName" onClick={switchChat}>
-            {chat.isGroupChat ? chat.chatName : currentChatUser}
+            {chat.isGroupChat ? chat.chatName : currentChatUsername}
           </div>
           <div className="friendWord" onClick={switchChat}>
             {chat.latestMessage &&

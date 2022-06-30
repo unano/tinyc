@@ -18,9 +18,9 @@ const Message = ({ message }) => {
               className="avatar"
             ></img>
           )}
-          <div>
+          <div className={`msgIn ${isSender ? "sendedIn" : "recievedIn"}`}>
             {!isSender && <div>{message.sender.username}</div>}
-            <div className="content ">
+            <div className="MSGcontent ">
               <div>{message.message}</div>
             </div>
           </div>

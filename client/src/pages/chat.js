@@ -5,13 +5,11 @@ import AddFriend from "../imgs/addFriend.png";
 import Settings from "../imgs/settings.png";
 import { useNavigate } from "react-router-dom";
 import {
-  getFriendsAPI,
   searchUserAPI,
   applyFriendsAPI,
   sendMsgAPI,
   getChatsAPI,
   getMsgsAPI,
-  addGroupUserAPI,
   removeGroupUserAPI,
 } from "../api/api";
 import Chats from "../components/chats";
@@ -34,9 +32,6 @@ var socket, selectedChatCompare;
 function Chat() {
   const [chatSwitch, setChatSwitch] = useState();
   const [chatBtnSwitch, setChatBtnSwitch] = useState();
-  const [friends, setFriends] = useState([]);
-  const [shownFriends, setShownFriends] = useState([]);
-  const [switched, setSwitched] = useState(false);
   const [noUser, setNoUser] = useState(false);
   const [chatInputStyle, setChatInputStyle] = useState({});
   const [searchInput, setSearchIput] = useState();
@@ -50,15 +45,16 @@ function Chat() {
   const scrollRef = useRef();
   const inputRef = useRef();
   const [chats, setChats] = useState([]);
+  const [shownChats, setShownChats] = useState([]);
   const [socketConnected, setScoketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [notification, setNotification] = useState([]);
-  // const [shownchats, setShownChats] = useState([]);
-  const [reFetch, setReFetch] = useState(false);
   const [showAddFriends, setShowAddFriends] = useState(false);
-  const [currentChatUser, setCurrentChatUser] = useState();
-  const [refresh,setRefresh] = useState(false);
+
+  const [currentChatUsername, setCurrentChatUsername] = useState();
+  const [currentChatUserAvatar, setCurrentChatUserAvatar] = useState();
+  const [refresh, setRefresh] = useState(false);
 
   const [rightBarStyle, setRightBarStyle] = useState({});
   const stretchStyle = { right: "-1%" };
@@ -97,29 +93,26 @@ function Chat() {
   }, [noUser]);
 
   useEffect(() => {
-    const getFriendsFunc = async () => {
-      if (currentUser) {
-        let friendList = await getFriendsAPI(currentUser._id);
-        let { friends } = friendList.data;
-        setFriends(friends);
-        setShownFriends(friends);
-      }
-    };
-    getFriendsFunc();
-  }, [currentUser]);
-
-  useEffect(() => {
-    const getFriendsFunc = async () => {
+    const getChatsFunc = async () => {
       if (currentUser) {
         let chatsList = await getChatsAPI(currentUser._id);
         let chats = chatsList.data;
-        setChats(chats);
+        let sortedChat = chats.sort((a,b)=>{
+          let aDate0 = new Date(a.latestMessage.createdAt);
+          let bDate0 = new Date(b.latestMessage.createdAt);
+          let aDate = aDate0.getTime()
+          let bDate = bDate0.getTime();
+          return bDate - aDate;
+        })
+        setChats(sortedChat);
+        setShownChats(sortedChat);
       }
     };
-    getFriendsFunc();
+    getChatsFunc();
   }, [currentUser, refresh]);
   useEffect(() => {
     socket.on("message received", (newMsgReceived) => {
+      setRefresh(!refresh);
       if (
         !selectedChatCompare ||
         selectedChatCompare !== newMsgReceived.chat._id
@@ -131,7 +124,6 @@ function Chat() {
             arr.shift();
             setNotification(arr);
           }, 4000);
-          setReFetch(!reFetch);
         }
       } else {
         setMessages([...messages, newMsgReceived]);
@@ -139,18 +131,20 @@ function Chat() {
     });
   });
 
-  const switchs = async (index, currentChatUser) => {
+  const switchs = async (index, currentChatUsername, currentChatAvatar) => {
     setCurrentChat(index);
-    setCurrentChatUser(currentChatUser);
+    setCurrentChatUsername(currentChatUsername);
+    setCurrentChatUserAvatar(currentChatAvatar);
     const response = await getMsgsAPI(index);
     setMessages(response.data);
     socket.emit("join chat", index);
     selectedChatCompare = index;
 
-        setChatSwitch({ left: "-100%" });
-        setChatBtnSwitch({ left: "-85px" });
+    setChatSwitch({ left: "-100%" });
+    setChatBtnSwitch({ left: "-85px" });
   };
   const switchsBack = () => {
+    setRightBarStyle(inStyle);
     setRefresh(!refresh);
     setShowAddFriends(false);
     setChatSwitch({ left: "0px" });
@@ -159,16 +153,20 @@ function Chat() {
 
   const setInput = (input) => {
     setSearchIput(input);
-    let filtered = friends.filter((friend) => {
-      return friend.username.match(input);
+    let filtered = chats.filter((chat) => {
+      if(chat.isGroupChat) return chat.chatName.match(input);
+      else return chat.users
+        .filter((user) => user._id !== currentUser._id)[0].username
+        .match(input);
     });
-    setShownFriends(filtered);
-    if (filtered.length === 0) {
-      setNoUser(true);
-    }
-    if (filtered.length !== 0) {
-      setNoUser(false);
-    }
+    setShownChats(filtered);
+    // setShownFriends(filtered);
+    // if (filtered.length === 0) {
+    //   setNoUser(true);
+    // }
+    // if (filtered.length !== 0) {
+    //   setNoUser(false);
+    // }
   };
 
   const searchInputUser = async () => {
@@ -235,16 +233,14 @@ function Chat() {
 
   const removeUser = async (user) => {
     let result = await removeGroupUserAPI(currentChat._id, user._id);
-    if(result){
-      setCurrentChat(result.data)
-      setCurrentChatUser(currentChatUser+"");
+    if (result) {
+      setCurrentChat(result.data);
     }
   };
 
-  const AddFriendsToChat = (value)=>{
+  const AddFriendsToChat = (value) => {
     setShowAddFriends(value);
-    setCurrentChatUser(currentChatUser + "");
-  }
+  };
 
   const navigateToUser = () => {
     navigate("/user");
@@ -335,7 +331,7 @@ function Chat() {
                     </div>
                   ) : null}
                   {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
-                  <Chats chats={chats} switchs={switchs} />
+                  <Chats chats={shownChats} switchs={switchs} />
                 </div>
               </div>
               <div className="chatSwitchRight">
@@ -371,16 +367,36 @@ function Chat() {
                             </div>
                           );
                         })}
-                      <div className="newGroupMate">
-                        <IoAddOutline onClick={() => setShowAddFriends(true)} />
-                      </div>
+                      {currentChat.groupAdmin._id === currentUser._id && (
+                        <div className="newGroupMate">
+                          <IoAddOutline
+                            onClick={() => setShowAddFriends(true)}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
-                <div className="currentChatName">
-                  {currentChat.isGroupChat
-                    ? currentChat.chatName
-                    : currentChatUser}
+                <div className="chatInfo">
+                  <img
+                    src={
+                      currentChat.isGroupChat
+                        ? currentChat.avatar
+                          ? require(`../images/${currentChat.avatar}`)
+                          : require(`../images/defaultGroup.png`)
+                        : currentChatUserAvatar
+                        ? require(`../images/${currentChatUserAvatar}`)
+                        : require(`../images/default.png`)
+                    }
+                    alt="logo"
+                    className="chatAvatar"
+                    onClick={navigateToUser}
+                  ></img>
+                  <div className="currentChatName">
+                    {currentChat.isGroupChat
+                      ? currentChat.chatName
+                      : currentChatUsername}
+                  </div>
                 </div>
                 <div className="chatbox" ref={scrollRef}>
                   <Messages messages={messages} />
@@ -418,7 +434,7 @@ function Chat() {
               </div>
             </div>
           </div>
-          {(currentChat._id && showAddFriends) && (
+          {currentChat._id && showAddFriends && (
             <div className="findFriends">
               <AddChatFriend
                 currentChat={currentChat}

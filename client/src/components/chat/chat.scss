@@ -4,6 +4,9 @@
     background-color: rgb(255, 255, 255);
     margin-bottom: 10px;
     position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 1.2rem;
     .chatIcon{
         width: 60px;
         height: 60px;
@@ -11,18 +14,15 @@
         background-color: rgb(255, 255, 255);
         border: 0.3px solid rgb(0, 0, 0);
         padding: 3px;
-        display: inline-block;
         vertical-align: top;
         transition: all 0.5s;
         overflow: hidden;
         white-space: nowrap;
-        margin-right: 20px;
+        position: relative;
         .icon{
             height: 100%;
             width: 100%;
-            position: relative;
             border-radius: 100px;
-            display: inline-block;
             margin-right: 10px;
             border-radius: 50%;
         }
@@ -30,9 +30,13 @@
     .friendNameAndWord{
         font-size: 30px;
         font-family: 'Raleway', sans-serif;
-        display: inline-block;
         position: relative;
         vertical-align: top;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        white-space:nowrap;
+        text-overflow: ellipsis;
         .friendName{
             font-size: 30px;
             cursor: default;
@@ -42,6 +46,11 @@
             margin-top: 5px;
             color: rgb(104, 104, 104);
             cursor: default;
+            overflow:hidden;
+            white-space:nowrap;
+            display:inline-block;
+            text-overflow:ellipsis;
+            width: 390px;
         }
     }
 
