@@ -44,10 +44,12 @@ textarea:focus{
     box-sizing: border-box;
     gap: 1rem;
     .chatLeft{
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         .chatLeftIcon{
+            background-color: white;
             width: 70px;
             height: 70px;
             border-radius: 50px 0px 50px 50px;

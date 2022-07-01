@@ -343,4 +343,32 @@ module.exports.changeIntro = async (req, res, next) => {
   }
 };
 
+module.exports.setIsOnline = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    const upload = await User.findOneAndUpdate(
+      { _id: _id },
+      { $set: { isOnline: true } },
+      { new: true }
+    ).select("-password -friends");
+    return res.json({ status: true, upload });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.setIsOffline = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    const upload = await User.findOneAndUpdate(
+      { _id: _id },
+      { $set: { isOnline: false } },
+      { new: true }
+    ).select("-password -friends");
+    return res.json({ status: true, upload });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
 

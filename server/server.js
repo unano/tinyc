@@ -46,6 +46,7 @@ const io = socket(server, {
 io.on("connection",(socket)=>{
   console.log("connected to socket.io");
   socket.on('setup', (userData) =>{
+    console.log(userData)
     socket.join(userData._id);
     socket.emit('connected');
   })
@@ -68,5 +69,9 @@ io.on("connection",(socket)=>{
     });
 
   })
+  socket.on("logout", (data) => {
+    const userId = data;
+    console.log(userId);
+  });
 })
 

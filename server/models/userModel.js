@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     max: 50,
   },
+  isOnline: {
+    type: Boolean
+  },
   friends: [
     {
       unique: true,

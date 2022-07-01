@@ -13,6 +13,8 @@ const {
   changePassword,
   changeIntro,
   deleteAvatar,
+  setIsOnline,
+  setIsOffline
 } = require("../controllers/userController");
 
 const router = require("express").Router();
@@ -41,4 +43,6 @@ router.post("/deleteAvatar", deleteAvatar);
 router.put("/changeUsername", changeUsername);
 router.put("/changePassword", changePassword);
 router.put("/changeIntro", changeIntro);
+router.put("/setOnline", setIsOnline);
+router.put("/setOffline", setIsOffline);
 module.exports = router;

@@ -30,7 +30,7 @@ const Friend = ({ friend }) => {
 
   return (
     <>
-      <div className="friendList">
+      <div className="friendListi">
         <div className="friendIcon">
           <img
             src={

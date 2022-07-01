@@ -19,6 +19,8 @@ const deleteAvatarRoute = `${userRoot}/deleteAvatar`;
 const changeUsernameRoute = `${userRoot}/changeUsername`;
 const changePasswordRoute = `${userRoot}/changePassword`;
 const changeIntroRoute = `${userRoot}/changeIntro`;
+const setOnlineRoute = `${userRoot}/setOnline`;
+const setOfflineRoute = `${userRoot}/setOffline`;
 
 // const sendMessageRoute = `${host}/api/message/addmsg`;
 const recieveMessageRoute = `${messageRoot}/getmsg`;
@@ -123,4 +125,12 @@ export const removeGroupUserAPI = (chatId, userId) => {
   return axios
     .post(removeGroupUserRoute, { chatId, userId })
     .then((res) => res);
+};
+
+export const setOnlineAPI = (_id) => {
+  return axios.post(setOnlineRoute, { _id }).then((res) => res);
+};
+
+export const setOfflineAPI = (_id) => {
+  return axios.post(setOfflineRoute, { _id }).then((res) => res);
 };
