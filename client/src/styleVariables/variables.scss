@@ -2,3 +2,33 @@ $mainColor: rgb(99, 216, 239);
 $mainColorDark: rgb(75, 192, 216);
 $warn: rgb(225, 89, 89);
 $success: rgb(117, 224, 105);
+
+@mixin hover($inform, $top){
+  position: relative;
+  &:hover::after{
+    content: $inform;
+    position: absolute;
+    color: white;
+    background-color: $mainColor;
+    font-size: 14px;
+    padding: 2px;
+    font-weight: 300;
+    animation: showInform 0.1s linear;
+    animation-delay: 0.7s;
+    animation-fill-mode: forwards;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 100px;
+    opacity: 0;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top:$top;
+    text-align: center;
+  }
+}
+
+@keyframes showInform {
+    0% {opacity: 0;} 
+    100% {opacity: 1;}
+}

@@ -96,6 +96,7 @@
             margin-left: auto;
             margin-right: 100px;
             transition: all 0.5s;
+            flex-shrink: 0;
             &:hover{
                 border: 1px solid $warn;
                 background-color: $warn;
@@ -140,7 +141,7 @@
             margin-right: 30px;
             font-weight: 200;
             display: inline-block;
-            width: 50%;
+            width: 40%;
         }
         .chooses{
             margin-left: auto;
@@ -150,8 +151,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
             gap: 1rem;
             .choose{
+                background-color: $warn;
+                position: relative;
+                z-index: 3;
                 font-size: 20px;
                 padding: 10px;
                 border: 1px solid white;

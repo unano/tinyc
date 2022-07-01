@@ -20,7 +20,7 @@ const NewGroup = () => {
 
   useEffect(() => {
     const getFriendsFunc = async () => {
-      if (currentUser) {
+      if (currentUser._id) {
         let friendList = await getFriendsAPI(currentUser._id);
         let { friends } = friendList.data;
         setFriends(friends);

@@ -4,17 +4,26 @@ import { MdOutlineGroupAdd } from "react-icons/md";
 import {NavLink} from 'react-router-dom';
 import "./navBar.scss"
 const NavBar = () => {
-    const classNameFunc = ({ isActive }) =>
-      isActive ? "activeNavLink navLink" : "navLink";
+    const classNameFunc = (isActive, classN) =>
+      isActive ? `activeNavLink navLink ${classN}` : `navLink ${classN}`;
   return (
     <div className="listSwitch">
-      <NavLink className={classNameFunc} to="/friend">
+      <NavLink
+        className={({ isActive }) => classNameFunc(isActive, "nav1")}
+        to="/friend"
+      >
         <HiOutlineUsers />
       </NavLink>
-      <NavLink className={classNameFunc} to="/home">
+      <NavLink
+        className={({ isActive }) => classNameFunc(isActive, "nav2")}
+        to="/home"
+      >
         <BiMessageSquareDetail />
       </NavLink>
-      <NavLink className={classNameFunc} to="/newGroup">
+      <NavLink
+        className={({ isActive }) => classNameFunc(isActive, "nav3")}
+        to="/newGroup"
+      >
         <MdOutlineGroupAdd />
       </NavLink>
     </div>

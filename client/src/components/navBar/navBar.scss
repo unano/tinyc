@@ -26,6 +26,15 @@
             color: white;
         }
     }
+    .nav1{
+        @include hover("friends",80%);
+    }
+    .nav2{
+        @include hover("chats",80%);
+    }
+    .nav3{
+        @include hover("new chat",80%);
+    }
     .activeNavLink{
         background-color: $mainColor;
         color: white;
