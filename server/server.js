@@ -46,7 +46,6 @@ const io = socket(server, {
 io.on("connection",(socket)=>{
   console.log("connected to socket.io");
   socket.on('setup', (userData) =>{
-    console.log(userData)
     socket.join(userData._id);
     socket.emit('connected');
   })

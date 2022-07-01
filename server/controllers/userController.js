@@ -345,7 +345,6 @@ module.exports.changeIntro = async (req, res, next) => {
 
 module.exports.setIsOnline = async (req, res, next) => {
   try {
-    console.log("gg")
     const { _id } = req.body;
     const upload = await User.findOneAndUpdate(
       { _id: _id },

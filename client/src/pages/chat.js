@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import "./chat.scss";
 import Back from "../imgs/back2.png";
-import AddFriend from "../imgs/addFriend.png";
 import Settings from "../imgs/settings.png";
 import { useNavigate } from "react-router-dom";
 import {
-  searchUserAPI,
-  applyFriendsAPI,
   sendMsgAPI,
   getChatsAPI,
   getMsgsAPI,
@@ -28,18 +25,13 @@ import Picker from "emoji-picker-react";
 import NavBar from "../components/navBar";
 import AddChatFriend from "../components/addChatFriend";
 import { useBeforeunload } from "react-beforeunload";
+import LoadingBar from "../components/loadingBar";
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {
   const [chatSwitch, setChatSwitch] = useState();
   const [chatBtnSwitch, setChatBtnSwitch] = useState();
-  const [noUser, setNoUser] = useState(false);
-  const [chatInputStyle, setChatInputStyle] = useState({});
-  const [searchInput, setSearchIput] = useState();
-  const [searchedUser, setSearchedUser] = useState({});
-  const [hasSearchedUser, setHasSearchedUser] = useState(false);
-  const [applyResult, setApplyResult] = useState();
   const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
@@ -58,6 +50,7 @@ function Chat() {
   const [currentChatUsername, setCurrentChatUsername] = useState();
   const [currentChatUserAvatar, setCurrentChatUserAvatar] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [noChat, setNoChat] = useState(false);
 
   const [rightBarStyle, setRightBarStyle] = useState({});
   const [left, setLeft] = useState(false);
@@ -66,10 +59,9 @@ function Chat() {
 
   const { currentUser } = useContext(AuthContext);
 
-  useBeforeunload(async() => {
+  useBeforeunload(async () => {
     await setOfflineAPI(currentUser._id);
   });
-
 
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -86,7 +78,7 @@ function Chat() {
   }, [currentUser]);
 
   useEffect(() => {
-    if(!left){
+    if (!left) {
       const scrollHeight = scrollRefOut.current.scrollHeight;
       const height = scrollRefOut.current.clientHeight;
       const maxScrollTop = scrollHeight - height;
@@ -94,12 +86,12 @@ function Chat() {
     }
   }, [messages]);
 
-    useEffect(() => {
-      if(left)
+  useEffect(() => {
+    if (left)
       scrollRef.current?.scrollIntoView({
-        behavior: "smooth"
+        behavior: "smooth",
       });
-    }, [messages]);
+  }, [messages]);
 
   useEffect(() => {
     inputRef.current.style.height = "inherit";
@@ -108,22 +100,19 @@ function Chat() {
   }, [msg]);
 
   useEffect(() => {
-    setSearchedUser({});
-    setHasSearchedUser(false);
-  }, [noUser]);
-
-  useEffect(() => {
     const getChatsFunc = async () => {
-      if (currentUser) {
+      if (currentUser._id) {
         let chatsList = await getChatsAPI(currentUser._id);
         let chats = chatsList.data;
-        let sortedChat = chats.sort((a,b)=>{
+        if (chats.length === 0) setNoChat(true);
+        else setNoChat(false);
+        let sortedChat = chats.sort((a, b) => {
           let aDate0 = new Date(a.latestMessage.createdAt);
           let bDate0 = new Date(b.latestMessage.createdAt);
-          let aDate = aDate0.getTime()
+          let aDate = aDate0.getTime();
           let bDate = bDate0.getTime();
           return bDate - aDate;
-        })
+        });
         setChats(sortedChat);
         setShownChats(sortedChat);
       }
@@ -162,9 +151,9 @@ function Chat() {
 
     setChatSwitch({ left: "-100%" });
     setChatBtnSwitch({ left: "-85px" });
-    setTimeout(()=>{
+    setTimeout(() => {
       setLeft(true);
-    },1000)
+    }, 1000);
   };
   const switchsBack = () => {
     setLeft(false);
@@ -176,35 +165,14 @@ function Chat() {
   };
 
   const setInput = (input) => {
-    setSearchIput(input);
     let filtered = chats.filter((chat) => {
-      if(chat.isGroupChat) return chat.chatName.match(input);
-      else return chat.users
-        .filter((user) => user._id !== currentUser._id)[0].username
-        .match(input);
+      if (chat.isGroupChat) return chat.chatName.match(input);
+      else
+        return chat.users
+          .filter((user) => user._id !== currentUser._id)[0]
+          .username.match(input);
     });
     setShownChats(filtered);
-    // setShownFriends(filtered);
-    // if (filtered.length === 0) {
-    //   setNoUser(true);
-    // }
-    // if (filtered.length !== 0) {
-    //   setNoUser(false);
-    // }
-  };
-
-  const searchInputUser = async () => {
-    let user = await searchUserAPI(searchInput);
-    if (user) {
-      setSearchedUser(user.data.user);
-    }
-    setHasSearchedUser(true);
-  };
-
-  const applyFriend = async () => {
-    let apply = await applyFriendsAPI(currentUser._id, searchedUser._id);
-    let msg = apply.data.msg;
-    if (msg) setApplyResult(msg);
   };
 
   const handleType = (e) => {
@@ -313,47 +281,8 @@ function Chat() {
                       className="searchInput"
                       onChange={(e) => setInput(e.target.value)}
                     ></input>
-                    <div className="waitLine"></div>
+                    {!chats.length && !noChat && <LoadingBar />}
                   </div>
-                  {noUser ? (
-                    <div className="searchNewFriend">
-                      no such friend,
-                      <span className="searchUser" onClick={searchInputUser}>
-                        <b> search the use with this name</b>
-                      </span>
-                      {hasSearchedUser ? (
-                        searchedUser ? (
-                          <div className="searchedUser">
-                            <div className="searchFriendIcon inline">
-                              <img
-                                src={searchedUser.avatarImage}
-                                alt="logo"
-                                className="icon"
-                              ></img>
-                            </div>
-                            <div className="searchedUsername inline">
-                              {searchedUser.username}
-                            </div>
-                            <div className="addFriendIcon inline fright">
-                              <img
-                                src={AddFriend}
-                                alt="logo"
-                                className="icon"
-                                onClick={applyFriend}
-                              ></img>
-                            </div>
-                            <div className="searchedUsername inline smallName fright">
-                              {applyResult}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="searchedUser">
-                            <div>No such user</div>
-                          </div>
-                        )
-                      ) : null}
-                    </div>
-                  ) : null}
                   {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
                   <Chats chats={shownChats} switchs={switchs} />
                 </div>
@@ -447,7 +376,6 @@ function Chat() {
                     rows="1"
                     ref={inputRef}
                     className="chatInput"
-                    style={chatInputStyle}
                     onChange={handleType}
                     value={msg}
                   ></textarea>

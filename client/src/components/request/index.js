@@ -7,15 +7,17 @@ import {
 } from "../../api/api";
 import { AuthContext } from "../../contexts/authContext";
 
-const Request = ({ request }) => {
-    const { currentUser } = useContext(AuthContext);
-    console.log(request)
-    const accept = async() =>{
-      await acceptFriendsAPI(currentUser._id,request._id);
-    }
-    const refuse = async () => {
-      await denyFriendsAPI(currentUser._id, request._id);
-    };
+const Request = ({ request, refresh, setRefresh }) => {
+  const { currentUser } = useContext(AuthContext);
+  console.log(request);
+  const accept = async () => {
+    await acceptFriendsAPI(currentUser._id, request._id);
+    setRefresh(!refresh);
+  };
+  const refuse = async () => {
+    await denyFriendsAPI(currentUser._id, request._id);
+    setRefresh(!refresh);
+  };
   return (
     <div className="request">
       <img

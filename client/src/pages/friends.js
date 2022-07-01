@@ -1,54 +1,55 @@
 import "./chat.scss";
-import FriendList from '../components/friendList';
+import FriendList from "../components/friendList";
 import { useState, useEffect, useContext } from "react";
 import testIcon from "../imgs/testIcon.jpg";
-import {
-  BiSearch,
-} from "react-icons/bi";
-import {
-  getFriendsAPI,
-  searchUserAPI,
-  applyFriendsAPI,
-} from "../api/api";
+import { BiSearch } from "react-icons/bi";
+import { getFriendsAPI, searchUserAPI, applyFriendsAPI } from "../api/api";
 import { AuthContext } from "../contexts/authContext";
 import NavBar from "../components/navBar";
 import { RiUserAddLine } from "react-icons/ri";
-import LeftIcons from "../components/leftArea"
+import LeftIcons from "../components/leftArea";
+import LoadingBar from "../components/loadingBar";
+
 const FriensArea = () => {
-    const { currentUser } = useContext(AuthContext);
-    const [shownFriends, setShownFriends] = useState([]);
-    const [searchInput, setSearchIput] = useState();
-    const [friends, setFriends] = useState([]);
-    const [noUser, setNoUser] = useState(false);
-    const [hasSearchedUser, setHasSearchedUser] = useState(false);
-    const [searchedUser, setSearchedUser] = useState({});
-    const [applyResult, setApplyResult] = useState();
+  const { currentUser } = useContext(AuthContext);
+  const [shownFriends, setShownFriends] = useState([]);
+  const [searchInput, setSearchIput] = useState();
+  const [friends, setFriends] = useState([]);
+  const [noUser, setNoUser] = useState(false);
+  const [hasSearchedUser, setHasSearchedUser] = useState(false);
+  const [searchedUser, setSearchedUser] = useState({});
+  const [applyResult, setApplyResult] = useState();
+  const [refresh, setRefresh] = useState(false);
+  const [noFriend, setNoFriend] = useState(false);
 
-      useEffect(() => {
-        const getFriendsFunc = async () => {
-          if (currentUser) {
-            let friendList = await getFriendsAPI(currentUser._id);
-            let { friends } = friendList.data;
-            setFriends(friends);
-            setShownFriends(friends);
-          }
-        };
-        getFriendsFunc();
-      }, [currentUser]);
+  useEffect(() => {
+    const getFriendsFunc = async () => {
+      if (currentUser._id) {
+        let friendList = await getFriendsAPI(currentUser._id);
+        let { friends } = friendList.data;
+        if (friends.length === 0) setNoFriend(true);
+        else setNoFriend(false);
+        setFriends(friends);
+        setShownFriends(friends);
+      }
+    };
+    getFriendsFunc();
+  }, [currentUser, refresh]);
+  console.log("friend");
+  console.log(friends);
 
-      useEffect(() => {
-        setSearchedUser({});
-        setHasSearchedUser(false);
-      }, [noUser]);
+  useEffect(() => {
+    setSearchedUser({});
+    setHasSearchedUser(false);
+  }, [noUser]);
 
-       const applyFriend = async () => {
-         let apply = await applyFriendsAPI(currentUser._id, searchedUser._id);
-         let msg = apply.data.msg;
-         if (msg) setApplyResult(msg);
-       };
+  const applyFriend = async () => {
+    let apply = await applyFriendsAPI(currentUser._id, searchedUser._id);
+    let msg = apply.data.msg;
+    if (msg) setApplyResult(msg);
+  };
 
-
-    const setInput = (input) => {
+  const setInput = (input) => {
     setSearchIput(input);
     let filtered = friends.filter((friend) => {
       return friend.username.match(input);
@@ -90,7 +91,7 @@ const FriensArea = () => {
                     className="searchInput"
                     onChange={(e) => setInput(e.target.value)}
                   ></input>
-                  <div className="waitLine"></div>
+                  {!friends.length && !noFriend && <LoadingBar />}
                 </div>
                 {noUser ? (
                   <div className="searchNewFriend">
@@ -120,7 +121,11 @@ const FriensArea = () => {
                     ) : null}
                   </div>
                 ) : null}
-                <FriendList friends={shownFriends} />
+                <FriendList
+                  friends={shownFriends}
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                />
               </div>
             </div>
           </div>
@@ -131,4 +136,3 @@ const FriensArea = () => {
 };
 
 export default FriensArea;
-

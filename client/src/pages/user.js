@@ -32,6 +32,7 @@ function Personal() {
   const [preview, setPreview] = useState();
   const [requests, setRequests] = useState([]);
   const [requesting, setRequesting] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     if (!image) {
       setPreview(undefined);
@@ -67,7 +68,7 @@ function Personal() {
       setRequests(requests.data.friends);
     };
     fetchRequest();
-  }, [currentUser]);
+  }, [currentUser, refresh]);
 
     useEffect(() => {
       const fetchRequest = async () => {
@@ -75,7 +76,7 @@ function Personal() {
         setRequesting(requests.data.friends);
       };
       fetchRequest();
-    },[currentUser]);
+    }, [currentUser]);
   const navigate = useNavigate();
   const navigates = () => {
     navigate("/home");
@@ -210,7 +211,7 @@ function Personal() {
             </div>
           )}
           <div className="twoRequests">
-            <Requests requests={requests} />
+            <Requests requests={requests} refresh={refresh} setRefresh={setRefresh}/>
             <Requestings requestings={requesting} />
           </div>
           <div className="logout">

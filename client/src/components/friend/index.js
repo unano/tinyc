@@ -6,7 +6,7 @@ import { TiUserDeleteOutline } from "react-icons/ti";
 import { IoCloseOutline, IoCheckmarkOutline } from "react-icons/io5";
 import { denyFriendsAPI } from "../../api/api";
 import { AuthContext } from "../../contexts/authContext";
-const Friend = ({ friend }) => {
+const Friend = ({ friend, refresh, setRefresh }) => {
   const [friendInfo, setFriendInfo] = useState();
   const [deleteInfo, setDeleteInfo] = useState();
   const { currentUser } = useContext(AuthContext);
@@ -26,14 +26,13 @@ const Friend = ({ friend }) => {
 
   const deleteFriend = async () => {
     await denyFriendsAPI(currentUser._id, friend._id);
+    setRefresh(!refresh);
   };
 
   return (
     <>
       <div className="friendListi">
-        <div
-          className={`friendIcon ${friend.isOnline ? "onlined" : ""}`}
-        >
+        <div className={`friendIcon ${friend.isOnline ? "onlined" : ""}`}>
           <img
             src={
               friend.avatarImage
