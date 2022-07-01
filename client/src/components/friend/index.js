@@ -31,7 +31,9 @@ const Friend = ({ friend }) => {
   return (
     <>
       <div className="friendListi">
-        <div className="friendIcon">
+        <div
+          className={`friendIcon ${friend.isOnline ? "onlined" : ""}`}
+        >
           <img
             src={
               friend.avatarImage

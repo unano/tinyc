@@ -11,6 +11,8 @@ import {
   getChatsAPI,
   getMsgsAPI,
   removeGroupUserAPI,
+  setOnlineAPI,
+  setOfflineAPI,
 } from "../api/api";
 import Chats from "../components/chats";
 import Messages from "../components/messages";
@@ -25,7 +27,7 @@ import { BiLeftArrow } from "react-icons/bi";
 import Picker from "emoji-picker-react";
 import NavBar from "../components/navBar";
 import AddChatFriend from "../components/addChatFriend";
-
+import { useBeforeunload } from "react-beforeunload";
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
@@ -64,12 +66,18 @@ function Chat() {
 
   const { currentUser } = useContext(AuthContext);
 
+  useBeforeunload(async() => {
+    await setOfflineAPI(currentUser._id);
+  });
+
 
   useEffect(() => {
     socket = io(ENDPOINT);
     if (currentUser._id) {
       socket.emit("setup", currentUser);
       socket.on("connected", () => {
+        setOnlineAPI(currentUser._id);
+        setRefresh(!refresh);
         setScoketConnected(true);
       });
       socket.on("typingBro", () => setIsTyping(true));

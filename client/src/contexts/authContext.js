@@ -1,5 +1,6 @@
 import {createContext,  useEffect, useState, } from 'react';
 import { useNavigate } from "react-router-dom";
+import { setOfflineAPI } from "../api/api";
 export const AuthContext = createContext(null);
 
 const AuthContextProvider = (props) => {
@@ -15,6 +16,7 @@ const AuthContextProvider = (props) => {
     );
   }
   const logout = async () => {
+    await setOfflineAPI(currentUser._id);
     localStorage.clear();
     navigate("/");
   };

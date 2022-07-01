@@ -128,9 +128,9 @@ export const removeGroupUserAPI = (chatId, userId) => {
 };
 
 export const setOnlineAPI = (_id) => {
-  return axios.post(setOnlineRoute, { _id }).then((res) => res);
+  return axios.put(setOnlineRoute, { _id }).then((res) => res);
 };
 
 export const setOfflineAPI = (_id) => {
-  return axios.post(setOfflineRoute, { _id }).then((res) => res);
+  return axios.put(setOfflineRoute, { _id }).then((res) => res);
 };

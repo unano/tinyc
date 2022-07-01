@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { loginAPI, setOnlineAPI } from "../../api/api";
+import { loginAPI } from "../../api/api";
 import { AuthContext } from "../../contexts/authContext";
 import { useNavigate } from "react-router-dom";
 
@@ -35,7 +35,6 @@ const Login = ({ informStyle }) => {
         dealPasswordError(data.msg);
       }
       if (data.status === true) {
-        setOnlineAPI(data.user._id);
         resetUserData(data.user);
         navigate("/home");
       }

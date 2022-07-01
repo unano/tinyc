@@ -11,7 +11,7 @@
         width: 60px;
         height: 60px;
         border-radius: 100px;
-        background-color: rgb(184, 255, 185);
+        background-color: white;
         border: 0.3px solid rgb(185, 185, 185);
         padding: 3px;
         display: inline-block;
@@ -35,6 +35,9 @@
             height: 60px;
             font-size: 40px;
         }
+    }
+    .onlined{
+        background-color: rgb(184, 255, 185);
     }
     .friendInfo,.deleteInfo{
         position: absolute;
