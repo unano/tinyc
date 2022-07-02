@@ -21,6 +21,10 @@ const chatSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  background: {
+    type: String,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("Chats", chatSchema);

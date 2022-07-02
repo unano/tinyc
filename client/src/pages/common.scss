@@ -1,0 +1,50 @@
+@import '../styleVariables/variables.scss';
+*{
+    font-family: 'Raleway', sans-serif;
+}
+
+div{
+    font-family: 'Raleway', sans-serif;
+}
+.inline-block{
+    display: inline-block;
+}
+.fright{
+    float: right;
+}
+input:focus{
+    outline: none;
+}
+textarea{
+    resize: none;
+}
+textarea:focus{
+    outline: none;
+}
+
+.inline{
+    display: inline-block;
+}
+
+.chatContainer{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    .chatBody{
+      width: 700px;
+      height: 700px;
+      display: flex;
+      margin: auto;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 1rem;
+      box-sizing: border-box;
+      .chatLeft{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+}

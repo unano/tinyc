@@ -1,104 +1,6 @@
 @import '../styleVariables/variables.scss';
 
-*{
-    font-family: 'Raleway', sans-serif;
-}
-
-div{
-    font-family: 'Raleway', sans-serif;
-}
-.inline-block{
-    display: inline-block;
-}
-.fright{
-    float: right;
-}
-
-input:focus{
-    outline: none;
-}
-textarea{
-    resize: none;
-}
-textarea:focus{
-    outline: none;
-}
-
-.inline{
-    display: inline-block;
-}
-
-.chatContainer{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-}
 .chatBody{
-    width: 700px;
-    height: 700px;
-    display: flex;
-    margin: auto;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-end;
-    box-sizing: border-box;
-    gap: 1rem;
-    .chatLeft{
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        .chatLeftIcon{
-            background-color: white;
-            width: 70px;
-            height: 70px;
-            border-radius: 50px 0px 50px 50px;
-            padding: 5px;
-            border:1px solid black;
-            position: relative;
-            overflow: hidden;
-            .chatLeftIn{
-                position: absolute;
-                width: 180px;
-                transition: all 1s;
-                left: 5px;
-            }
-            .backOut{
-                width: 70px;
-                height: 70px;
-                background-color: $mainColor;
-                border-radius: 50%;
-                display: inline-block;
-                margin-right: 20px;
-                box-sizing: border-box;
-                .back{
-                    height: 100%;
-                    position: relative;
-                    border-radius: 50%;                    
-                }
-                .rotate{
-                    transition: all 1.4s;
-                    transform: rotate(0deg);
-                    &:hover{
-                        transform: rotate(360deg);
-                    }
-                }
-                .icon{
-                    height: 100%;
-                    width: 100%;
-                    position: relative;
-                    border-radius: 50%;
-                    display: inline-block;
-                    margin-right: 10px;
-                }
-            }
-            .borderBackout{
-                border: 1px solid rgb(202, 202, 202);
-                background-color: white;
-
-            }
-        }
-    }
     .chat{
         width: 600px;
         height: 600px;
@@ -145,7 +47,7 @@ textarea:focus{
                 width: 83%;
                 display:flex;
                 flex-direction: column;
-                height: 86%;
+                height: 98%;
                 vertical-align: middle;
                 gap: 0.3rem;
                 border-radius: 0 0 20px 0;
@@ -501,5 +403,5 @@ textarea:focus{
  
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: rgb(1, 169, 230);
+    background-color: rgb(240, 251, 255);
 }

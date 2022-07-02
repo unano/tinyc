@@ -11,7 +11,6 @@ const AvatarEditor = ({ setPreview, setShowClipper, width, height}) => {
   const onClose = () => {
     setPreview(null);
   };
-  console.log(width)
   return (
     <div className="clipAvatar">
       <Avatar
@@ -21,7 +20,7 @@ const AvatarEditor = ({ setPreview, setShowClipper, width, height}) => {
           border: "1px solid black",
           textAlign: "center",
         }}
-        labelStyle={{ fontSize: "90px", fontWeight: 100 }}
+        labelStyle={{ fontSize: "70px", fontWeight: 200 }}
         label={"+"}
         onCrop={onCrop}
         onClose={onClose}

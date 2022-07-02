@@ -1,5 +1,5 @@
 @import '../../styleVariables/variables.scss';
-.clipAvatar{
+.clipAvatar,.bgClipAvatar{
     position: absolute;
     top: 0%;
     left: 105%;
@@ -7,10 +7,8 @@
         .ok{
             font-size: 30px;
             border: 1px solid black;
-            margin-left: auto;
         }
         .close{
-            margin-left: 5px;
 
         }
         .choose{
@@ -23,7 +21,8 @@
             color: black;
             display: flex;
             flex-direction: row;
-            justify-content: flex-start;
+            justify-content: flex-end;
             align-items: flex-start;
+            gap: 1rem;
         }
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import "./chat.scss";
-import Back from "../imgs/back2.png";
 import Settings from "../imgs/settings.png";
 import { useNavigate } from "react-router-dom";
 import {
@@ -26,6 +25,7 @@ import NavBar from "../components/navBar";
 import AddChatFriend from "../components/addChatFriend";
 import { useBeforeunload } from "react-beforeunload";
 import LoadingBar from "../components/loadingBar";
+import LeftArea from "../components/leftArea";
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
@@ -242,30 +242,7 @@ function Chat() {
       <div className="chatBody">
         {/* <button onClick={submitAvatar}>dd</button> */}
         <div className="chatLeft">
-          <div className="chatLeftIcon">
-            <div className="chatLeftIn" style={chatBtnSwitch}>
-              <div className="backOut">
-                <img
-                  src={
-                    currentUser.avatarImage
-                      ? require(`../images/${currentUser.avatarImage}`)
-                      : require(`../images/default.png`)
-                  }
-                  alt="logo"
-                  className="icon"
-                  onClick={navigateToUser}
-                ></img>
-              </div>
-              <div className="backOut" onClick={switchsBack}>
-                <img src={Back} alt="logo" className="back"></img>
-              </div>
-            </div>
-          </div>
-          <div className="chatLeftIcon">
-            <div className="backOut borderBackout">
-              <img src={Settings} alt="logo" className="back rotate"></img>
-            </div>
-          </div>
+          <LeftArea ischat={true} chatBtnSwitch={chatBtnSwitch} switchsBack={switchsBack}/>
           <NewMsgs newMsgs={notification} />
         </div>
         <div className="chat">

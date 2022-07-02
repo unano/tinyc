@@ -113,9 +113,15 @@ export const changePasswordAPI = (_id, password) => {
   return axios.put(changeUsernameRoute, { _id, password }).then((res) => res);
 };
 
-export const createGroupChatsAPI = (chatName, users, applyerId, avatar) => {
+export const createGroupChatsAPI = (chatName, users, applyerId, avatar, background) => {
   return axios
-    .post(createGroupChatsRoute, { chatName, users, applyerId, avatar })
+    .post(createGroupChatsRoute, {
+      chatName,
+      users,
+      applyerId,
+      avatar,
+      background,
+    })
     .then((res) => res);
 };
 

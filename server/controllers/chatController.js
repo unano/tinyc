@@ -67,29 +67,34 @@ module.exports.fetchChat = async (req, res, next) => {
 }
 
 module.exports.createGropuChat = async (req, res, next) => {
-    const { chatName, users, applyerId, avatar } = req.body;
-    console.log(req.body)
-    const name = Date.now() + ".png";
-    const path = "./client/src/images/" + name;
-    const image = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    fs.writeFileSync(path, image, { encoding: "base64" });
-    const user = await User.findById(applyerId).select("-password");
-    if (!users || !chatName) {
-      return res.status(400).send({ msg: "lack property" });
-    }
-    if (users.length < 2) {
-      return res.status(400).send({ msg: "user >3 is required" });
-    }
-    users.push(user);
-    try {
-       const groupChat = await Chat.create({
-         chatName: chatName,
-         users: users,
-         isGroupChat: true,
-         groupAdmin: user,
-         avatar: name,
-       });
-       console.log(groupChat._id)
+  const { chatName, users, applyerId, avatar, background } = req.body;
+  const avatarName = "avatar" + Date.now() + ".png";
+  const avatarPath = "./client/src/images/" + avatarName;
+  const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+  fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
+
+  const bgName = "gpbg" + Date.now() + ".png";
+  const bgPath = "./client/src/images/background/" + bgName;
+  const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+  fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
+
+  const user = await User.findById(applyerId).select("-password");
+  if (!users || !chatName) {
+    return res.status(400).send({ msg: "lack property" });
+  }
+  if (users.length < 2) {
+    return res.status(400).send({ msg: "user >3 is required" });
+  }
+  users.push(user);
+  try {
+    const groupChat = await Chat.create({
+      chatName: chatName,
+      users: users,
+      isGroupChat: true,
+      groupAdmin: user,
+      avatar: avatarName,
+      background: bgName,
+    });
     var newMessage = {
       sender: applyerId,
       message: "hello everyone!",
@@ -100,21 +105,21 @@ module.exports.createGropuChat = async (req, res, next) => {
     message = await message.populate("sender", "username avatarImage");
     message = await message.populate("chat");
     message = await User.populate(message, {
-        path: "chat.users",
-        select: "username avatarImage",
+      path: "chat.users",
+      select: "username avatarImage",
     });
     await Chat.findByIdAndUpdate(groupChat._id, { latestMessage: message });
 
-       const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
-         .populate("users", "-password -friends")
-         .populate("groupAdmin", "-password -friends");
+    const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
+      .populate("users", "-password -friends")
+      .populate("groupAdmin", "-password -friends");
 
-       res.status(200).json(fullGroupChat);
-     } catch (error) {
-       res.status(400);
-       throw new Error(error.message);
-     }
-}
+    res.status(200).json(fullGroupChat);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
 
 module.exports.sendMessage = async (req, res) => {
   const { sender, content, chatId } = req.body;

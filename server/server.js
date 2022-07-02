@@ -8,8 +8,8 @@ const userRoutes = require('./routes/userRoute');
 const messageRoutes = require("./routes/messageRoute");
 const chatRoutes = require("./routes/chatRoute");
 app.use(cors());
-app.use(express.json());
-
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ limit: "5mb" }));
 
 try {
     mongoose

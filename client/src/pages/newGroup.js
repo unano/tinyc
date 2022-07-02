@@ -12,10 +12,12 @@ import Avatar from 'react-avatar-edit';
 import { HiScale } from "react-icons/hi";
 import AvatarEditor from "../components/avatarEditor";
 import BGEditor from "../components/bgEditor";
+import { blobToBase64 } from "../functions";
 const NewGroup = () => {
   const { currentUser } = useContext(AuthContext);
-  const [image, setImage] = useState("");
-  const [preview, setPreview] = useState(null);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [BGpreview, setBGPreview] = useState(null);
   const [shownFriends, setShownFriends] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -24,7 +26,7 @@ const NewGroup = () => {
   const [warning, SetWarning] = useState(false);
   const [showClipper, setShowClipper] = useState(false);
   const [showBGClipper, setShowBGClipper] = useState(false);
-
+  const [photoURL, setPhotoURL] = useState();
   useEffect(() => {
     const getFriendsFunc = async () => {
       if (currentUser._id) {
@@ -56,8 +58,14 @@ const NewGroup = () => {
   // }, [image]);
 
   const uploadImage = (e) => {
-    setImage(e.target.files[0]);
-  };
+    const file = e.target.files[0];
+      if (file) {
+        setImage(file);
+        setShowPreview(false);
+        setPhotoURL(URL.createObjectURL(file));
+        setShowBGClipper(true);
+    }
+  }
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
       chosenUsers.splice(chosenUsers.indexOf("62b1e7cd15b04834a22d4be5"), 1);
@@ -69,6 +77,16 @@ const NewGroup = () => {
       setChosenUsers(choose);
     }
   };
+  const dealImage = async (image)=>{
+    if(image) {
+      let result = await blobToBase64(image);
+      return result;
+    }
+    else{
+      let result = await null;
+      return result;
+    }
+  }
 
   const check = async () => {
     if (GPName === "" || chosenUsers.length <= 2 || !preview) {
@@ -77,14 +95,15 @@ const NewGroup = () => {
         SetWarning(false);
       }, 2000);
     } else {
-      const formData = new FormData();
-      for (var i = 0; i < chosenUsers.length; i++) {
-        formData.append("users[]", chosenUsers[i]);
-      }
-      formData.append("chatName", GPName);
-      formData.append("image", preview);
-      formData.append("applyerId", currentUser._id);
-      const res = await createGroupChatsAPI(GPName, chosenUsers, currentUser._id, preview);
+      const background = await dealImage(image);
+      // const formData = new FormData();
+      // for (var i = 0; i < chosenUsers.length; i++) {
+      //   formData.append("users[]", chosenUsers[i]);
+      // }
+      // formData.append("chatName", GPName);
+      // formData.append("image", preview);
+      // formData.append("applyerId", currentUser._id);
+      const res = await createGroupChatsAPI(GPName, chosenUsers, currentUser._id, preview, background);
     }
   };
 
@@ -106,7 +125,13 @@ const NewGroup = () => {
               />
             )}
             {showBGClipper && (
-              <BGEditor/>
+              <BGEditor
+                setShowClipper={setShowBGClipper}
+                photoURL={photoURL}
+                setPhotoURL={setPhotoURL}
+                setFile={setImage}
+                setShowPreview={setShowPreview}
+              />
             )}
             <div className="chatOverflow">
               {/* <Cover /> */}
@@ -179,7 +204,21 @@ const NewGroup = () => {
                   </div>
                   <div className="groupBG">
                     Group background
-                    <div className="BGContainer">
+                    <label htmlFor="inputTag">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        name="image"
+                        filename="image"
+                        id="inputTag"
+                        onChange={uploadImage}
+                      />
+                      <div className="BGContainer">
+                        {showPreview && <img src={photoURL} alt="" className="avatar" />}
+                        <div className="add"> + </div>
+                      </div>
+                    </label>
+                    {/* <div className="BGContainer">
                       <img
                         src={BGpreview}
                         alt=""
@@ -189,7 +228,7 @@ const NewGroup = () => {
                         }}
                       />
                       <div className="add">+</div>
-                    </div>
+                    </div> */}
                     {/* <label htmlFor="inputTag">
                       <input
                         type="file"

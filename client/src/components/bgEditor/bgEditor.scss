@@ -1,0 +1,27 @@
+.cropper{
+    width: 300px;
+    height: 300px;
+}
+
+.bgClipAvatar{
+    width: 400px;
+    height: 400px;
+    border: 1px solid black;
+    .choose{
+        justify-content: flex-start;
+        .ok{
+            margin-left: auto;
+            font-size: 30px;
+        }
+        .close{
+            margin-left: 3px;
+            font-size: 30px;
+        }
+
+    }
+}
+
+.cropperContainer{
+    width: 500px;
+    height: 250px;
+}
