@@ -272,12 +272,36 @@ module.exports.denyFriend = async (req, res, next) => {
 };
 
 
+// module.exports.uploadAvatar = async (req, res, next) => {
+//   try {
+//     const {_id } = req.body;
+//     const upload = await User.findOneAndUpdate(
+//       { _id: _id },
+//       { $set: { avatarImage: req.file.filename } },
+//       { new: true }
+//     ).select("-password -friends");
+//     return res.json({ status: true, upload });
+//   } catch (ex) {
+//     next(ex);
+//   }
+// };
+
+
 module.exports.uploadAvatar = async (req, res, next) => {
   try {
-    const {_id } = req.body;
+    const name = Date.now() + ".png";
+    const path = "./client/src/images/" + name;
+
+    const { _id, base64image } = req.body;
+
+    // to convert base64 format into random filename
+    const base64Data = base64image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+
+    fs.writeFileSync(path, base64Data, { encoding: "base64" });
+
     const upload = await User.findOneAndUpdate(
       { _id: _id },
-      { $set: { avatarImage: req.file.filename } },
+      { $set: { avatarImage: name } },
       { new: true }
     ).select("-password -friends");
     return res.json({ status: true, upload });
@@ -285,7 +309,6 @@ module.exports.uploadAvatar = async (req, res, next) => {
     next(ex);
   }
 };
-
 
 module.exports.deleteAvatar = async (req, res, next) => {
   try {

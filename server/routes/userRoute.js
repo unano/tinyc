@@ -18,16 +18,16 @@ const {
 } = require("../controllers/userController");
 
 const router = require("express").Router();
-const multer = require("multer");
-const storage = multer.diskStorage({
-    destination:(req, file, callback) =>{
-        callback(null,"./client/src/images")
-    },
-    filename:(req, file, callback) =>{
-        callback(null, Date.now() + "-" + file.originalname);
-    }
-});
-const upload = multer({ storage: storage });
+// const multer = require("multer");
+// const storage = multer.diskStorage({
+//     destination:(req, file, callback) =>{
+//         callback(null,"./client/src/images")
+//     },
+//     filename:(req, file, callback) =>{
+//         callback(null, Date.now() + "-" + file.originalname);
+//     }
+// });
+// const upload = multer({ storage: storage });
 
 router.post("/login", login);
 router.post("/register", register);
@@ -38,7 +38,8 @@ router.post("/searchUser", searchUser);
 router.post("/getFriends", getFriends);
 router.post("/getFriendsReq", getFriendsRequest);
 router.post("/getSendedReq", getSendedRequest);
-router.post("/uploadAvatar", upload.single("image"), uploadAvatar);
+// router.post("/uploadAvatar", upload.single("image"), uploadAvatar);
+router.post("/uploadAvatar", uploadAvatar);
 router.post("/deleteAvatar", deleteAvatar);
 router.put("/changeUsername", changeUsername);
 router.put("/changePassword", changePassword);

@@ -16,8 +16,8 @@ import "./App.css";
 function App() {
   const location = useLocation();
   return (
-    <TransitionGroup>
-      <CSSTransition timeout={300} classNames="fade" key={location.key}>
+    // <TransitionGroup>
+    //   <CSSTransition timeout={300} classNames="fadeRoute" key={location.key}>
         <AuthProvider>
           <Routes location={location}>
             <Route path="/login" element={<LoginRegister />} />
@@ -28,8 +28,8 @@ function App() {
             <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>
         </AuthProvider>
-      </CSSTransition>
-    </TransitionGroup>
+      // </CSSTransition>
+    //</TransitionGroup>
   );
 }
 

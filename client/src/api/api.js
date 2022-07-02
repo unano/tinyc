@@ -94,8 +94,8 @@ export const getMsgsAPI = (chatId) => {
   return axios.post(getMessagesRoute, { chatId }).then((res) => res);
 };
 
-export const uploadAvatarAPI = (data) => {
-  return axios.post(uploadAvatarRoute, data).then((res) => res);
+export const uploadAvatarAPI = (_id, base64image) => {
+  return axios.post(uploadAvatarRoute, {_id, base64image}).then((res) => res);
 };
 
 export const deleteAvatarAPI = (avatar) => {
@@ -113,8 +113,10 @@ export const changePasswordAPI = (_id, password) => {
   return axios.put(changeUsernameRoute, { _id, password }).then((res) => res);
 };
 
-export const createGroupChatsAPI = (formData) => {
-  return axios.post(createGroupChatsRoute, formData).then((res) => res);
+export const createGroupChatsAPI = (chatName, users, applyerId, avatar) => {
+  return axios
+    .post(createGroupChatsRoute, { chatName, users, applyerId, avatar })
+    .then((res) => res);
 };
 
 export const addGroupUserAPI = (chatId, userId) => {

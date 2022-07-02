@@ -1,5 +1,7 @@
 const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
+const Messages = require("../models/messageModel");
+let fs = require("fs");
 module.exports.accessChat = async (req, res, next) => {
     const { presentUserId, userId } = req.body;
     if(!userId){
@@ -65,7 +67,12 @@ module.exports.fetchChat = async (req, res, next) => {
 }
 
 module.exports.createGropuChat = async (req, res, next) => {
-    const { chatName, users, applyerId } = req.body;
+    const { chatName, users, applyerId, avatar } = req.body;
+    console.log(req.body)
+    const name = Date.now() + ".png";
+    const path = "./client/src/images/" + name;
+    const image = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    fs.writeFileSync(path, image, { encoding: "base64" });
     const user = await User.findById(applyerId).select("-password");
     if (!users || !chatName) {
       return res.status(400).send({ msg: "lack property" });
@@ -80,8 +87,23 @@ module.exports.createGropuChat = async (req, res, next) => {
          users: users,
          isGroupChat: true,
          groupAdmin: user,
-         avatar: req.file.filename,
+         avatar: name,
        });
+       console.log(groupChat._id)
+    var newMessage = {
+      sender: applyerId,
+      message: "hello everyone!",
+      chat: groupChat._id,
+    };
+    var message = await Messages.create(newMessage);
+
+    message = await message.populate("sender", "username avatarImage");
+    message = await message.populate("chat");
+    message = await User.populate(message, {
+        path: "chat.users",
+        select: "username avatarImage",
+    });
+    await Chat.findByIdAndUpdate(groupChat._id, { latestMessage: message });
 
        const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
          .populate("users", "-password -friends")
@@ -93,6 +115,38 @@ module.exports.createGropuChat = async (req, res, next) => {
        throw new Error(error.message);
      }
 }
+
+module.exports.sendMessage = async (req, res) => {
+  const { sender, content, chatId } = req.body;
+
+  if (!content || !chatId) {
+    console.log("Invalid data passed into request");
+    return res.sendStatus(400);
+  }
+
+  var newMessage = {
+    sender: sender,
+    message: "hello everyone!",
+    chat: chatId,
+  };
+
+  try {
+    var message = await Messages.create(newMessage);
+
+    message = await message.populate("sender", "username avatarImage");
+    message = await message.populate("chat");
+    message = await Users.populate(message, {
+      path: "chat.users",
+      select: "username avatarImage",
+    });
+
+    await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+    res.json(message);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
 
 module.exports.renameGroup = async (req, res) => {
   const { chatId, chatName } = req.body;

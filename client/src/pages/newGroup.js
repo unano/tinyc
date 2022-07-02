@@ -8,15 +8,22 @@ import { AiOutlineSearch, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import "./newGroup.scss";
 import { createGroupChatsAPI } from "../api/api";
+import Avatar from 'react-avatar-edit';
+import { HiScale } from "react-icons/hi";
+import AvatarEditor from "../components/avatarEditor";
+import BGEditor from "../components/bgEditor";
 const NewGroup = () => {
   const { currentUser } = useContext(AuthContext);
   const [image, setImage] = useState("");
-  const [preview, setPreview] = useState();
+  const [preview, setPreview] = useState(null);
+  const [BGpreview, setBGPreview] = useState(null);
   const [shownFriends, setShownFriends] = useState([]);
   const [friends, setFriends] = useState([]);
   const [chosenUsers, setChosenUsers] = useState([]);
   const [GPName, setGPName] = useState("");
   const [warning, SetWarning] = useState(false);
+  const [showClipper, setShowClipper] = useState(false);
+  const [showBGClipper, setShowBGClipper] = useState(false);
 
   useEffect(() => {
     const getFriendsFunc = async () => {
@@ -37,16 +44,16 @@ const NewGroup = () => {
     setShownFriends(filtered);
   };
 
-  useEffect(() => {
-    if (!image) {
-      setPreview(undefined);
-      return;
-    }
-    const objectUrl = URL.createObjectURL(image);
-    setPreview(objectUrl);
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [image]);
+  // useEffect(() => {
+  //   if (!image) {
+  //     setPreview(undefined);
+  //     return;
+  //   }
+  //   const objectUrl = URL.createObjectURL(image);
+  //   setPreview(objectUrl);
+  //   // free memory when ever this component is unmounted
+  //   return () => URL.revokeObjectURL(objectUrl);
+  // }, [image]);
 
   const uploadImage = (e) => {
     setImage(e.target.files[0]);
@@ -64,7 +71,7 @@ const NewGroup = () => {
   };
 
   const check = async () => {
-    if (GPName === "" || chosenUsers.length <= 2 || !image) {
+    if (GPName === "" || chosenUsers.length <= 2 || !preview) {
       SetWarning(true);
       setTimeout(() => {
         SetWarning(false);
@@ -75,9 +82,9 @@ const NewGroup = () => {
         formData.append("users[]", chosenUsers[i]);
       }
       formData.append("chatName", GPName);
-      formData.append("image", image);
+      formData.append("image", preview);
       formData.append("applyerId", currentUser._id);
-      const res = await createGroupChatsAPI(formData);
+      const res = await createGroupChatsAPI(GPName, chosenUsers, currentUser._id, preview);
     }
   };
 
@@ -90,80 +97,118 @@ const NewGroup = () => {
             <LeftIcons />
           </div>
           <div className="chat">
-            {/* <Cover /> */}
-            <div className="chatSwitchLeft">
-              {warning && (
-                <div className="GPwarn">
-                  {" "}
-                  Please fill in all data / add enough member
-                </div>
-              )}
-              <NavBar />
-              <div className="GroupInfo">
-                <div className="title">Create a group</div>
-                <div className="GPcontent">
-                  <div>Group Name:</div>
-                  <input
-                    className="GPInput"
-                    onChange={(e) => setGPName(e.target.value)}
-                  ></input>
-                </div>
-                <div className="GPcontent">
-                  Group Avatar:
-                  <label htmlFor="inputTag">
+            {showClipper && (
+              <AvatarEditor
+                setPreview={setPreview}
+                setShowClipper={setShowClipper}
+                width={200}
+                height={200}
+              />
+            )}
+            {showBGClipper && (
+              <BGEditor/>
+            )}
+            <div className="chatOverflow">
+              {/* <Cover /> */}
+              <div className="chatSwitchLeft">
+                {warning && (
+                  <div className="GPwarn">
+                    {" "}
+                    Please fill in all data / add enough member
+                  </div>
+                )}
+                <NavBar />
+                <div className="GroupInfo">
+                  <div className="title">Create a group</div>
+                  <div className="GPcontent">
+                    <div>Group Name:</div>
                     <input
-                      type="file"
-                      name="image"
-                      filename="image"
-                      id="inputTag"
-                      onChange={uploadImage}
-                    />
-                    <div className="avatarContainer">
-                      <img src={preview} alt="" className="avatar" />
-                      <div className="add"> + </div>
-                    </div>
-                  </label>
-                </div>
-                {/* <div className="GPcontent">Group Tag:</div> */}
-                <div className="GPMember">
-                  <div className="GPcontent">Group Member:</div>
-                  <div className="searchArea">
-                    <AiOutlineSearch />
-                    <input
-                      onChange={(e) => setInput(e.target.value)}
-                      className="input"
+                      className="GPInput"
+                      onChange={(e) => setGPName(e.target.value)}
                     ></input>
                   </div>
-                </div>
-                <div className="friends">
-                  {shownFriends.map((friend) => {
-                    return (
-                      <div
-                        key={friend._id}
-                        className="friend"
-                        onClick={() => chooseOrNot(friend._id)}
-                      >
-                        <img
-                          src={
-                            friend.avatarImage
-                              ? require(`../images/${friend.avatarImage}`)
-                              : require(`../images/default.png`)
-                          }
-                          alt="avatar"
-                          className="friendAvatar"
-                        ></img>
-                        <div>{friend.username}</div>
-                        {chosenUsers.includes(friend._id) && (
-                          <IoCheckmarkOutline className="chosen" />
-                        )}
+                  <div className="GPcontent">
+                    Group Avatar:
+                    <div className="avatarContainer">
+                      <img
+                        src={preview}
+                        alt=""
+                        className="avatar"
+                        onClick={() => {
+                          setShowClipper(true);
+                        }}
+                      />
+                      <div className="add">+</div>
+                    </div>
+                  </div>
+                  {/* <div className="GPcontent">Group Tag:</div> */}
+                  <div className="GPMember">
+                    <div className="GPcontent">Group Member:</div>
+                    <div className="searchArea">
+                      <AiOutlineSearch />
+                      <input
+                        onChange={(e) => setInput(e.target.value)}
+                        className="input"
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="friends">
+                    {shownFriends.map((friend) => {
+                      return (
+                        <div
+                          key={friend._id}
+                          className="friend"
+                          onClick={() => chooseOrNot(friend._id)}
+                        >
+                          <img
+                            src={
+                              friend.avatarImage
+                                ? require(`../images/${friend.avatarImage}`)
+                                : require(`../images/default.png`)
+                            }
+                            alt="avatar"
+                            className="friendAvatar"
+                          ></img>
+                          <div>{friend.username}</div>
+                          {chosenUsers.includes(friend._id) && (
+                            <IoCheckmarkOutline className="chosen" />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="groupBG">
+                    Group background
+                    <div className="BGContainer">
+                      <img
+                        src={BGpreview}
+                        alt=""
+                        className="avatar"
+                        onClick={() => {
+                          setShowBGClipper(true);
+                        }}
+                      />
+                      <div className="add">+</div>
+                    </div>
+                    {/* <label htmlFor="inputTag">
+                      <input
+                        type="file"
+                        name="image"
+                        filename="image"
+                        id="inputTag"
+                        onChange={uploadImage}
+                      />
+                      <div className="BGContainer">
+                        <img src={preview} alt="" className="bg" />
+                        <div className="add"> + </div>
                       </div>
-                    );
-                  })}
-                </div>
-                <div className="submitGP" onClick={check}>
-                  <div className="submitGPInside">
-                    Form Group
-                    <AiOutlineUsergroupAdd className="newGPIcon" />
+                    </label> */}
+                  </div>
+                  <div className="submitGP" onClick={check}>
+                    <div className="submitGPInside">
+                      Form Group
+                      <AiOutlineUsergroupAdd className="newGPIcon" />
+                    </div>
                   </div>
                 </div>
               </div>

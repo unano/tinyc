@@ -1,6 +1,5 @@
 import './requesting.scss'
 const Requesting = ({ requesting }) => {
-    console.log(requesting)
 
     return(<div className="requesting">
       <img

@@ -281,10 +281,10 @@ function Chat() {
                       className="searchInput"
                       onChange={(e) => setInput(e.target.value)}
                     ></input>
-                    {!chats.length && !noChat && <LoadingBar />}
                   </div>
+                  <div className="loadingContainer">{!chats.length && !noChat && <LoadingBar />}</div>
                   {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
-                  <Chats chats={shownChats} switchs={switchs} />
+                  <Chats chats={shownChats} switchs={switchs} left={left}/>
                 </div>
               </div>
               <div className="chatSwitchRight">

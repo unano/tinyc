@@ -136,6 +136,7 @@ textarea:focus{
             vertical-align: middle;
             overflow: hidden;
             position: relative;
+            border-radius: 0 50px 50px 50px;
         }
         .chatSwitchLeft{
             display: flex;
@@ -146,6 +147,7 @@ textarea:focus{
                 flex-direction: column;
                 height: 86%;
                 vertical-align: middle;
+                gap: 0.3rem;
                 border-radius: 0 0 20px 0;
                 .searchContainer{
                     border:  1px solid black;
@@ -154,24 +156,21 @@ textarea:focus{
                     height: 44px;
                     padding: 4px;
                     padding-left: 6px;
-                    display: inline-block;
-                    vertical-align: top;
-                    margin-bottom: 20px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
                     .searchIcon{
                         color: white;
                         font-size: 30px;
                         border-radius: 50%;
-                        display: inline-block;
-                        vertical-align: middle;
                         margin-right: 5px;
                         padding: 5px;
                         background-color: $mainColor;
+                        flex-shrink: 0;
                     }
                     .searchInput{
                         width: 400px;
-                        display: inline-block;
                         height: 42px;
-                        vertical-align: middle;
                         border-radius: 100px;
                         border: none;
                         font-size: 30px;
@@ -180,6 +179,9 @@ textarea:focus{
                             outline: none;
                         }
                     }
+                }
+                .loadingContainer{
+                    height: 10px;
                 }
                 .searchNewFriend{
                     .searchUser{
@@ -493,11 +495,11 @@ textarea:focus{
 }
  
 ::-webkit-scrollbar-track {
-    background-color: rgb(223, 223, 223);
+    background-color: transparent;
     border-radius: 10px;
 }
  
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: rgb(179, 179, 179);
+    background-color: rgb(1, 169, 230);
 }

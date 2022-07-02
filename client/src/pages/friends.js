@@ -35,8 +35,6 @@ const FriensArea = () => {
     };
     getFriendsFunc();
   }, [currentUser, refresh]);
-  console.log("friend");
-  console.log(friends);
 
   useEffect(() => {
     setSearchedUser({});
@@ -91,6 +89,8 @@ const FriensArea = () => {
                     className="searchInput"
                     onChange={(e) => setInput(e.target.value)}
                   ></input>
+                </div>
+                <div className="loadingContainer">
                   {!friends.length && !noFriend && <LoadingBar />}
                 </div>
                 {noUser ? (

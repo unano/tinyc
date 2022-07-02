@@ -1,0 +1,29 @@
+@import '../../styleVariables/variables.scss';
+.clipAvatar{
+    position: absolute;
+    top: 0%;
+    left: 105%;
+    background-color: white;
+        .ok{
+            font-size: 30px;
+            border: 1px solid black;
+            margin-left: auto;
+        }
+        .close{
+            margin-left: 5px;
+
+        }
+        .choose{
+            width: 100%;
+            position: absolute;
+            bottom: -36px;
+            right: 0%;
+            font-size: 18px;
+            font-weight: 200;
+            color: black;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+}

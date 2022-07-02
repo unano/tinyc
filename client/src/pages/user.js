@@ -22,29 +22,19 @@ import {
 } from "react-icons/io5";
 import { BsUpload, BsChevronDoubleRight } from "react-icons/bs";
 import { AiOutlineLogout } from "react-icons/ai";
+import AvatarEditor from "../components/avatarEditor";
 function Personal() {
   const { currentUser, resetUserData, logout } = useContext(AuthContext);
   const [showChangeInput, setShowChangeInput] = useState(false);
-    const [showChangeIntro, setShowChangeIntro] = useState(false);
+  const [showChangeIntro, setShowChangeIntro] = useState(false);
   const [input, setInput] = useState("");
   const [introInput,  setIntroInput] = useState("");
-  const [image, setImage] = useState("");
-  const [preview, setPreview] = useState();
+  const [preview, setPreview] = useState(null);
   const [requests, setRequests] = useState([]);
   const [requesting, setRequesting] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  useEffect(() => {
-    if (!image) {
-      setPreview(undefined);
-      return;
-    }
+  const [showClipper, setShowClipper] = useState(false);
 
-    const objectUrl = URL.createObjectURL(image);
-    setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [image]);
   const changeUsername = async () => {
     if (input !== "") {
       let result = await changeUsernameAPI(currentUser._id, input);
@@ -82,19 +72,12 @@ function Personal() {
     navigate("/home");
   };
 
-  const uploadImage = (e) => {
-    setImage(e.target.files[0]);
-  };
-
   const submitAvatar = async () => {
-    const formData = new FormData();
     const previousImage = currentUser.avatarImage;
-    formData.append("_id", currentUser._id);
-    formData.append("image", image);
-    const updatedUser = await uploadAvatarAPI(formData);
+    const updatedUser = await uploadAvatarAPI(currentUser._id, preview);
     setTimeout(() => {
       resetUserData(updatedUser.data.upload);
-      setImage("");
+      setPreview(null);
       setTimeout(async () => await deleteAvatarAPI(previousImage), 2000);
     }, 1000);
   };
@@ -119,26 +102,48 @@ function Personal() {
           </div>
         </div>
         <div className="userInfo">
-          <div className="flex">
-            <div className="avatarContainer">
-              <img
-                src={
-                  currentUser.avatarImage
-                    ? require(`../images/${currentUser.avatarImage}`)
-                    : require(`../images/default.png`)
-                }
-                alt="avatar"
-                className="avatar"
-              ></img>
-            </div>
-            {image !== "" ? (
-              <>
+          {showClipper && (
+            <AvatarEditor
+              setPreview={setPreview}
+              setShowClipper={setShowClipper}
+            />
+          )}
+          <div className="userOverflow">
+            <div className="flex">
+              <div className="avatarContainer">
+                <img
+                  src={
+                    currentUser.avatarImage
+                      ? require(`../images/${currentUser.avatarImage}`)
+                      : require(`../images/default.png`)
+                  }
+                  alt="avatar"
+                  className="avatar"
+                ></img>
+              </div>
+              {preview && (
                 <div className="avatarContainer">
                   <div className="right">
                     <BsChevronDoubleRight />
                   </div>
-                  <img src={preview} alt="" className="avatar" />
+                  <img
+                    src={preview}
+                    alt=""
+                    className="avatar"
+                    onClick={() => {
+                      setShowClipper(true);
+                    }}
+                  />
                 </div>
+              )}
+              {!preview ? (
+                <IoPencilOutline
+                  className="modify"
+                  onClick={() => {
+                    setShowClipper(true);
+                  }}
+                />
+              ) : (
                 <div className="buttonsContainer">
                   <BsUpload
                     className="usernameBtn smallBtn"
@@ -146,76 +151,72 @@ function Personal() {
                   />
                   <IoCloseOutline
                     className="usernameBtn"
-                    onClick={() => setImage("")}
+                    onClick={() => setPreview(null)}
                   />
                 </div>
-              </>
-            ) : (
-              <label htmlFor="inputTag">
-                <IoPencilOutline className="modify" />
-                <input
-                  type="file"
-                  name="image"
-                  filename="image"
-                  id="inputTag"
-                  onChange={uploadImage}
+              )}
+            </div>
+            {!showChangeInput ? (
+              <div className="flex">
+                <div className="username">{currentUser.username}</div>
+                <IoPencilOutline
+                  className="modify"
+                  onClick={() => setShowChangeInput(true)}
                 />
-              </label>
+              </div>
+            ) : (
+              <div className="flex">
+                <input
+                  className="changeUsername"
+                  onChange={(e) => setInput(e.target.value)}
+                  defaultValue={currentUser.username}
+                ></input>
+                <IoCheckmarkOutline
+                  className="usernameBtn"
+                  onClick={changeUsername}
+                />
+                <IoCloseOutline
+                  className="usernameBtn"
+                  onClick={() => setShowChangeInput(false)}
+                />
+              </div>
             )}
-          </div>
-          {!showChangeInput ? (
-            <div className="flex">
-              <div className="username">{currentUser.username}</div>
-              <IoPencilOutline
-                className="modify"
-                onClick={() => setShowChangeInput(true)}
+            {!showChangeIntro ? (
+              <div className="flex">
+                <div className="username intro">{currentUser.intro}</div>
+                <IoPencilOutline
+                  className="modify smallModify"
+                  onClick={() => setShowChangeIntro(true)}
+                />
+              </div>
+            ) : (
+              <div className="flex">
+                <input
+                  className="changeIntro"
+                  defaultValue={currentUser.intro}
+                  onChange={(e) => setIntroInput(e.target.value)}
+                ></input>
+                <IoCheckmarkOutline
+                  className="introBtn"
+                  onClick={changeIntro}
+                />
+                <IoCloseOutline
+                  className="introBtn"
+                  onClick={() => setShowChangeIntro(false)}
+                />
+              </div>
+            )}
+            <div className="twoRequests">
+              <Requests
+                requests={requests}
+                refresh={refresh}
+                setRefresh={setRefresh}
               />
+              <Requestings requestings={requesting} />
             </div>
-          ) : (
-            <div className="flex">
-              <input
-                className="changeUsername"
-                onChange={(e) => setInput(e.target.value)}
-                defaultValue={currentUser.username}
-              ></input>
-              <IoCheckmarkOutline
-                className="usernameBtn"
-                onClick={changeUsername}
-              />
-              <IoCloseOutline
-                className="usernameBtn"
-                onClick={() => setShowChangeInput(false)}
-              />
+            <div className="logout">
+              <AiOutlineLogout onClick={logout} />
             </div>
-          )}
-          {!showChangeIntro ? (
-            <div className="flex">
-              <div className="username intro">{currentUser.intro}</div>
-              <IoPencilOutline
-                className="modify smallModify"
-                onClick={() => setShowChangeIntro(true)}
-              />
-            </div>
-          ) : (
-            <div className="flex">
-              <input
-                className="changeIntro"
-                defaultValue={currentUser.intro}
-                onChange={(e) => setIntroInput(e.target.value)}
-              ></input>
-              <IoCheckmarkOutline className="introBtn" onClick={changeIntro} />
-              <IoCloseOutline
-                className="introBtn"
-                onClick={() => setShowChangeIntro(false)}
-              />
-            </div>
-          )}
-          <div className="twoRequests">
-            <Requests requests={requests} refresh={refresh} setRefresh={setRefresh}/>
-            <Requestings requestings={requesting} />
-          </div>
-          <div className="logout">
-            <AiOutlineLogout onClick={logout} />
           </div>
         </div>
       </div>

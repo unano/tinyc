@@ -33,7 +33,6 @@
         gap: 1rem;
         align-items: center;
         .GPInput{
-            font-size: 20px;
             border: none;
             border-bottom: 1px solid silver;
             width: 60%;
@@ -50,7 +49,7 @@
             overflow: hidden;
             position: relative;
             &:hover>.add{
-                font-size: 50px;
+                font-size: 24px;
             }
         }
         .avatar{
@@ -61,7 +60,7 @@
             position: relative;
         }
         .add{
-            font-size: 70px;
+            font-size: 50px;
             font-weight: 100;
             position: absolute;
             top: 50%;
@@ -76,12 +75,14 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 1rem;
+        max-height: 43%;
+        overflow: auto;
         .friend{
             display: flex;
+            width: 45%;
             flex-direction: row;
             align-items: center;
             gap: 0.5rem;
-            width: 45%;
             border-left: 2px solid $mainColor;
             padding-left: 8px;
             .friendAvatar{
@@ -100,12 +101,57 @@
             }
         }
     }
+    .groupBG{
+        position: absolute;
+        width: 76%;
+        background-color: rgb(171, 171, 171);
+        bottom: 0;
+        left: 10%;
+        height: 42%;
+        padding: 10px;
+        font-size: 20px;
+        font-weight: 300;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
+        .BGContainer{
+            border: 1px solid black;
+            width: 450px;
+            height: 225px;
+            .avatar{
+                width: 100%;
+                height: 100%;
+                z-index: 5;
+                position: relative;
+            }
+            .add{
+                font-size: 60px;
+                font-weight: 100;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                z-index: 2;
+                transition: all 0.5s;
+            }
+        }
+        .bg{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            z-index: 5;
+            position: relative;
+        }
+    }
     .submitGP{
+            z-index: 100;
             font-size: 16px;
             position: absolute;
             right: 30px;
             bottom: 30px;
             border: 2px solid $success;
+            background-color: white;
             color: white;
             width: 60px;
             height: 60px;

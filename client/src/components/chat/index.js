@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import Info from "../../imgs/info.png";
 import "./chat.scss";
 import { AuthContext } from "../../contexts/authContext";
-
-const Chat = ({ chat, switchs }) => {
+import LoadingBar from "../loadingBar";
+const Chat = ({ chat, switchs, left }) => {
   const { currentUser } = useContext(AuthContext);
   const [avatar, setAvatar] = useState("default.png");
+  const [loading, setLoading] = useState(false);
   const chatUser = chat.users.filter((u) => {
     return u._id !== currentUser._id;
   });
@@ -13,8 +14,14 @@ const Chat = ({ chat, switchs }) => {
   const currentChatAvatar = chatUser[0].avatarImage;
 
   const switchChat = () => {
+    setLoading(true);
     switchs(chat, currentChatUsername, currentChatAvatar);
   };
+
+  useEffect(()=>{
+    if(!left) setLoading(false);
+    else setLoading(true);
+  },[left])
 
   useEffect(()=>{
         if (chat.isGroupChat) {
@@ -51,6 +58,7 @@ const Chat = ({ chat, switchs }) => {
                 ? `${chat.latestMessage.sender.username} : ${chat.latestMessage.message}`
                 : chat.latestMessage.message)}
           </div>
+          {loading && <LoadingBar />}
         </div>
       </div>
     </>
