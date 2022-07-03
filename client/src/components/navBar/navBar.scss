@@ -17,8 +17,8 @@
         align-items: center;
         font-size: 40px;
         color: $mainColor;
-        border: 2px solid $mainColor;
-        border-radius: 50%;
+        border: 1.5px solid $mainColor;
+        border-radius: 10px;
         transition: all 0.5s;
         &:hover{
             transform: scale(110%);
@@ -27,13 +27,16 @@
         }
     }
     .nav1{
-        @include hover("friends",80%);
+        @include hover("friends",76%);
     }
     .nav2{
-        @include hover("chats",80%);
+        @include hover("chats",76%);
     }
     .nav3{
-        @include hover("new chat",80%);
+        @include hover("new chat",76%);
+    }
+    .nav4{
+        @include hover("ground",76%);
     }
     .activeNavLink{
         background-color: $mainColor;

@@ -68,15 +68,20 @@ module.exports.fetchChat = async (req, res, next) => {
 
 module.exports.createGropuChat = async (req, res, next) => {
   const { chatName, users, applyerId, avatar, background } = req.body;
+  var bgName;
   const avatarName = "avatar" + Date.now() + ".png";
   const avatarPath = "./client/src/images/" + avatarName;
   const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
   fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
-
-  const bgName = "gpbg" + Date.now() + ".png";
-  const bgPath = "./client/src/images/background/" + bgName;
-  const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-  fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
+  if(background){
+    bgName = "gpbg" + Date.now() + ".png";
+    const bgPath = "./client/src/images/background/" + bgName;
+    const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
+  }
+  else{
+    bgName=null;
+  }
 
   const user = await User.findById(applyerId).select("-password");
   if (!users || !chatName) {
@@ -219,3 +224,91 @@ module.exports.removeFromGroup = async (req, res) => {
       res.json(removed);
     }
   };
+
+module.exports.getAllGroupChats = async (req, res, next) => {
+  try {
+    const users = await Chat.find({ isGroupChat: true }).populate(
+      "users",
+      "-password -friends -isOnline"
+    );
+    return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+
+module.exports.accessChat = async (req, res, next) => {
+  const { presentUserId, userId } = req.body;
+  if (!userId) {
+    return res.status(400).json({ msg: "No id send." });
+  }
+
+  var isChat = await Chat.find({
+    isGroupChat: false,
+    $and: [
+      { users: { $elemMatch: { $eq: presentUserId } } },
+      { users: { $elemMatch: { $eq: userId } } },
+    ],
+  })
+    .populate("users", "-password -friends")
+    .populate("latestMessage");
+
+  isChat = await User.populate(isChat, {
+    path: "latestMessage.sender",
+    select: "username",
+  });
+
+  if (isChat.length > 0) {
+    res.send(isChat[0]);
+  } else {
+    var chatData = {
+      chatName: "sender",
+      isGroupChat: false,
+      users: [presentUserId, userId],
+    };
+  }
+  try {
+    const createdChat = await Chat.create(chatData);
+    const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
+      "users",
+      "-password -friends"
+    );
+
+    res.status(200).send(FullChat);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.dealJoinGroupChat = async (req, res, next) => {
+  const { applyer_id, admin_id, group_id } = req.body;
+  const isAdmin = await Chat.findOne({ _id: group_id, groupAdmin: admin_id });
+  if (isAdmin) {
+    const chat = await Chat.updateOne(
+      { _id: group_id },
+      { $addToSet: { users: applyer_id } }
+    );
+    res.status(200).json(chat);
+  }
+};
+
+module.exports.applyJoinGroupChat = async (req, res, next) => {
+  const { applyer_id, group_id } = req.body;
+  const chat = await Chat.updateOne(
+    { _id: group_id },
+    { $addToSet: { applyingUsers: applyer_id } }
+  );
+  res.status(200).json(chat);
+};
+
+module.exports.fetchChatApplications = async (req, res, next) => {
+  const { _id, group_id } = req.body;
+  const chat = await Chat.findOne(
+    {
+      $and: [{ _id: group_id }, { groupAdmin: _id }],
+    },
+    { _id: 1, users: 1, chatName: 1, avatar :1}
+  );
+  res.status(200).json(chat);
+};

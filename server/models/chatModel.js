@@ -25,6 +25,12 @@ const chatSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  applyingUsers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Chats", chatSchema);

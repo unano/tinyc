@@ -1,0 +1,166 @@
+@import '../styleVariables/variables.scss';
+.grounds{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: auto;
+    .GPchat{
+        width: 98%;
+        height: 80px;
+        border: 1px solid rgb(206, 206, 206);
+        border-radius: 0 0 10px 10px;
+        border-top: 4px solid rgba(25, 156, 193, 0.607);
+        overflow: hidden;
+        position: relative;
+        transition: all 0.7s;
+        flex-shrink: 0;
+        &:hover{
+            height: 250px;
+        }
+        &:nth-child(3n+1){
+            border-top: 3px solid rgba(55, 60, 214, 0.607);
+        }
+        &:nth-child(3n+2){
+            border-top: 3px solid rgb(255, 149, 28);
+        }
+        .GPchatIn{
+            width: 100%;
+            height: 250px;
+            position: relative;
+        }
+        .transparentCover{
+            width: 101%;
+            height: 100%;
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            background-image: linear-gradient(rgba(43, 43, 43, 0.581), rgba(251, 251, 251, 0));
+        }
+    }
+    .backgroundPic{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 0 0 10px 10px;
+        opacity: 0.8;
+        z-index: -10;
+    }
+    .gpAvatar{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+    .gpContent{
+        width: 101%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        font-size: 30px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        .flex{
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+    }
+    .groupMembers{
+        display: flex;
+        flex-direction: row;
+        gap: 0.2rem;
+        margin-top: auto;
+        margin-bottom: 4%;
+        .apply{
+            font-size: 14px;
+            margin-left: auto;
+            line-height: 100%;
+            margin-right: 5%;
+            border-radius: 100px;
+            padding: 12px 20px 0px 20px;
+            box-sizing: border-box;
+            transition: all 0.5s;
+            background-position: -100% -100%;
+            background-color: $mainColor;
+            -webkit-transition: background-image 0.2s ease-in-out;
+            overflow: hidden;
+            position: relative;
+            &::after{
+                transition: all  1s;
+                content: "";
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.425));
+                position: absolute;
+                left: 0;
+                top:0;
+            }
+            &:hover::after{
+                opacity: 1;
+            }
+        }
+        .applying{
+            background-color: transparent;
+            border: 1px solid $mainColor;
+            font-weight: 600;
+            color: $mainColor;
+            &:hover::after{
+                opacity: 0;
+            }
+        }
+        .applied{
+            background-color: transparent;
+            border: 1px solid gray;
+            font-weight: 600;
+            color: gray;
+            &:hover::after{
+                opacity: 0;
+            }
+        }
+    }
+    .avatarContainer{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        position: relative;
+    }
+    .otherMember{
+        width: 40px;
+        height: 40px;
+        background-color: rgb(121, 214, 235);
+        border-radius: 50%;
+        text-align: center;
+        padding: 3px;
+        font-size: 26px;
+        font-weight: 200;
+        box-sizing: border-box;
+    }
+    .avatar{
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        &:hover+.username{
+            opacity: 1;
+        }
+    }
+    .username{
+        position: absolute;
+        right: 0;
+        bottom: -20%;
+        background-color: $mainColor;
+        color: white;
+        padding: 4px;
+        font-size: 10px;
+        opacity: 0;
+        transition: all 0.5s;
+    }
+}

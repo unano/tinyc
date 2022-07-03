@@ -14,7 +14,7 @@ const {
   changeIntro,
   deleteAvatar,
   setIsOnline,
-  setIsOffline
+  setIsOffline,
 } = require("../controllers/userController");
 
 const router = require("express").Router();

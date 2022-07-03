@@ -31,6 +31,10 @@ const getChatsRoute = `${chatRoot}/allChat`;
 const createGroupChatsRoute = `${chatRoot}/createGroup`;
 const addGroupUserRoute = `${chatRoot}/addUser`;
 const removeGroupUserRoute = `${chatRoot}/removeUser`;
+const allGroupChatRoute = `${chatRoot}/group/all`;
+const applyGroupChatJoinRoute = `${chatRoot}/group/apply`;
+const dealGroupChatApplyRoute = `${chatRoot}/group/deal`;
+const getGroupChatAppliesRoute = `${chatRoot}/group/getApplies`;
 
 export const loginAPI = (username, password) => {
   return axios.post(loginRoute, { username, password }).then((res) => res);
@@ -142,3 +146,28 @@ export const setOnlineAPI = (_id) => {
 export const setOfflineAPI = (_id) => {
   return axios.put(setOfflineRoute, { _id }).then((res) => res);
 };
+
+export const getAllGroupChatAPI = () => {
+  return axios.get(allGroupChatRoute).then((res) => res);
+};
+
+
+export const dealGroupChatApplyAPI = (applyer_id, admin_id, group_id) => {
+  return axios
+    .post(dealGroupChatApplyRoute, { applyer_id, admin_id, group_id })
+    .then((res) => res);
+};
+
+export const applyGroupChatJoinAPI = ( applyer_id, group_id) => {
+  return axios
+    .post(applyGroupChatJoinRoute, { applyer_id, group_id })
+    .then((res) => res);
+};
+
+
+export const getGroupChatAppliesAPI = (_id, group_id) => {
+  return axios
+    .get(getGroupChatAppliesRoute, { _id, group_id })
+    .then((res) => res);
+};
+

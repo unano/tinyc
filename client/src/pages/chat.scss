@@ -312,6 +312,9 @@
                     border: 0px;
                     overflow: scroll;
                     margin-bottom: -16px;
+                    &:focus{
+                        outline: none;
+                    }
                     &::-webkit-scrollbar {
                         display: none;
                     }

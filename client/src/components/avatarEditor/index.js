@@ -14,8 +14,8 @@ const AvatarEditor = ({ setPreview, setShowClipper, width, height}) => {
   return (
     <div className="clipAvatar">
       <Avatar
-        width={width}
-        height={height}
+        width={200}
+        height={200}
         borderStyle={{
           border: "1px solid black",
           textAlign: "center",

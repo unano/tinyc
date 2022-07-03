@@ -5,7 +5,7 @@ import { AuthContext } from "../contexts/authContext";
 import NavBar from "../components/navBar";
 import LeftIcons from "../components/leftArea";
 import { AiOutlineSearch, AiOutlineUsergroupAdd } from "react-icons/ai";
-import { IoCheckmarkOutline } from "react-icons/io5";
+import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
 import "./newGroup.scss";
 import { createGroupChatsAPI } from "../api/api";
 import Avatar from 'react-avatar-edit';
@@ -13,6 +13,8 @@ import { HiScale } from "react-icons/hi";
 import AvatarEditor from "../components/avatarEditor";
 import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
+import {BsCaretDown} from "react-icons/bs";
+import "./common.scss";
 const NewGroup = () => {
   const { currentUser } = useContext(AuthContext);
   const [image, setImage] = useState(null);
@@ -66,6 +68,7 @@ const NewGroup = () => {
         setShowBGClipper(true);
     }
   }
+
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
       chosenUsers.splice(chosenUsers.indexOf("62b1e7cd15b04834a22d4be5"), 1);
@@ -107,6 +110,17 @@ const NewGroup = () => {
     }
   };
 
+  const [gpbgStyle, setGpbgStyle] = useState({});
+  const clearBG = () =>{
+    setShowPreview(false);
+    setImage(null);
+    setPhotoURL(null);
+  }
+  const expandGPBG = () =>{
+    if (gpbgStyle.bottom !== "-10px") setGpbgStyle({ bottom: "-10px", width: "76%" });
+    else setGpbgStyle({ bottom: "-40%", width: "42%"});
+  }
+
   return (
     <>
       <div className="chatContainer">
@@ -138,7 +152,6 @@ const NewGroup = () => {
               <div className="chatSwitchLeft">
                 {warning && (
                   <div className="GPwarn">
-                    {" "}
                     Please fill in all data / add enough member
                   </div>
                 )}
@@ -202,8 +215,18 @@ const NewGroup = () => {
                       );
                     })}
                   </div>
-                  <div className="groupBG">
-                    Group background
+                  <div
+                    className="groupBG"
+                    style={gpbgStyle}
+                    onClick={expandGPBG}
+                  >
+                    <div className="gpbdHeadDecoreate"></div>
+                    <div className="bgTitle">
+                      Group background <span className="grey"> (optional)</span>
+                    </div>
+                    {showPreview && (
+                      <IoCloseOutline className="gpbgClear" onClick={clearBG} />
+                    )}
                     <label htmlFor="inputTag">
                       <input
                         type="file"
@@ -212,9 +235,16 @@ const NewGroup = () => {
                         filename="image"
                         id="inputTag"
                         onChange={uploadImage}
+                        onClick={(event) => {
+                          event.target.value = null;
+                        }}
                       />
                       <div className="BGContainer">
-                        {showPreview && <img src={photoURL} alt="" className="avatar" />}
+                        {showPreview && (
+                          <>
+                            <img src={photoURL} alt="" className="avatar" />
+                          </>
+                        )}
                         <div className="add"> + </div>
                       </div>
                     </label>
