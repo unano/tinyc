@@ -14,6 +14,7 @@ import AvatarEditor from "../components/avatarEditor";
 import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
 import {BsCaretDown} from "react-icons/bs";
+import { useNavigate } from "react-router-dom"
 import "./common.scss";
 const NewGroup = () => {
   const { currentUser } = useContext(AuthContext);
@@ -29,6 +30,7 @@ const NewGroup = () => {
   const [showClipper, setShowClipper] = useState(false);
   const [showBGClipper, setShowBGClipper] = useState(false);
   const [photoURL, setPhotoURL] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     const getFriendsFunc = async () => {
       if (currentUser._id) {
@@ -91,9 +93,10 @@ const NewGroup = () => {
       return result;
     }
   }
+  console.log(chosenUsers)
 
   const check = async () => {
-    if (GPName === "" || chosenUsers.length <= 2 || !preview) {
+    if (GPName === "" || chosenUsers.length < 2 || !preview) {
       SetWarning(true);
       setTimeout(() => {
         SetWarning(false);
@@ -108,6 +111,7 @@ const NewGroup = () => {
       // formData.append("image", preview);
       // formData.append("applyerId", currentUser._id);
       const res = await createGroupChatsAPI(GPName, chosenUsers, currentUser._id, preview, background);
+      if(res) navigate("/home");
     }
   };
 

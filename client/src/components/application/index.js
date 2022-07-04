@@ -111,7 +111,7 @@ const Application = () => {
                           alt="avatar"
                           className="avatar"
                         ></img>
-                        <div className="columnFlex">
+                        <div className="columnFlex zeroGap">
                           <div className="username">{user.username}</div>
                           <div className="rowFlex chooses">
                             <IoCheckmarkOutline

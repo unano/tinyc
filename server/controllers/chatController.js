@@ -455,3 +455,43 @@ module.exports.exitFromGroup = async (req, res, next) => {
     next(ex);
   }
 };
+
+module.exports.diceChats6 = async (req, res, next) => {
+  try {
+    const chat = await Chat.aggregate([
+      { $match: { isGroupChat: true } },
+      { $sample: { size: 6 } },
+      {$lookup: {from: 'users', localField: "users", foreignField:"_id", as:"users"}},
+    ])
+    res.status(200).json(chat);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.diceChats20 = async (req, res, next) => {
+  try {
+    const chat = await Chat.aggregate([
+      { $match: { isGroupChat: true } },
+      { $sample: { size: 20 } },
+    ]);
+    const chatAndInfo = chat.populate("users", "-password -friends -isOnline");
+    res.status(200).json(chatAndInfo);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.searchChats = async (req, res, next) => {
+  try {
+    const { keyword } = req.body;
+    var rgx = new RegExp(keyword, "i");
+    const chat = await Chat.find({ chatName: { $regex: rgx } }).populate(
+      "users",
+      "-password -friends -isOnline"
+    );
+    res.status(200).json(chat);
+  } catch (ex) {
+    next(ex);
+  }
+};

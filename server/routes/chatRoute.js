@@ -18,7 +18,10 @@ const {
   changeGroupBackground,
   deleteGroupBackground,
   deleteGroup,
-  exitFromGroup
+  exitFromGroup,
+  diceChats6,
+  diceChats20,
+  searchChats
 } = require("../controllers/chatController");
 const router = require("express").Router();
 const multer = require("multer");
@@ -51,5 +54,8 @@ router.post("/group/changeBackground", changeGroupBackground);
 router.post("/group/deleteBackground", deleteGroupBackground);
 router.post("/group/delete", deleteGroup);
 router.post("/exitGroup", exitFromGroup);
+router.get("/diceChats6", diceChats6);
+router.get("/diceChats20", diceChats20);
+router.post("/searchGroup", searchChats);
 
 module.exports = router;

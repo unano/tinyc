@@ -46,9 +46,24 @@ const Chat = ({ chat, switchs, left }) => {
             className="icon"
             onClick={switchChat}
           ></img>
-          <img src={Info} alt="logo" className="icon showBtn "></img>
         </div>
         <div className="friendNameAndWord">
+          {chat.isGroupChat && (
+            <div>
+              <img
+                src={
+                  chat.background
+                    ? require(`../../images/background/${chat.background}`)
+                    : require(`../../images/default.png`)
+                }
+                alt="logo"
+                className="background"
+                onClick={switchChat}
+              ></img>
+              <div className="bgCover"></div>
+              <div className="bgCover2"></div>
+            </div>
+          )}
           <div className="friendName" onClick={switchChat}>
             {chat.isGroupChat ? chat.chatName : currentChatUsername}
           </div>
@@ -58,7 +73,9 @@ const Chat = ({ chat, switchs, left }) => {
                 ? `${chat.latestMessage.sender.username} : ${chat.latestMessage.message}`
                 : chat.latestMessage.message)}
           </div>
-          {loading && <LoadingBar />}
+          {loading && ( 
+              <LoadingBar />
+           )} 
         </div>
       </div>
     </>

@@ -7,6 +7,7 @@
     flex-direction: column;
     gap: 0.5rem;
     overflow: auto;
+    padding-bottom: 40px;
     .GPchat{
         width: 98%;
         height: 80px;
@@ -163,4 +164,45 @@
         opacity: 0;
         transition: all 0.5s;
     }
+}
+.diceContainer{
+    position: absolute;
+    right: 5%;
+    bottom: 2%;
+    z-index: 10;
+    display: flex;
+    gap: 0.5rem;
+    .dice{
+        font-size: 36px;
+        color: rgb(173, 173, 173);
+        transition: all 0.5s;
+        &:hover{
+            color: black;
+        }
+    }
+    .dice6{
+        font-size: 40px;
+    }
+}
+
+.chatsSort{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-right: 15px;
+    .sortChoice{
+        font-size: 15px;
+        padding: 2px 10px;
+        border-radius: 100px;
+        border: 1px solid $mainColor;
+    }
+}
+
+.searchBtn{
+    background-color: $mainColor;
+    border-radius: 100px;
+    font-size: 17px;
+    padding: 8px;
+    color: white;
 }

@@ -295,13 +295,13 @@ const Application = () => {
                     </div>
                   )}
                   {isAdmin && (
-                    <div className="columnFlex part zeroGap">
+                    <div className="columnFlex part">
                       <div className="title">Applying users</div>
-                      <div className="users columnFlex">
+                      <div className="users columnFlex allUsers">
                         {chat.applyingUsers &&
                           chat.applyingUsers.map((user) => {
                             return (
-                              <div className="rowFlex">
+                              <div className="rowFlex memberFull">
                                 <img
                                   src={
                                     user.avatarImage
@@ -311,7 +311,7 @@ const Application = () => {
                                   alt="avatar"
                                   className="avatarSmall"
                                 ></img>
-                                <div className="columnFlex">
+                                <div className="columnFlex zeroGap">
                                   <div className="username">
                                     {user.username}
                                   </div>

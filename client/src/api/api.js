@@ -46,7 +46,9 @@ const changeGroupBackgroundRoute = `${chatRoot}/group/changeBackground`;
 const deleteGroupBackgroundRoute = `${chatRoot}/group/deleteBackground`;
 const deleteGroupRoute = `${chatRoot}/group/delete`;
 const exitGroupRoute = `${chatRoot}/exitGroup`;
-
+const diceChats6Route = `${chatRoot}/diceChats6`;
+const diceChats20Route = `${chatRoot}/diceChats20`;
+const searchGroupRoute = `${chatRoot}/searchGroup`;
 export const loginAPI = (username, password) => {
   return axios.post(loginRoute, { username, password }).then((res) => res);
 };
@@ -236,4 +238,16 @@ export const deleteGroupAPI = (_id) => {
 
 export const exitGroupAPI = (group_id, user_id) => {
   return axios.post(exitGroupRoute, { group_id, user_id }).then((res) => res);
+};
+
+export const diceChats6 = () => {
+  return axios.get(diceChats6Route).then((res) => res);
+};
+
+export const diceChats20 = () => {
+  return axios.get(diceChats20Route).then((res) => res);
+};
+
+export const searchGroupChatsAPI = (keyword) => {
+  return axios.post(searchGroupRoute,{keyword}).then((res) => res);
 };
