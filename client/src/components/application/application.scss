@@ -1,0 +1,85 @@
+@import '../../styleVariables/variables.scss';
+.chatManage{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    .rowFlex{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        font-size: 25px;
+    }
+    .head{
+        margin-bottom: 1rem;
+        .delete{
+            font-size: 30px;
+            background-color: $warn;
+            padding: 15px;
+            color: white;
+            margin-left: -13%;
+            transition: all 0.5s;
+        }
+    }
+    .columnFlex{
+        display: flex;
+        flex-direction:column;
+        gap: 1rem;
+    }
+    .title{
+        font-size: 20px;
+        border-left: 4px solid $mainColor;
+        padding-left: 5px;
+    }
+    .users{
+        height: 270px;
+        overflow: auto;
+    }
+    .avatar{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+    .username{
+        font-size: 20px;
+        padding: 3px;
+        align-self: start;
+    }
+    .zeroGap{
+        gap: 0;
+    }
+    .half{
+        gap: 0.5rem;
+    }
+    .part{
+        width: 40%;
+    }
+    .chooses{
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        .choose{
+            box-sizing: border-box;
+            border-radius: 50%;
+            transition: all 0.5s;
+            border: 2px solid transparent;
+            flex-shrink: o;
+        }
+        .accept{
+            color: rgb(49, 228, 73);
+            &:hover{
+                font-size: 40px;
+                color: rgb(0, 165, 22);
+                border: 2px solid rgb(0, 165, 22);
+            }
+        }
+        .refuse{
+            color: rgba(239, 78, 78, 0.932);
+            &:hover{
+                font-size: 40px;
+                color: rgba(165, 0, 0, 0.932);
+                border: 2px solid rgba(165, 0, 0, 0.932);
+            }
+        }
+
+    }
+}

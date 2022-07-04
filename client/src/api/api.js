@@ -35,6 +35,17 @@ const allGroupChatRoute = `${chatRoot}/group/all`;
 const applyGroupChatJoinRoute = `${chatRoot}/group/apply`;
 const dealGroupChatApplyRoute = `${chatRoot}/group/deal`;
 const getGroupChatAppliesRoute = `${chatRoot}/group/getApplies`;
+const getMyCreatedChatsRoute = `${chatRoot}/group/MyCreatedChats`;
+const getMyJoinedChatsRoute = `${chatRoot}/group/MyJoinedChats`;
+const getGroupChatRoute = `${chatRoot}/getGroupChat`;
+const refuseChatApplyRoute = `${chatRoot}/group/refuse`;
+const renameGroupRoute = `${chatRoot}/renameGroup`;
+const changeGroupAvatarRoute = `${chatRoot}/group/changeAvatar`;
+const deleteGroupAvatarRoute = `${chatRoot}/group/deleteAvatar`;
+const changeGroupBackgroundRoute = `${chatRoot}/group/changeBackground`;
+const deleteGroupBackgroundRoute = `${chatRoot}/group/deleteBackground`;
+const deleteGroupRoute = `${chatRoot}/group/delete`;
+const exitGroupRoute = `${chatRoot}/exitGroup`;
 
 export const loginAPI = (username, password) => {
   return axios.post(loginRoute, { username, password }).then((res) => res);
@@ -171,3 +182,58 @@ export const getGroupChatAppliesAPI = (_id, group_id) => {
     .then((res) => res);
 };
 
+export const getMyCreatedChatsAPI = (_id) => {
+  return axios.post(getMyCreatedChatsRoute, { _id }).then((res) => res);
+};
+
+export const getMyJoinedChatsAPI = (_id ) => {
+  return axios
+    .post(getMyJoinedChatsRoute, { _id })
+    .then((res) => res);
+};
+
+export const getGroupChat = (_id) =>{
+  return axios.post(getGroupChatRoute, { _id }).then((res) => res);
+
+}
+
+export const refuseChatApplyAPI = (applyer_id, admin_id, group_id) => {
+  return axios
+    .post(refuseChatApplyRoute, { applyer_id, admin_id, group_id })
+    .then((res) => res);
+};
+
+export const renameGroupAPI = (chatId, chatName) => {
+  return axios.post(renameGroupRoute, { chatId, chatName }).then((res) => res);
+};
+
+export const changeGroupAvatar = (chatId, avatar) => {
+  return axios
+    .post(changeGroupAvatarRoute, { chatId, avatar })
+    .then((res) => res);
+};
+
+export const deleteGroupAvatarAPI = ( avatar) => {
+  return axios
+    .post(deleteGroupAvatarRoute, { avatar })
+    .then((res) => res);
+};
+
+
+export const changeGroupBackgroundAPI = (chatId, background) => {
+  return axios
+    .post(changeGroupBackgroundRoute, { chatId, background })
+    .then((res) => res);
+};
+
+export const deleteGroupBackgroundAPI = (avatar) => {
+  return axios.post(deleteGroupBackgroundRoute, { avatar }).then((res) => res);
+};
+
+export const deleteGroupAPI = (_id) => {
+  return axios.post(deleteGroupRoute, { _id }).then((res) => res);
+};
+
+export const exitGroupAPI = (group_id, user_id) => {
+  return axios.post(exitGroupRoute, { group_id, user_id }).then((res) => res);
+};

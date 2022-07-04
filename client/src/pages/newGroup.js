@@ -1,4 +1,4 @@
-import "./chat.scss";
+import "./chats.scss";
 import { useState, useEffect, useContext } from "react";
 import { getFriendsAPI } from "../api/api";
 import { AuthContext } from "../contexts/authContext";
@@ -69,9 +69,10 @@ const NewGroup = () => {
     }
   }
 
+   //查下选择和输出的数组是否一致
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
-      chosenUsers.splice(chosenUsers.indexOf("62b1e7cd15b04834a22d4be5"), 1);
+      chosenUsers.splice(chosenUsers.indexOf(id), 1);
       let choose = [...chosenUsers];
       setChosenUsers(choose);
     } else {

@@ -1,4 +1,4 @@
-import "./chat.scss";
+import "./chats.scss";
 import FriendList from "../components/friendList";
 import { useState, useEffect, useContext } from "react";
 import testIcon from "../imgs/testIcon.jpg";

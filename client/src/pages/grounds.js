@@ -6,6 +6,7 @@ import LoadingBar from "../components/loadingBar";
 import NavBar from "../components/navBar";
 import { BiSearch } from "react-icons/bi";
 import './grounds.scss'
+import {useNavigate} from "react-router-dom"
 const NewGroup = () => {
     const [chats, setChats] = useState([]);
     const [shownChats, setShownChats] = useState();
@@ -28,13 +29,18 @@ const NewGroup = () => {
         });
         setShownChats(filtered);
       };
-    console.log(chats)
     const apply = async (chatId) =>{
       const result = await applyGroupChatJoinAPI(currentUser._id, chatId);
       if(result){
          setIsApplying(true);
       }
     }
+
+      const navigate = useNavigate();
+
+      const navigates = (chatId) => {
+        navigate(`/chat/${chatId}`);
+      };
 
     return (
       <>
@@ -80,8 +86,11 @@ const NewGroup = () => {
                                       src={require(`../images/${chat.avatar}`)}
                                       alt="avatar"
                                       className="gpAvatar"
+                                      onClick={()=>navigates(chat._id)}
                                     ></img>
-                                    <div>{chat.chatName}</div>
+                                    <div onClick={() =>navigates(chat._id)}>
+                                      {chat.chatName}
+                                    </div>
                                   </div>
                                   <div className="groupMembers">
                                     {chat.users

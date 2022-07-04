@@ -1,18 +1,15 @@
 import "./user.scss";
 import Back from "../imgs/back2.png";
 import Settings from "../imgs/settings.png";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
-import { useContext, useState, useEffect } from "react";
-import Requestings from '../components/requestings';
-import Requests from "../components/requests";
+import { useContext, useState } from "react";
+import UserNavBar from "../components/userNavBar";
 import {
   uploadAvatarAPI,
   deleteAvatarAPI,
   changeUsernameAPI,
   changeIntroAPI,
-  getFriendsReqAPI,
-  getsendedFriendRedAPI,
 } from "../api/api";
 
 import {
@@ -23,6 +20,7 @@ import {
 import { BsUpload, BsChevronDoubleRight } from "react-icons/bs";
 import { AiOutlineLogout } from "react-icons/ai";
 import AvatarEditor from "../components/avatarEditor";
+import LeftAreaBack from "../components/leftAreaBackV"
 function Personal() {
   const { currentUser, resetUserData, logout } = useContext(AuthContext);
   const [showChangeInput, setShowChangeInput] = useState(false);
@@ -30,9 +28,6 @@ function Personal() {
   const [input, setInput] = useState("");
   const [introInput,  setIntroInput] = useState("");
   const [preview, setPreview] = useState(null);
-  const [requests, setRequests] = useState([]);
-  const [requesting, setRequesting] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [showClipper, setShowClipper] = useState(false);
 
   const changeUsername = async () => {
@@ -52,21 +47,21 @@ function Personal() {
   };
 
 
-  useEffect(() => {
-    const fetchRequest = async () => {
-      const requests = await getFriendsReqAPI(currentUser._id);
-      setRequests(requests.data.friends);
-    };
-    fetchRequest();
-  }, [currentUser, refresh]);
+  // useEffect(() => {
+  //   const fetchRequest = async () => {
+  //     const requests = await getFriendsReqAPI(currentUser._id);
+  //     setRequests(requests.data.friends);
+  //   };
+  //   fetchRequest();
+  // }, [currentUser, refresh]);
 
-    useEffect(() => {
-      const fetchRequest = async () => {
-        const requests = await getsendedFriendRedAPI(currentUser._id);
-        setRequesting(requests.data.friends);
-      };
-      fetchRequest();
-    }, [currentUser]);
+  //   useEffect(() => {
+  //     const fetchRequest = async () => {
+  //       const requests = await getsendedFriendRedAPI(currentUser._id);
+  //       setRequesting(requests.data.friends);
+  //     };
+  //     fetchRequest();
+  //   }, [currentUser]);
   const navigate = useNavigate();
   const navigates = () => {
     navigate("/home");
@@ -85,21 +80,7 @@ function Personal() {
     <div className="chatContainer">
       <div className="chatBody">
         <div className="chatLeft">
-          <div className="chatLeftIcon">
-            <div className="backOut">
-              <img
-                src={Back}
-                alt="logo"
-                className="back"
-                onClick={navigates}
-              ></img>
-            </div>
-          </div>
-          <div className="chatLeftIcon">
-            <div className="backOut borderBackout">
-              <img src={Settings} alt="logo" className="back rotate"></img>
-            </div>
-          </div>
+          <LeftAreaBack/>
         </div>
         <div className="userInfo">
           {showClipper && (
@@ -182,7 +163,7 @@ function Personal() {
               </div>
             )}
             {!showChangeIntro ? (
-              <div className="flex">
+              <div className="flex flexEnd">
                 <div className="username intro">{currentUser.intro}</div>
                 <IoPencilOutline
                   className="modify smallModify"
@@ -190,7 +171,7 @@ function Personal() {
                 />
               </div>
             ) : (
-              <div className="flex">
+              <div className="flex flexEnd">
                 <input
                   className="changeIntro"
                   defaultValue={currentUser.intro}
@@ -206,14 +187,10 @@ function Personal() {
                 />
               </div>
             )}
-            <div className="twoRequests">
-              <Requests
-                requests={requests}
-                refresh={refresh}
-                setRefresh={setRefresh}
-              />
-              <Requestings requestings={requesting} />
+            <div className="userNavBar">
+              <UserNavBar />
             </div>
+            <Outlet />
             <div className="logout">
               <AiOutlineLogout onClick={logout} />
             </div>

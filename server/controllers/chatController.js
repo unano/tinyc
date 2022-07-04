@@ -126,6 +126,7 @@ module.exports.createGropuChat = async (req, res, next) => {
   }
 };
 
+
 module.exports.sendMessage = async (req, res) => {
   const { sender, content, chatId } = req.body;
 
@@ -285,9 +286,25 @@ module.exports.dealJoinGroupChat = async (req, res, next) => {
   const { applyer_id, admin_id, group_id } = req.body;
   const isAdmin = await Chat.findOne({ _id: group_id, groupAdmin: admin_id });
   if (isAdmin) {
-    const chat = await Chat.updateOne(
+    const accept = await Chat.updateOne(
       { _id: group_id },
       { $addToSet: { users: applyer_id } }
+    );
+    const chat = await Chat.findByIdAndUpdate(
+      { _id: group_id },
+      { $pull: { applyingUsers: applyer_id } }
+    );
+    res.status(200).json(chat);
+  }
+};
+
+module.exports.dealRefuseGroupChat = async (req, res, next) => {
+  const { applyer_id, admin_id, group_id } = req.body;
+  const isAdmin = await Chat.findOne({ _id: group_id, groupAdmin: admin_id });
+  if (isAdmin) {
+    const chat = await Chat.findByIdAndUpdate(
+      { _id: group_id },
+      { $pull: { applyingUsers: applyer_id } }
     );
     res.status(200).json(chat);
   }
@@ -311,4 +328,130 @@ module.exports.fetchChatApplications = async (req, res, next) => {
     { _id: 1, users: 1, chatName: 1, avatar :1}
   );
   res.status(200).json(chat);
+};
+
+
+module.exports.fetchMyJoinedChats = async (req, res, next) => {
+  const { _id } = req.body;
+  const chat = await Chat.find(
+    {
+      $and: [{ users: _id }, { groupAdmin: { $ne: _id } }],
+    },
+    { _id: 1, users: 1, chatName: 1, avatar: 1 }
+  );
+  res.status(200).json(chat);
+};
+
+
+module.exports.fetchMyCreatedChats = async (req, res, next) => {
+  const { _id } = req.body;
+  const chat = await Chat.find(
+    {
+      $and: [{ users: _id }, { groupAdmin: _id }],
+    },
+    { _id: 1, users: 1, chatName: 1, avatar: 1, applyingUsers:1}
+  );
+  res.status(200).json(chat);
+};
+
+module.exports.getGroupChat = async(req, res, next)=>{
+  const { _id } = req.body;
+  const chat = await Chat.findOne(
+    { _id: _id },
+    {
+      _id: 1,
+      users: 1,
+      chatName: 1,
+      avatar: 1,
+      applyingUsers: 1,
+      background: 1,
+      groupAdmin: 1,
+    }
+  )
+    .populate("applyingUsers", "-password -friends")
+    .populate("users", "-password -friends")
+    .populate("groupAdmin", "-password -friends");
+  res.status(200).json(chat);
+}
+
+module.exports.changeGroupAvatar = async (req, res) => {
+  const { chatId, avatar } = req.body;
+
+  const avatarName = "avatar" + Date.now() + ".png";
+  const avatarPath = "./client/src/images/" + avatarName;
+  const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+  fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
+
+  try {
+    await Chat.findByIdAndUpdate(chatId, { avatar: avatarName });
+    res.status(200).json({ msg: "updated" });
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
+
+module.exports.deleteGroupAvatar = async (req, res, next) => {
+  try {
+    const path = "./client/src/images/";
+    const { avatar } = req.body;
+    if (avatar !== "default.png") {
+      fs.unlinkSync(path + avatar);
+    }
+    return res.json({ status: true, result: "deleted" });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.changeGroupBackground = async (req, res) => {
+  const { chatId, background } = req.body;
+  const bgName = "gpbg" + Date.now() + ".png";
+  const bgPath = "./client/src/images/background/" + bgName;
+  const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+  fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
+
+  try {
+    await Chat.findByIdAndUpdate(chatId, { background: bgName });
+    res.status(200).json({ msg: "updated" });
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+};
+
+module.exports.deleteGroupBackground = async (req, res, next) => {
+  try {
+    const path = "./client/src/images/background/";
+    const { avatar } = req.body;
+    if (avatar && avatar !== "default.png") {
+      fs.unlinkSync(path + avatar);
+    }
+    return res.json({ status: true, result: "deleted" });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.deleteGroup = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    await Chat.deleteOne({ _id: _id });
+    return res.json({ status: true, result: "deleted" });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.exitFromGroup = async (req, res, next) => {
+  try {
+    const { group_id, user_id } = req.body;
+    const chat = await Chat.findByIdAndUpdate(
+      { _id: group_id },
+      { $pull: { users: user_id } }
+    );
+    res.status(200).json(chat);
+  } catch (ex) {
+    next(ex);
+  }
 };

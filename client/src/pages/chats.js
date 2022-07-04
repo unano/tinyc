@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from "react";
-import "./chat.scss";
+import "./chats.scss";
 import "./common.scss"
 import Settings from "../imgs/settings.png";
 import { useNavigate } from "react-router-dom";

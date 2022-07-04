@@ -97,6 +97,7 @@
                 border-radius: 50%;
                 background-color: $success;
                 color: white;
+                flex-shrink: 0;
             }
         }
     }
