@@ -267,7 +267,7 @@ const Application = () => {
                     src={
                       chat.background
                         ? require(`../images/background/${chat.background}`)
-                        : require(`../images/defaultGroup.png`)
+                        : require(`../images/background/defaultBG.png`)
                     }
                     alt="avatar"
                     className="bg"
@@ -285,7 +285,7 @@ const Application = () => {
                               src={
                                 chat.groupAdmin.avatarImage
                                   ? require(`../images/${chat.groupAdmin.avatarImage}`)
-                                  : require(`../images/defaultGroup.png`)
+                                  : require(`../images/default.png`)
                               }
                               alt="avatar"
                               className="avatarSmall"

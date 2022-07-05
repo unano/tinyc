@@ -106,7 +106,7 @@ const Application = () => {
                           src={
                             user.avatarImage
                               ? require(`../../images/${user.avatarImage}`)
-                              : require(`../../images/defaultGroup.png`)
+                              : require(`../../images/default.png`)
                           }
                           alt="avatar"
                           className="avatar"
@@ -140,7 +140,7 @@ const Application = () => {
                           src={
                             user.avatarImage
                               ? require(`../../images/${user.avatarImage}`)
-                              : require(`../../images/defaultGroup.png`)
+                              : require(`../../images/default.png`)
                           }
                           alt="avatar"
                           className="avatar"
