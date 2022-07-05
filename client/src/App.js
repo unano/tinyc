@@ -15,6 +15,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import AuthProvider from "./contexts/authContext";
+import SettingProvider from "./contexts/settingContext";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import "./App.css";
 function App() {
@@ -23,20 +24,22 @@ function App() {
     // <TransitionGroup>
     //   <CSSTransition timeout={300} classNames="fadeRoute" key={location.key}>
     <AuthProvider>
-      <Routes location={location}>
-        <Route path="/login" element={<LoginRegister />} />
-        <Route path="/home" element={<Chat />} />
-        <Route path="/friend" element={<Friends />} />
-        <Route path="/user" element={<User />}>
-          <Route path="users" element={<UserUser />} />
-          <Route path="chats" element={<UserChats />} />
-          <Route path="/user" element={<Navigate replace to="users" />} />
-        </Route>
-        <Route path="/newGroup" element={<NewGroup />} />
-        <Route path="/ground" element={<Groupchats />} />
-        <Route path="/chat/:id" element={<ChatApplication />} />
-        <Route path="/" element={<Navigate replace to="/login" />} />
-      </Routes>
+      <SettingProvider>
+        <Routes location={location}>
+          <Route path="/login" element={<LoginRegister />} />
+          <Route path="/home" element={<Chat />} />
+          <Route path="/friend" element={<Friends />} />
+          <Route path="/user" element={<User />}>
+            <Route path="users" element={<UserUser />} />
+            <Route path="chats" element={<UserChats />} />
+            <Route path="/user" element={<Navigate replace to="users" />} />
+          </Route>
+          <Route path="/newGroup" element={<NewGroup />} />
+          <Route path="/ground" element={<Groupchats />} />
+          <Route path="/chat/:id" element={<ChatApplication />} />
+          <Route path="/" element={<Navigate replace to="/login" />} />
+        </Routes>
+      </SettingProvider>
     </AuthProvider>
     // </CSSTransition>
     //</TransitionGroup>

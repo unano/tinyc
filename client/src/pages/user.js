@@ -20,7 +20,8 @@ import {
 import { BsUpload, BsChevronDoubleRight } from "react-icons/bs";
 import { AiOutlineLogout } from "react-icons/ai";
 import AvatarEditor from "../components/avatarEditor";
-import LeftAreaBack from "../components/leftAreaBackV"
+import LeftAreaBack from "../components/leftAreaBackV";
+import Logo from "../imgs/tinyc.png";
 function Personal() {
   const { currentUser, resetUserData, logout } = useContext(AuthContext);
   const [showChangeInput, setShowChangeInput] = useState(false);
@@ -78,9 +79,10 @@ function Personal() {
   };
   return (
     <div className="chatContainer">
+      <img src={Logo} alt="logo" className="logo"></img>
       <div className="chatBody">
         <div className="chatLeft">
-          <LeftAreaBack/>
+          <LeftAreaBack />
         </div>
         <div className="userInfo">
           {showClipper && (

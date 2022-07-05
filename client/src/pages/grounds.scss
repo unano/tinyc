@@ -7,13 +7,13 @@
     flex-direction: column;
     gap: 0.5rem;
     overflow: auto;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     .GPchat{
         width: 98%;
         height: 80px;
         border: 1px solid rgb(206, 206, 206);
         border-radius: 0 0 10px 10px;
-        border-top: 4px solid rgba(25, 156, 193, 0.607);
+        border-top: 3px solid rgba(25, 156, 193, 0.607);
         overflow: hidden;
         position: relative;
         transition: all 0.7s;
@@ -205,4 +205,49 @@
     font-size: 17px;
     padding: 8px;
     color: white;
+}
+.diceContainer{
+    padding-left: 20px;
+    padding-top: 10px;
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+    font-size: 34px;
+    color: gray;
+    background-color: white;
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    border-radius: 50px 0 0 0 ;
+    .dice20, .dice6{
+        transition: all 0.5s;
+        &:hover{
+            color: $mainColorDark;
+        }
+    }
+    .dice6{
+        font-size: 37px;
+    }
+    .diceAnime{
+        animation: roll 1s linear;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes roll {
+  0%{
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-10px) ;
+  }
+  50% {
+    transform: translateY(0) ;
+  }
+  75% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

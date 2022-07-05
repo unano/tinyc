@@ -9,7 +9,7 @@ import NavBar from "../components/navBar";
 import { RiUserAddLine } from "react-icons/ri";
 import LeftIcons from "../components/leftArea";
 import LoadingBar from "../components/loadingBar";
-
+import Logo from "../imgs/tinyc.png";
 const FriensArea = () => {
   const { currentUser } = useContext(AuthContext);
   const [shownFriends, setShownFriends] = useState([]);
@@ -65,7 +65,10 @@ const FriensArea = () => {
     setApplyResult("");
     let user = await searchUserAPI(searchInput);
     if (user) {
-      setSearchedUser(user.data.user);
+      console.log(user.data.user)
+      if(user.data.user._id!==currentUser._id){
+        setSearchedUser(user.data.user);
+      }
     }
     setHasSearchedUser(true);
   };
@@ -73,6 +76,7 @@ const FriensArea = () => {
   return (
     <>
       <div className="chatContainer">
+        <img src={Logo} alt="logo" className="logo"></img>
         <div className="chatBody">
           {/* <button onClick={submitAvatar}>dd</button> */}
           <div className="chatLeft">
@@ -93,33 +97,48 @@ const FriensArea = () => {
                 <div className="loadingContainer">
                   {!friends.length && !noFriend && <LoadingBar />}
                 </div>
+                {/* 首先判断是否好友列表里不存在该用户，其次判断是否搜索用户是自己，再其次才展示说明没有该好友 */}
                 {noUser ? (
-                  <div className="searchNewFriend">
-                    no such friend,
-                    <span className="searchUser" onClick={searchInputUser}>
-                      <b> search the use with this name</b>
-                    </span>
-                    {hasSearchedUser ? (
-                      searchedUser ? (
-                        <div className="searchedUser">
-                          <img src={testIcon} alt="logo" className="icon"></img>
-                          <div className="searchedUsername">
-                            {searchedUser.username}
+                  searchInput !== currentUser.username ? (
+                    <div className="searchNewFriend">
+                      no such friend,
+                      <span className="searchUser" onClick={searchInputUser}>
+                        <b> search the use with this name</b>
+                      </span>
+                      {hasSearchedUser ? (
+                        searchedUser ? (
+                          <div className="searchedUser">
+                            <img
+                              src={
+                                searchedUser.avatarImage
+                                  ? require(`../images/${searchedUser.avatarImage}`)
+                                  : require(`../images/default.png`)
+                              }
+                              alt="logo"
+                              className="icon"
+                            ></img>
+                            <div className="searchedUsername">
+                              {searchedUser.username}
+                            </div>
+                            <div className="addFriendIcon">
+                              <RiUserAddLine onClick={applyFriend} />
+                            </div>
+                            <div className="searchedUsername inline smallName fright">
+                              {applyResult}
+                            </div>
                           </div>
-                          <div className="addFriendIcon">
-                            <RiUserAddLine onClick={applyFriend} />
+                        ) : (
+                          <div className="searchedUser">
+                            <div>No such user</div>
                           </div>
-                          <div className="searchedUsername inline smallName fright">
-                            {applyResult}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="searchedUser">
-                          <div>No such user</div>
-                        </div>
-                      )
-                    ) : null}
-                  </div>
+                        )
+                      ) : null}
+                    </div>
+                  ) : (
+                    <div className="searchedUser">
+                      <div>It's you</div>
+                    </div>
+                  )
                 ) : null}
                 <FriendList
                   friends={shownFriends}

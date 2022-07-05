@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import Info from "../../imgs/info.png";
 import "./chat.scss";
 import { AuthContext } from "../../contexts/authContext";
+import { SettingContext } from "../../contexts/settingContext";
 import LoadingBar from "../loadingBar";
 const Chat = ({ chat, switchs, left }) => {
   const { currentUser } = useContext(AuthContext);
+  const { showBg } = useContext(SettingContext);
   const [avatar, setAvatar] = useState("default.png");
   const [loading, setLoading] = useState(false);
   const chatUser = chat.users.filter((u) => {
@@ -48,13 +50,13 @@ const Chat = ({ chat, switchs, left }) => {
           ></img>
         </div>
         <div className="friendNameAndWord">
-          {chat.isGroupChat && (
+          {chat.isGroupChat && showBg && (
             <div>
               <img
                 src={
                   chat.background
                     ? require(`../../images/background/${chat.background}`)
-                    : require(`../../images/default.png`)
+                    : require(`../../images/background/defaultBG.png`)
                 }
                 alt="logo"
                 className="background"
@@ -73,9 +75,7 @@ const Chat = ({ chat, switchs, left }) => {
                 ? `${chat.latestMessage.sender.username} : ${chat.latestMessage.message}`
                 : chat.latestMessage.message)}
           </div>
-          {loading && ( 
-              <LoadingBar />
-           )} 
+          {loading && <LoadingBar />}
         </div>
       </div>
     </>

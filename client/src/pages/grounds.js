@@ -17,14 +17,18 @@ import {
   GiPerspectiveDiceSixFacesSix,
 } from "react-icons/gi";
 import GroundChat from "../components/groundChat";
+import { GrSettingsOption } from "react-icons/gr";
+import Logo from "../imgs/tinyc.png";
 const NewGroup = () => {
   const [chats, setChats] = useState([]);
   const [searchInput, setSearchIput] = useState();
   const { currentUser } = useContext(AuthContext);
   const [searching, setSearching ] = useState(false);
+  const [stopDice20, setStopDice20] = useState(true);
+  const [stopDice6, setStopDice6] = useState(true);
   useEffect(() => {
     const getChats = async () => {
-      const chats = await getAllGroupChatAPI();
+      const chats = await diceChats20();
       setChats(chats.data);
     };
     getChats();
@@ -72,9 +76,23 @@ const NewGroup = () => {
     }
   }
 
+  const dice20 = async () =>{
+    const chats = await diceChats20();
+    setStopDice20(false);
+    setChats(chats.data);
+
+  }
+
+  const dice6 = async () => {
+    const chats = await diceChats6();
+    setStopDice6(false);
+    setChats(chats.data);
+  };
+
   return (
     <>
       <div className="chatContainer">
+        <img src={Logo} alt="logo" className="logo"></img>
         <div className="chatBody">
           {/* <button onClick={submitAvatar}>dd</button> */}
           <div className="chatLeft">
@@ -115,6 +133,18 @@ const NewGroup = () => {
                     chats.map((chat) => {
                       return <GroundChat chat={chat} key={chat._id} />;
                     })}
+                </div>
+                <div className="diceContainer">
+                  <GiDiceTwentyFacesTwenty
+                    className={stopDice20 ? "dice20" : "dice20 diceAnime"}
+                    onClick={dice20}
+                    onAnimationEnd={() => setStopDice20(true)}
+                  />
+                  <GiPerspectiveDiceSixFacesSix
+                    className={stopDice6 ? "dice6" : "dice6 diceAnime"}
+                    onClick={dice6}
+                    onAnimationEnd={() => setStopDice6(true)}
+                  />
                 </div>
               </div>
             </div>

@@ -1,10 +1,11 @@
-import './leftArea.scss'
+import "./leftArea.scss";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import Settings from "../../imgs/settings.png";
 import { useNavigate } from "react-router-dom";
 import Back from "../../imgs/back2.png";
-
+import { BsBell, BsImage, BsX } from "react-icons/bs";
+import {SettingContext} from "../../contexts/settingContext";
 const LeftIcons = ({
   ischat = false,
   chatBtnSwitch = {},
@@ -12,24 +13,33 @@ const LeftIcons = ({
 }) => {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
-  const [setting01, setSetting01] = useState({});
-  const [rotate, setRotate] = useState({});
+  const { inform, setInform, showBg, setShowBg } = useContext(SettingContext);
+  const [expanded, setExpanded] = useState(false);
+  const [settingStyle, setSettingStyle] = useState({});
   const navigateToUser = () => {
     navigate("/user");
   };
   const show = () => {
-    setting01.left !== "-80%"
-      ? setSetting01({ left: "-80%" })
-      : setSetting01({ left: "10%" });
+    setExpanded(true);
   };
 
-  const setStyle = () => {
-    setRotate({ transform: "rotate(-135deg" });
+  const rotate = (style) =>{
+    clearStyle();
+    const styles = { transform: `rotate(${style})` };
+    setSettingStyle(styles);
+  }
+  const clearStyle=()=>{
+    setSettingStyle({})
+  }
+
+  const changeInform = () =>{
+    setInform(!inform);
+  }
+
+  const changeShowBg = () => {
+    setShowBg(!showBg);
   };
 
-  const setLeaveStyle = () => {
-    setRotate({ transform: "rotate(0deg)" });
-  };
   return (
     <>
       <div className="chatLeftIcon">
@@ -67,17 +77,46 @@ const LeftIcons = ({
         )}
       </div>
       <div className="settingContainer">
-        <div className="chatLeftIcon" onClick={show} style={rotate}>
+        <div className="settingOption"></div>
+        <div className="chatLeftIcon" onClick={show} style={settingStyle}>
           <div className="backOut borderBackout">
             <img src={Settings} alt="logo" className="back rotate"></img>
           </div>
         </div>
-        <div
-          className="setting01"
-          style={setting01}
-          onMouseOver={setStyle}
-          onMouseLeave={setLeaveStyle}
-        ></div>
+        <div className={expanded ? "expandedSetting setting" : "setting"}>
+          <div
+            className="settingChoices"
+            onMouseOver={() => rotate("-105deg")}
+            onMouseLeave={clearStyle}
+            onClick={changeInform}
+          >
+            <div
+              className={inform ? "ringLine hideRingLine" : "ringLine"}
+            ></div>
+            <BsBell className="choiceIcon" />
+          </div>
+        </div>
+        <div className={expanded ? "expandedSetting setting" : "setting"}>
+          <div
+            className="settingChoices"
+            onMouseOver={() => rotate("-165deg")}
+            onMouseLeave={clearStyle}
+            onClick={changeShowBg}
+          >
+            <div className={showBg ? "BgLine hideBgLine" : "BgLine"}></div>
+            <BsImage className="choiceIcon" />
+          </div>
+        </div>
+        <div className={expanded ? "expandedSetting setting" : "setting"}>
+          <div
+            className="settingChoices"
+            onMouseOver={() => rotate("-225deg")}
+            onMouseLeave={clearStyle}
+            onClick={()=>setExpanded(false)}
+          >
+            <BsX className="choiceIcon" />
+          </div>
+        </div>
       </div>
     </>
   );

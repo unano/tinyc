@@ -8,6 +8,7 @@
     flex-direction: row;
     gap: 1.2rem;
     .chatIcon{
+        flex-shrink: 0;
         width: 60px;
         height: 60px;
         border-radius: 100px;
@@ -63,7 +64,7 @@
         .bgCover{
             background-image: linear-gradient(-60deg, rgba(255, 255, 255, 0.221) 30%,rgba(255, 255, 255, 0.198) 40%, rgb(255, 255, 255) 94%, white 100%);
             position: absolute;
-            width: 52%;
+            width: 190px;
             height: 100%;
             right: 0;
             top: 0;
@@ -72,7 +73,7 @@
         .bgCover2{
             background-image: linear-gradient(-90deg, rgba(255, 255, 255, 0.221) ,white 90%, white 100%);
             position: absolute;
-            width: 50%;
+            width: 190px;
             height: 100%;
             right: 0;
             top: 0;

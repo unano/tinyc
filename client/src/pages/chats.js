@@ -27,6 +27,7 @@ import AddChatFriend from "../components/addChatFriend";
 import { useBeforeunload } from "react-beforeunload";
 import LoadingBar from "../components/loadingBar";
 import LeftArea from "../components/leftArea";
+import Logo from "../imgs/tinyc.png";
 const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
@@ -125,7 +126,7 @@ function Chat() {
       setRefresh(!refresh);
       if (
         !selectedChatCompare ||
-        selectedChatCompare !== newMsgReceived.chat._id
+        selectedChatCompare._id !== newMsgReceived.chat._id
       ) {
         if (!notification.includes(newMsgReceived)) {
           setNotification([newMsgReceived, ...notification]);
@@ -240,10 +241,15 @@ function Chat() {
   };
   return (
     <div className="chatContainer">
+      <img src={Logo} alt="logo" className="logo"></img>
       <div className="chatBody">
         {/* <button onClick={submitAvatar}>dd</button> */}
         <div className="chatLeft">
-          <LeftArea ischat={true} chatBtnSwitch={chatBtnSwitch} switchsBack={switchsBack}/>
+          <LeftArea
+            ischat={true}
+            chatBtnSwitch={chatBtnSwitch}
+            switchsBack={switchsBack}
+          />
           <NewMsgs newMsgs={notification} />
         </div>
         <div className="chat">
@@ -260,9 +266,11 @@ function Chat() {
                       onChange={(e) => setInput(e.target.value)}
                     ></input>
                   </div>
-                  <div className="loadingContainer">{!chats.length && !noChat && <LoadingBar />}</div>
+                  <div className="loadingContainer">
+                    {!chats.length && !noChat && <LoadingBar />}
+                  </div>
                   {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
-                  <Chats chats={shownChats} switchs={switchs} left={left}/>
+                  <Chats chats={shownChats} switchs={switchs} left={left} />
                 </div>
               </div>
               <div className="chatSwitchRight">

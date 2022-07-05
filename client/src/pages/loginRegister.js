@@ -49,7 +49,7 @@ function App() {
 
           {/* Logo and its intro */}
           <div className="head">
-            <img src={Logo} alt="logo" className="logo"></img>
+            <img src={Logo} alt="logo" className="logoInLogin"></img>
             <div className="simpWordIntro">Tiny Chat tinyC! </div>
           </div>
 

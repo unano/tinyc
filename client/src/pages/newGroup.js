@@ -14,7 +14,8 @@ import AvatarEditor from "../components/avatarEditor";
 import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
 import {BsCaretDown} from "react-icons/bs";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import Logo from "../imgs/tinyc.png";
 import "./common.scss";
 const NewGroup = () => {
   const { currentUser } = useContext(AuthContext);
@@ -129,6 +130,7 @@ const NewGroup = () => {
   return (
     <>
       <div className="chatContainer">
+        <img src={Logo} alt="logo" className="logo"></img>
         <div className="chatBody">
           {/* <button onClick={submitAvatar}>dd</button> */}
           <div className="chatLeft">
@@ -195,6 +197,7 @@ const NewGroup = () => {
                       ></input>
                     </div>
                   </div>
+                  <div className="infrom">Choose at least 2 members</div>
                   <div className="friends">
                     {shownFriends.map((friend) => {
                       return (

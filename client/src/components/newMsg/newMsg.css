@@ -5,6 +5,14 @@
 .informAnime{
     animation:flick 2s infinite;
 }
+.informAnime{
+    z-index: 100;
+}
+
+.informAnime .avatar{
+    width: 100%;
+    height: 100%;
+}
 
 @keyframes shows
 {

@@ -1,5 +1,7 @@
 const User = require("../models/userModel");
 const Friend = require("../models/friendModel");
+const Chat = require("../models/chatModel");
+const Messages = require("../models/messageModel");
 const bcrypt = require("bcrypt");
 const { stringify } = require("nodemon/lib/utils");
 const mongoose = require("mongoose");
@@ -237,6 +239,37 @@ module.exports.acceptFriend = async(req, res, next) => {
         { recipient: sender, requester: receiver },
         { $set: { status: 3 }}
     )
+
+    var isChat = await Chat.find({
+      isGroupChat: false,
+      $and: [
+        { users: { $elemMatch: { $eq: sender } } },
+        { users: { $elemMatch: { $eq: receiver } } },
+      ],
+    });
+
+    if (isChat.length == 0) {
+      var chatData = {
+        chatName: "sender",
+        isGroupChat: false,
+        users: [sender, receiver],
+      };
+      const createdChat = await Chat.create(chatData);
+      var newMessage = {
+        sender: sender,
+        message: "hello",
+        chat: createdChat._id,
+      };
+      var message = await Messages.create(newMessage);
+      message = await message.populate("sender", "username avatarImage");
+      message = await message.populate("chat");
+      message = await User.populate(message, {
+        path: "chat.users",
+        select: "username avatarImage",
+      });
+      await Chat.findByIdAndUpdate(createdChat._id, { latestMessage: message });
+    }
+
     if (acceptStep1 && acceptStep2)
       return res.status(200).json({ msg: "Friend request accepted" });
 

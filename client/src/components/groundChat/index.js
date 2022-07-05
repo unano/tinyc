@@ -21,17 +21,17 @@ const GroundChat = ({ chat }) => {
     };
   return (
     <>
-      <div
-        className="GPchat"
-      >
+      <div className="GPchat">
         <div className="GPchatIn">
-          {chat.background && (
             <img
-              src={require(`../../images/background/${chat.background}`)}
+              src={
+                chat.background
+                  ? require(`../../images/background/${chat.background}`)
+                  : require(`../../images/background/defaultBG.png`)
+              }
               alt="logo"
               className="backgroundPic"
             ></img>
-          )}
           <div className="transparentCover"></div>
           <div className="gpContent">
             <div className="flex">

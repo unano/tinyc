@@ -335,7 +335,7 @@ module.exports.fetchMyJoinedChats = async (req, res, next) => {
   const { _id } = req.body;
   const chat = await Chat.find(
     {
-      $and: [{ users: _id }, { groupAdmin: { $ne: _id } }],
+      $and: [{ users: _id }, { isGroupChat: true }, { groupAdmin: { $ne: _id } }],
     },
     { _id: 1, users: 1, chatName: 1, avatar: 1 }
   );
@@ -461,8 +461,29 @@ module.exports.diceChats6 = async (req, res, next) => {
     const chat = await Chat.aggregate([
       { $match: { isGroupChat: true } },
       { $sample: { size: 6 } },
-      {$lookup: {from: 'users', localField: "users", foreignField:"_id", as:"users"}},
-    ])
+      {
+        $lookup: {
+          from: "users",
+          localField: "users",
+          foreignField: "_id",
+          as: "users",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          chatName: 1,
+          isGroupChat: 1,
+          "users.username": 1,
+          "users._id": 1,
+          "users.avatarImage": 1,
+          avatar: 1,
+          groupAdmin: 1,
+          background: 1,
+          applyingUsers: 1
+        },
+      },
+    ]);
     res.status(200).json(chat);
   } catch (ex) {
     next(ex);
@@ -474,9 +495,30 @@ module.exports.diceChats20 = async (req, res, next) => {
     const chat = await Chat.aggregate([
       { $match: { isGroupChat: true } },
       { $sample: { size: 20 } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "users",
+          foreignField: "_id",
+          as: "users",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          chatName: 1,
+          isGroupChat: 1,
+          "users.username": 1,
+          "users._id": 1,
+          "users.avatarImage": 1,
+          avatar: 1,
+          groupAdmin: 1,
+          background: 1,
+          applyingUsers: 1
+        },
+      },
     ]);
-    const chatAndInfo = chat.populate("users", "-password -friends -isOnline");
-    res.status(200).json(chatAndInfo);
+    res.status(200).json(chat);
   } catch (ex) {
     next(ex);
   }

@@ -26,6 +26,7 @@ import "./chatManage.scss";
 import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
 import LeftAreaBack from "../components/leftAreaBackV";
+import Logo from "../imgs/tinyc.png";
 
 const Application = () => {
   const { currentUser } = useContext(AuthContext);
@@ -138,6 +139,7 @@ const Application = () => {
   return (
     <>
       <div className="chatContainer">
+        <img src={Logo} alt="logo" className="logo"></img>
         <div className="chatBody">
           {/* <button onClick={submitAvatar}>dd</button> */}
           <div className="chatLeft">
