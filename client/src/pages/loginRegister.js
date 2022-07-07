@@ -6,37 +6,14 @@ import Register from "../components/register";
 import Login from "../components/login";
 
 function App() {
-  const [loginArea, setLoginArea] = useState({ width: "380px" });
-  const [registArea, setRegistArea] = useState({ opacity: "0.3" });
-  const [loginExpand, setLoginExpand] = useState({ height: "30px" });
-  const [registerExpand, setRegisterExpand] = useState();
+  const [loginExpand, setLoginExpand] = useState(true);
 
   const expandLogin = () => {
-    setLoginArea({ width: "380px", opacity: "1" });
-    setRegistArea({ width: "103px", opacity: "0.3" });
-    setLoginExpand({ height: "30px" });
-    setRegisterExpand({ height: "350px" });
+    setLoginExpand(true);
   };
 
   const expandRegister = () => {
-    setLoginArea({ width: "103px", opacity: "0.3" });
-    setRegistArea({ width: "380px", opacity: "1" });
-    setRegisterExpand({ height: "30px" });
-    setLoginExpand({ height: "350px" });
-  };
-  //input error inform style
-  const informStyle = {
-    width: "376px",
-    backgroundColor: "rgb(251, 89, 83)",
-    borderColor: "rgb(251, 89, 83)",
-    color: "white",
-  };
-
-  const successStyle = {
-    width: "376px",
-    backgroundColor: "rgb(114, 226, 168)",
-    borderColor: "rgb(114, 226, 168)",
-    color: "white",
+    setLoginExpand(false);
   };
 
   return (
@@ -56,30 +33,25 @@ function App() {
           {/* Login & register */}
           <div className="body">
             {/* Login */}
-            <div className="login" style={loginArea}>
+            <div className={loginExpand ? "loginExpand" : "login"}>
               <div
-                className="loginWord"
+                className={loginExpand ? " loginWord" : "loginWordStretch"}
                 onClick={expandLogin}
-                style={loginExpand}
               >
                 Login
               </div>
-              <Login informStyle={informStyle} />
+              <Login/>
             </div>
 
             {/* Register */}
-            <div className="login" style={registArea}>
-              {" "}
+            <div className={!loginExpand ? "loginExpand" : "login"}>
               <div
-                className="loginWord"
+                className={!loginExpand ? " loginWord" : "loginWordStretch"}
                 onClick={expandRegister}
-                style={registerExpand}
               >
                 Regist
               </div>
               <Register
-                informStyle={informStyle}
-                successStyle={successStyle}
                 expandLogin={expandLogin}
               />
             </div>

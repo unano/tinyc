@@ -3,11 +3,11 @@ import { loginAPI } from "../../api/api";
 import { AuthContext } from "../../contexts/authContext";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ informStyle }) => {
+const Login = () => {
   const [usernameWord, setUsernameWord] = useState("username");
   const [passwordWord, setPasswordWord] = useState("password");
-  const [usernameIndiStyle, setUsernameIndiStyle] = useState();
-  const [passwordIndiStyle, setPasswordIndiStyle] = useState();
+  const [usernameInform, setUsernameInform] = useState(false);
+  const [passwordInform, setPasswordInform] = useState(false);
   const navigate = useNavigate();
 
   const { resetUserData } = useContext(AuthContext);
@@ -42,19 +42,19 @@ const Login = ({ informStyle }) => {
   };
 
   const dealUsernameError = (error) => {
-    setUsernameIndiStyle(informStyle);
+    setUsernameInform(true);
     setUsernameWord(error);
     setTimeout(() => {
-      setUsernameIndiStyle({});
+      setUsernameInform(false);
       setUsernameWord("username");
     }, 2000);
   };
   // password error alert
   const dealPasswordError = (error) => {
-    setPasswordIndiStyle(informStyle);
+    setPasswordInform(true);
     setPasswordWord(error);
     setTimeout(() => {
-      setPasswordIndiStyle({});
+      setPasswordInform(false);
       setPasswordWord("password");
     }, 2000);
   };
@@ -80,7 +80,13 @@ const Login = ({ informStyle }) => {
       >
         {/* username */}
         <div className="loginInputContiner">
-          <div className="loginInputName" style={usernameIndiStyle}>
+          <div
+            className={
+              usernameInform
+                ? "loginInputInform"
+                : "loginInputName"
+            }
+          >
             {usernameWord}
           </div>
           <input
@@ -93,7 +99,13 @@ const Login = ({ informStyle }) => {
         </div>
         {/* password */}
         <div className="loginInputContiner">
-          <div className="loginInputName" style={passwordIndiStyle}>
+          <div
+            className={
+              passwordInform
+                ? "loginInputInform"
+                : "loginInputName"
+            }
+          >
             {passwordWord}
           </div>
           <input

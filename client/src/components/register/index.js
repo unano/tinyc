@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { registerAPI } from "../../api/api";
 
-const Register = ({ expandLogin, informStyle, successStyle }) => {
+const Register = ({ expandLogin }) => {
   //save register data
   const [registerValues, setRegisterValues] = useState({
     username: "",
@@ -15,10 +15,9 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
 
 
   //inform style setting
-  const [usernameRegistIndiStyle, setUsernameRegistIndiStyle] = useState();
-  const [passwordRegistIndiStyle, setPasswordRegistIndiStyle] = useState();
-  const [pswdConfirmRegistIndiStyle, setPswdConfirmRegistIndiStyle] =
-    useState();
+  const [usernameInform, setUsernameInform] = useState(false);
+  const [passwordInform, setPasswordInform] = useState(false);
+    const [passwordConfirmInform, setPasswordConfirmInform] = useState(false);
 
   //set inform word
   const [registUsername, setRegistUsername] = useState("username");
@@ -26,29 +25,32 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
   const [registConfirmPswd, setRegistConfirmPswd] =
     useState("confirm password");
   // register username error alert
-  const dealRegistUsernameError = (error, style = informStyle) => {
-    setUsernameRegistIndiStyle(style);
+  const dealRegistUsernameError = (error, success=false) => {
+    if (success) setUsernameInform("success");
+    else setUsernameInform(true);
     setRegistUsername(error);
     setTimeout(() => {
-      setUsernameRegistIndiStyle({});
+      setUsernameInform(false);
       setRegistUsername("username");
     }, 2000);
   };
   // register password error alert
-  const dealRegistPasswordError = (error, style = informStyle) => {
-    setPasswordRegistIndiStyle(style);
+  const dealRegistPasswordError = (error, success = false) => {
+    if (success) setPasswordInform("success");
+    else setPasswordInform(true);
     setRgistPassword(error);
     setTimeout(() => {
-      setPasswordRegistIndiStyle({});
+      setPasswordInform(false);
       setRgistPassword("password");
     }, 2000);
   };
   // register confirmation error alert
-  const dealRegistPasswordConfirmError = (error, style = informStyle) => {
-    setPswdConfirmRegistIndiStyle(style);
+  const dealRegistPasswordConfirmError = (error, success = false) => {
+    if (success) setPasswordConfirmInform("success");
+    else setPasswordConfirmInform(true);
     setRegistConfirmPswd(error);
     setTimeout(() => {
-      setPswdConfirmRegistIndiStyle({});
+      setPasswordConfirmInform(false);
       setRegistConfirmPswd("confirm password");
     }, 2000);
   };
@@ -86,10 +88,13 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
       if (data.status === false && data.err === "username") {
         dealRegistUsernameError(data.msg);
       }
+      if (data.status === false && data.err === "password") {
+        dealRegistPasswordError(data.msg);
+      }
       if (data.status === true) {
-        dealRegistUsernameError("register secceed!", successStyle);
-        dealRegistPasswordError("", successStyle);
-        dealRegistPasswordConfirmError("", successStyle);
+        dealRegistUsernameError("register secceed!", true);
+        dealRegistPasswordError("", true);
+        dealRegistPasswordConfirmError("", true);
         setTimeout(() => {
           registerUsernameRef.current.value = "";
           registerPasswordRef.current.value = "";
@@ -101,7 +106,7 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
   };
 
   return (
-      <>
+    <>
       {/* username */}
       <form
         action=""
@@ -109,7 +114,15 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
         onSubmit={(event) => handleRegisterSubmit(event)}
       >
         <div className="loginInputContiner">
-          <div className="loginInputName" style={usernameRegistIndiStyle}>
+          <div
+            className={
+              usernameInform
+                ? usernameInform === "success"
+                  ? "loginInputSuccess"
+                  : "loginInputInform"
+                : "loginInputName"
+            }
+          >
             {registUsername}
           </div>
           <input
@@ -122,7 +135,15 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
         </div>
         {/* password */}
         <div className="loginInputContiner">
-          <div className="loginInputName" style={passwordRegistIndiStyle}>
+          <div
+            className={
+              passwordInform
+                ? passwordInform === "success"
+                  ? "loginInputSuccess"
+                  : "loginInputInform"
+                : "loginInputName"
+            }
+          >
             {registPassword}
           </div>
           <input
@@ -136,8 +157,13 @@ const Register = ({ expandLogin, informStyle, successStyle }) => {
         {/* Confirm password */}
         <div className="loginInputContiner">
           <div
-            className="loginInputName loginInputNameSmall"
-            style={pswdConfirmRegistIndiStyle}
+            className={
+              passwordConfirmInform
+                ? passwordConfirmInform === "success"
+                  ? "loginInputSuccess"
+                  : "loginInputInform"
+                : "loginInputName loginInputNameSmall"
+            }
           >
             {registConfirmPswd}
           </div>

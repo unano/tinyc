@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import "./chats.scss";
-import "./common.scss"
-import Settings from "../imgs/settings.png";
+import "./common.scss";
 import { useNavigate } from "react-router-dom";
 import {
   sendMsgAPI,
@@ -32,32 +31,30 @@ const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {
-  const [chatSwitch, setChatSwitch] = useState();
-  const [chatBtnSwitch, setChatBtnSwitch] = useState();
-  const [msg, setMsg] = useState("");
-  const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
-  const [currentChat, setCurrentChat] = useState({});
   const scrollRefOut = useRef();
   const scrollRef = useRef();
   const inputRef = useRef();
-  const [chats, setChats] = useState([]);
-  const [shownChats, setShownChats] = useState([]);
+  const [chatSwitch, setChatSwitch] = useState(); //切换聊天页面的左右
+  const [chatBtnSwitch, setChatBtnSwitch] = useState(); //聊天页面切换时按钮同时切换
+  const [msg, setMsg] = useState(""); //用户输入框输入的内容
+  const [messages, setMessages] = useState([]); //聊天界面的所有聊天内容
+  const [currentChat, setCurrentChat] = useState({}); //当前聊天
+  const [chats, setChats] = useState([]); //用户加入的所有聊天
+  const [shownChats, setShownChats] = useState([]); //显示在界面的聊天
   const [socketConnected, setScoketConnected] = useState(false);
-  const [typing, setTyping] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [notification, setNotification] = useState([]);
-  const [showAddFriends, setShowAddFriends] = useState(false);
+  const [typing, setTyping] = useState(false); //监测自己是否在打字，用于提示socket
+  const [isTyping, setIsTyping] = useState(false); //监测聊天对方是否在打字
+  const [notification, setNotification] = useState([]); //自己在和其他人聊天时用于提示其他聊天的新消息
+  const [showAddFriends, setShowAddFriends] = useState(false); //群管理员用于添加新用户
 
-  const [currentChatUsername, setCurrentChatUsername] = useState();
-  const [currentChatUserAvatar, setCurrentChatUserAvatar] = useState();
-  const [refresh, setRefresh] = useState(false);
-  const [noChat, setNoChat] = useState(false);
+  const [currentChatUsername, setCurrentChatUsername] = useState(); //当前群名/当前聊天对象名字
+  const [currentChatUserAvatar, setCurrentChatUserAvatar] = useState(); //当前群头像/当前聊天对象头像
+  const [refresh, setRefresh] = useState(false); //用于刷新更新内容
+  const [noChat, setNoChat] = useState(false);  //当前页面是否显示聊天
 
-  const [left, setLeft] = useState(false);
-  const stretchStyle = { right: "-1%" };
-  const inStyle = { right: "-16.2%" };
-  const [stretchBar, setStretchBar] = useState(false);
+  const [left, setLeft] = useState(false);  //当前在聊天页面左侧还是右侧
+  const [stretchBar, setStretchBar] = useState(false);  // 是否展开聊天界面右边的用户栏
 
   const { currentUser } = useContext(AuthContext);
 
@@ -65,10 +62,12 @@ function Chat() {
     await setOfflineAPI();
   });
 
+
+  //socket 初始化及检测聊天对象是否在输入
   useEffect(() => {
     socket = io(ENDPOINT);
     if (currentUser._id) {
-      socket.emit("setup", currentUser);
+      socket.emit("setup", currentUser._id);
       socket.on("connected", () => {
         setOnlineAPI();
         setRefresh(!refresh);
@@ -148,7 +147,7 @@ function Chat() {
     setCurrentChatUserAvatar(currentChatAvatar);
     const response = await getMsgsAPI(index._id);
     setMessages(response.data);
-    socket.emit("join chat", index);
+    socket.emit("join chat", index._id);
     selectedChatCompare = index;
 
     setChatSwitch({ left: "-100%" });
@@ -198,7 +197,7 @@ function Chat() {
 
   const sendChat = async () => {
     if (msg.length > 0) {
-      const { data } = await sendMsgAPI( msg, currentChat._id);
+      const { data } = await sendMsgAPI(msg, currentChat._id);
       socket.emit("stop typing", currentChat._id);
       socket.emit("new message", data);
       // const msgs = [...messages];
@@ -233,6 +232,7 @@ function Chat() {
   const navigateToUser = () => {
     navigate("/user");
   };
+  console.log(isTyping)
   return (
     <div className="chatContainer">
       <img src={Logo} alt="logo" className="logo"></img>
@@ -279,7 +279,7 @@ function Chat() {
                         className="stretchBtn"
                         onClick={() => setStretchBar(!stretchBar)}
                       >
-                        {stretchBar?<BiRightArrow/>:<BiLeftArrow />}
+                        {stretchBar ? <BiRightArrow /> : <BiLeftArrow />}
                       </div>
                       {currentChat.users &&
                         currentChat.users.map((user) => {
@@ -341,34 +341,38 @@ function Chat() {
                 <div className="chatbox" ref={scrollRefOut}>
                   <Messages messages={messages} scrollRef={scrollRef} />
                 </div>
-                {isTyping ? <div>The other side is typing...</div> : <></>}
                 {showEmojiPicker && (
                   <div className="emojiPickerContainer">
                     <Picker
                       onEmojiClick={handleEmojiClick}
                       pickerStyle={{
                         boxShasow: "none",
-                        border: "1px solid black",
+                        border: "1px solid silver",
                         animation: "showEmojis 0.3s linear",
                       }}
                     />
                   </div>
                 )}
-                <div className="chatInputContiner">
-                  <BsEmojiHeartEyes
-                    className="openEmoji"
-                    onClick={handleEmojiPickerhideShow}
-                  />
-                  <textarea
-                    rows="1"
-                    ref={inputRef}
-                    className="chatInput"
-                    onChange={handleType}
-                    value={msg}
-                  ></textarea>
-                </div>
-                <div className="chatSubmitContiner" onClick={sendChat}>
-                  <GrSend className="sendIcon" />
+                <div className="chatInputSubmitContainer">
+                  {isTyping && (
+                    <div className="isTyping">The other side is typing...</div>
+                  )}
+                  <div className="chatInputContiner">
+                    <BsEmojiHeartEyes
+                      className="openEmoji"
+                      onClick={handleEmojiPickerhideShow}
+                    />
+                    <textarea
+                      rows="1"
+                      ref={inputRef}
+                      className="chatInput"
+                      onChange={handleType}
+                      value={msg}
+                    ></textarea>
+                  </div>
+                  <div className="chatSubmitContiner" onClick={sendChat}>
+                    <GrSend className="sendIcon" />
+                  </div>
                 </div>
               </div>
             </div>

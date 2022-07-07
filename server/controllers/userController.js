@@ -81,22 +81,33 @@ module.exports.login = async (req, res, next) => {
 module.exports.register = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const usernameCheck = await User.findOne({ username });
-    if (usernameCheck)
+    const reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{8,16}$/;
+    const strongPassword = reg.test(password);
+    if(!strongPassword){
       return res.json({
-        msg: "Username already used",
+        msg: "At least 8-16 characters,1 upper, 1 lower, 1 number",
         status: false,
-        err: "username"
+        err: "password",
       });
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      username,
-      password: hashedPassword,
-      avatarImage: "default.png",
-      intro: ""
-    });
-    delete user.password;
-    return res.status(200).json({ status: true, user });
+    }
+    else{
+          const usernameCheck = await User.findOne({ username });
+          if (usernameCheck)
+            return res.json({
+              msg: "Username already used",
+              status: false,
+              err: "username",
+            });
+          const hashedPassword = await bcrypt.hash(password, 10);
+          const user = await User.create({
+            username,
+            password: hashedPassword,
+            avatarImage: "default.png",
+            intro: "",
+          });
+          delete user.password;
+          return res.status(200).json({ status: true, user });
+    }
   } catch (error) {
     next(error);
   }
@@ -337,12 +348,15 @@ module.exports.acceptFriend = async(req, res, next) => {
 module.exports.denyFriend = async (req, res, next) => {
   try {
     const { receiver } = req.body;
+    console.log(receiver)
     const { _id } = req.user;
+    console.log(_id);
     const sender = _id;
     const docA = await Friend.findOneAndRemove({
       requester: sender,
       recipient: receiver,
     });
+    console.log(docA)
     const docB = await Friend.findOneAndRemove({
       recipient: sender,
       requester: receiver,

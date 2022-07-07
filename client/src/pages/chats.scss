@@ -263,98 +263,111 @@
                     display: none;
                 }
             }
-            .chatInputContiner{
-                width:80%;
-                border:1px solid silver;
-                border-radius: 28px;
-                padding:2px;
-                transition: all 0.5s;
-                overflow: hidden;
-                white-space: nowrap;
-                position: absolute;
-                display: inline-block;
-                margin-right: 20px;
-                bottom: 20px;
-                background-color: white;
-                .openEmoji{
-                    color: white;
-                    font-size: 43px;
-                    border-radius: 50%;
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-right: 5px;
-                    padding: 2px;
-                    background-color: white;
-                    color: $mainColor;
-                    transition: all 0.5s;
-                    &:hover{
-                    background-color: $mainColor;
-                    color: white;
-                    }
-                }
-                .chatInputName{
-                    width: 43px;
-                    height: 43px;
-                    border-radius: 100px;
-                    border:1.5px solid $mainColor;
-                    background-color: $mainColor;
-                    transition: all 0.5s;
-                    display: inline-block;
-                    vertical-align: middle;
-                    line-height: 40px;
-                    text-align: center;
-                    color: transparent;
-                    overflow: hidden;
-                    font-family: 'Raleway', sans-serif;
-                    user-select: none;
-                }
-                .chatInput{
-                    max-height: 310px;
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 85%;
-                    font-size: 32px;
-                    padding-left: 5px;
-                    font-family: 'Raleway', sans-serif;
-                    transition: all 0.5s;
-                    border: 0px;
-                    overflow: scroll;
-                    margin-bottom: -16px;
-                    &:focus{
-                        outline: none;
-                    }
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
-                }
-            }
-            .chatSubmitContiner{
-                width:58px;
-                height: 58px;
-                border:1px solid silver;
-                border-radius: 50%;
-                overflow: hidden;
-                white-space: nowrap;
-                position: absolute;
+            .chatInputSubmitContainer{
                 display: flex;
-                justify-content: center;
+                flex-direction: row;
+                position: absolute;
+                width: 96%;
+                bottom: 2%;
+                padding: 4px;
                 align-items: center;
-                bottom: 20px;
-                right: 20px;
-                background-color: white;
-                transition: all 0.5s;
-                font-size: 40px;
-                &:hover{
+                    .isTyping{
+                        position: absolute;
+                        top: -1.4rem;
+                        left: 2%;
+                    }
+                .chatInputContiner{
+                    width:80%;
+                    height: 80%;
                     border:1px solid silver;
-                    box-shadow: 0 0 3px 2px rgb(221, 221, 221) inset;
-                    font-size: 30px;
+                    border-radius: 28px;
+                    padding:2px;
+                    transition: all 0.5s;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    margin-right: 20px;
+                    bottom: 20px;
+                    background-color: white;
+                    .openEmoji{
+                        color: white;
+                        font-size: 43px;
+                        border-radius: 50%;
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin-right: 5px;
+                        padding: 2px;
+                        background-color: white;
+                        color: $mainColor;
+                        transition: all 0.5s;
+                        &:hover{
+                        background-color: $mainColor;
+                        color: white;
+                        }
+                    }
+                    .chatInputName{
+                        width: 43px;
+                        height: 43px;
+                        border-radius: 100px;
+                        border:1.5px solid $mainColor;
+                        background-color: $mainColor;
+                        transition: all 0.5s;
+                        display: inline-block;
+                        vertical-align: middle;
+                        line-height: 40px;
+                        text-align: center;
+                        color: transparent;
+                        overflow: hidden;
+                        font-family: 'Raleway', sans-serif;
+                        user-select: none;
+                    }
+                    .chatInput{
+                        max-height: 310px;
+                        display: inline-block;
+                        vertical-align: middle;
+                        width: 85%;
+                        font-size: 32px;
+                        padding-left: 5px;
+                        font-family: 'Raleway', sans-serif;
+                        transition: all 0.5s;
+                        border: 0px;
+                        overflow: scroll;
+                        margin-bottom: -16px;
+                        &:focus{
+                            outline: none;
+                        }
+                        &::-webkit-scrollbar {
+                            display: none;
+                        }
+                    }
                 }
-                &:hover>.chatSend{
-                    font-size: 30px;
+                .chatSubmitContiner{
+                    width:58px;
+                    height: 58px;
+                    border:1px solid silver;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    bottom: 20px;
+                    right: 20px;
+                    background-color: white;
+                    transition: all 0.5s;
+                    font-size: 40px;
+                    &:hover{
+                        border:1px solid silver;
+                        box-shadow: 0 0 3px 2px rgb(221, 221, 221) inset;
+                        font-size: 30px;
+                    }
+                    &:hover>.chatSend{
+                        font-size: 30px;
+                    }
+                    svg path {
+                        stroke: $mainColor;
+                    }
                 }
-                svg path {
-                    stroke: $mainColor;
-                }
+
             }
         }
         .findFriends{

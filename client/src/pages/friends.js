@@ -69,6 +69,12 @@ const FriensArea = () => {
     setHasSearchedUser(true);
   };
 
+  const handleInput= (e) =>{
+    const input = e.target.value;
+    setInput(e.target.value);
+    if (!input) setNoUser(false);
+  }
+
   return (
     <>
       <div className="chatContainer">
@@ -87,7 +93,7 @@ const FriensArea = () => {
                   <BiSearch className="searchIcon" />
                   <input
                     className="searchInput"
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={handleInput}
                   ></input>
                 </div>
                 <div className="loadingContainer">
