@@ -11,13 +11,16 @@ import { useNavigate } from "react-router-dom";
 import { exitGroupAPI } from "../../../api/api";
 import { AuthContext } from "../../../contexts/authContext";
 const ChatInfo = ({ chat, refresh, setRefresh }) => {
+  const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
   const exit = async () => {
     await exitGroupAPI(chat._id);
     setShowDelete(false);
     setRefresh(!refresh);
   };
-
+  const navigates = () => {
+    navigate(`/chat/${chat._id}`);
+  };
   return (
     <div className="container" key={chat._id}>
       {showDelete && (
@@ -43,8 +46,11 @@ const ChatInfo = ({ chat, refresh, setRefresh }) => {
         }
         alt="logo"
         className="icon"
+        onClick={navigates}
       ></img>
-      <div className="chatName">{chat.chatName}</div>
+      <div className="chatName" onClick={navigates}>
+        {chat.chatName}
+      </div>
     </div>
   );
 };

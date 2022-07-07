@@ -8,12 +8,9 @@ import { AiOutlineSearch, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
 import "./newGroup.scss";
 import { createGroupChatsAPI } from "../api/api";
-import Avatar from 'react-avatar-edit';
-import { HiScale } from "react-icons/hi";
 import AvatarEditor from "../components/avatarEditor";
 import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
-import {BsCaretDown} from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import Logo from "../imgs/tinyc.png";
 import "./common.scss";
@@ -22,7 +19,6 @@ const NewGroup = () => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [BGpreview, setBGPreview] = useState(null);
   const [shownFriends, setShownFriends] = useState([]);
   const [friends, setFriends] = useState([]);
   const [chosenUsers, setChosenUsers] = useState([]);
@@ -34,10 +30,10 @@ const NewGroup = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const getFriendsFunc = async () => {
-        let friendList = await getFriendsAPI();
-        let { friends } = friendList.data;
-        setFriends(friends);
-        setShownFriends(friends);
+      let friendList = await getFriendsAPI();
+      let { friends } = friendList.data;
+      setFriends(friends);
+      setShownFriends(friends);
     };
     getFriendsFunc();
   }, [currentUser]);
@@ -62,15 +58,15 @@ const NewGroup = () => {
 
   const uploadImage = (e) => {
     const file = e.target.files[0];
-      if (file) {
-        setImage(file);
-        setShowPreview(false);
-        setPhotoURL(URL.createObjectURL(file));
-        setShowBGClipper(true);
+    if (file) {
+      setImage(file);
+      setShowPreview(false);
+      setPhotoURL(URL.createObjectURL(file));
+      setShowBGClipper(true);
     }
-  }
+  };
 
-   //查下选择和输出的数组是否一致
+  //查下选择和输出的数组是否一致
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
       chosenUsers.splice(chosenUsers.indexOf(id), 1);
@@ -82,17 +78,15 @@ const NewGroup = () => {
       setChosenUsers(choose);
     }
   };
-  const dealImage = async (image)=>{
-    if(image) {
+  const dealImage = async (image) => {
+    if (image) {
       let result = await blobToBase64(image);
       return result;
-    }
-    else{
+    } else {
       let result = await null;
       return result;
     }
-  }
-  console.log(chosenUsers)
+  };
 
   const check = async () => {
     if (GPName === "" || chosenUsers.length < 2 || !preview) {
@@ -109,21 +103,27 @@ const NewGroup = () => {
       // formData.append("chatName", GPName);
       // formData.append("image", preview);
       // formData.append("applyerId", currentUser._id);
-      const res = await createGroupChatsAPI(GPName, chosenUsers, preview, background);
-      if(res) navigate("/home");
+      const res = await createGroupChatsAPI(
+        GPName,
+        chosenUsers,
+        preview,
+        background
+      );
+      if (res) navigate("/home");
     }
   };
 
   const [gpbgStyle, setGpbgStyle] = useState({});
-  const clearBG = () =>{
+  const clearBG = () => {
     setShowPreview(false);
     setImage(null);
     setPhotoURL(null);
-  }
-  const expandGPBG = () =>{
-    if (gpbgStyle.bottom !== "-10px") setGpbgStyle({ bottom: "-10px", width: "76%" });
-    else setGpbgStyle({ bottom: "-40%", width: "42%"});
-  }
+  };
+  const expandGPBG = () => {
+    if (gpbgStyle.bottom !== "-10px")
+      setGpbgStyle({ bottom: "-10px", width: "76%" });
+    else setGpbgStyle({ bottom: "-40%", width: "42%" });
+  };
 
   return (
     <>

@@ -16,7 +16,7 @@ import {
 } from "react-router-dom";
 import AuthProvider from "./contexts/authContext";
 import SettingProvider from "./contexts/settingContext";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+
 import "./App.css";
 function App() {
   const location = useLocation();

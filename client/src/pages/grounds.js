@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import {
   getAllGroupChatAPI,
-  applyGroupChatJoinAPI,
   diceChats20,
   diceChats6,
   searchGroupChatsAPI,
@@ -17,7 +16,6 @@ import {
   GiPerspectiveDiceSixFacesSix,
 } from "react-icons/gi";
 import GroundChat from "../components/groundChat";
-import { GrSettingsOption } from "react-icons/gr";
 import Logo from "../imgs/tinyc.png";
 const NewGroup = () => {
   const [chats, setChats] = useState([]);

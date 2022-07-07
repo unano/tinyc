@@ -1,7 +1,5 @@
 import "./user.scss";
-import Back from "../imgs/back2.png";
-import Settings from "../imgs/settings.png";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
 import { useContext, useState } from "react";
 import UserNavBar from "../components/userNavBar";
@@ -63,11 +61,6 @@ function Personal() {
   //     };
   //     fetchRequest();
   //   }, [currentUser]);
-  const navigate = useNavigate();
-  const navigates = () => {
-    navigate("/home");
-  };
-
   const submitAvatar = async () => {
     const previousImage = currentUser.avatarImage;
     const updatedUser = await uploadAvatarAPI(preview);

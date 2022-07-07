@@ -1,8 +1,8 @@
 import {createContext,  useEffect, useState, } from 'react';
 import { useNavigate } from "react-router-dom";
-import { setOfflineAPI, refreshTokenAPI } from "../api/api";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { setOfflineAPI } from "../api/api";   //refreshTokenAPI
+// import axios from "axios";
+// import jwt_decode from "jwt-decode";
 export const AuthContext = createContext(null);
 
 const AuthContextProvider = (props) => {
@@ -85,12 +85,9 @@ const AuthContextProvider = (props) => {
 // );
 
   const resetUserData = (data) => {
-    console.log(data)
     let prevUserData = JSON.parse(localStorage.getItem("token"));
-    console.log(prevUserData)
     let newData = { ...prevUserData, ...data };
     setCurrentUser(newData);
-    console.log(newData);
     localStorage.setItem("token", JSON.stringify(newData));
   };
 

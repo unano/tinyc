@@ -7,14 +7,11 @@ import {
 } from "react-icons/io5";
 import { AuthContext } from "../../contexts/authContext";
 import { useParams } from "react-router-dom";
-import { StepContent } from "@material-ui/core";
 import {
   dealGroupChatApplyAPI,
   refuseChatApplyAPI,
   renameGroupAPI,
 } from "../../api/api";
-import { BsUpload, BsChevronDoubleRight } from "react-icons/bs";
-import AvatarEditor from "../../components/avatarEditor";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import "./application.scss";
 const Application = () => {
@@ -34,12 +31,10 @@ const Application = () => {
   }, [currentUser, refresh]);
   const accept = async (userId) => {
     let result = await dealGroupChatApplyAPI(userId, chat._id);
-    console.log(result);
     setRefresh(!refresh);
   };
   const refuse = async (userId) => {
     let result = await refuseChatApplyAPI(userId, chat._id);
-    console.log(result);
     setRefresh(!refresh);
   };
 

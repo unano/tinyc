@@ -1,7 +1,6 @@
 import "./chats.scss";
 import FriendList from "../components/friendList";
 import { useState, useEffect, useContext } from "react";
-import testIcon from "../imgs/testIcon.jpg";
 import { BiSearch } from "react-icons/bi";
 import { getFriendsAPI, searchUserAPI, applyFriendsAPI } from "../api/api";
 import { AuthContext } from "../contexts/authContext";
@@ -62,10 +61,7 @@ const FriensArea = () => {
   const searchInputUser = async () => {
     setApplyResult("");
     let user = await searchUserAPI(searchInput);
-    console.log(user)
     if (user?.data.user) {
-      console.log("dd")
-      console.log(user.data.user)
       if(user.data.user._id!==currentUser._id){
         setSearchedUser(user.data.user);
       }

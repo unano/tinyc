@@ -28,7 +28,6 @@ const Demo = ({ classes, img }) => {
         dogImg,
         croppedAreaPixels,
       )
-      console.log('donee', { croppedImage })
       setCroppedImage(croppedImage)
     } catch (e) {
       console.error(e)

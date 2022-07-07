@@ -5,13 +5,10 @@ import { useContext } from "react";
 const NewMsg = ({ newMsg }) => {
   const { currentUser } = useContext(AuthContext);
   const { inform } = useContext(SettingContext);
-  const m = newMsg;
-  console.log(newMsg);
   const getUser = () => {
     return newMsg.chat.users.filter((user) => user._id !== currentUser.id)[0]
       .avatarImage;
   };
-  console.log(m);
   return (
     <>{inform && <div className="informOutside">
       <div className="chatLeftIcon informAnime">

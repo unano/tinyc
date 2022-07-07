@@ -8,8 +8,6 @@ import {
 import { AuthContext } from "../../contexts/authContext";
 
 const Request = ({ request, refresh, setRefresh }) => {
-  const { currentUser } = useContext(AuthContext);
-  console.log(request);
   const accept = async () => {
     await acceptFriendsAPI(request._id);
     setRefresh(!refresh);

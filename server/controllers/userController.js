@@ -106,7 +106,6 @@ module.exports.register = async (req, res, next) => {
 module.exports.getFriends = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    console.log(req.user)
     const test = await User.aggregate([
       {
         $lookup: {

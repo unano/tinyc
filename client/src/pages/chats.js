@@ -20,7 +20,7 @@ import { BiSearch } from "react-icons/bi";
 import { GrSend } from "react-icons/gr";
 import { IoRemoveCircleSharp, IoAddOutline } from "react-icons/io5";
 import { BsEmojiHeartEyes } from "react-icons/bs";
-import { BiLeftArrow } from "react-icons/bi";
+import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import Picker from "emoji-picker-react";
 import NavBar from "../components/navBar";
 import AddChatFriend from "../components/addChatFriend";
@@ -54,10 +54,10 @@ function Chat() {
   const [refresh, setRefresh] = useState(false);
   const [noChat, setNoChat] = useState(false);
 
-  const [rightBarStyle, setRightBarStyle] = useState({});
   const [left, setLeft] = useState(false);
   const stretchStyle = { right: "-1%" };
   const inStyle = { right: "-16.2%" };
+  const [stretchBar, setStretchBar] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -159,7 +159,7 @@ function Chat() {
   };
   const switchsBack = () => {
     setLeft(false);
-    setRightBarStyle(inStyle);
+    setStretchBar(false);
     setRefresh(!refresh);
     setShowAddFriends(false);
     setChatSwitch({ left: "0px" });
@@ -219,12 +219,6 @@ function Chat() {
     setMsg(message);
   };
 
-  const setStretch = () => {
-    if (rightBarStyle.right !== stretchStyle.right)
-      setRightBarStyle(stretchStyle);
-    else setRightBarStyle(inStyle);
-  };
-
   const removeUser = async (user) => {
     let result = await removeGroupUserAPI(currentChat._id, user._id);
     if (result) {
@@ -275,10 +269,17 @@ function Chat() {
               </div>
               <div className="chatSwitchRight">
                 {currentChat.isGroupChat && (
-                  <div className="rightBar" style={rightBarStyle}>
+                  <div
+                    className={
+                      stretchBar ? "rightBar rightBarExpand" : "rightBar"
+                    }
+                  >
                     <div className="rightBarInside">
-                      <div className="stretchBtn" onClick={setStretch}>
-                        <BiLeftArrow />
+                      <div
+                        className="stretchBtn"
+                        onClick={() => setStretchBar(!stretchBar)}
+                      >
+                        {stretchBar?<BiRightArrow/>:<BiLeftArrow />}
                       </div>
                       {currentChat.users &&
                         currentChat.users.map((user) => {

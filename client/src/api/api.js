@@ -57,9 +57,7 @@ const searchGroupRoute = `${chatRoot}/searchGroup/:keyword`;
 // add header
 axios.interceptors.request.use(
   (config) => {
-    console.log("data");
     const data = JSON.parse(localStorage.getItem("token"));
-    console.log(data);
     if (data) {
       config.headers["authorization"] = `Bearer ${
         JSON.parse(localStorage.getItem("token")).accessToken

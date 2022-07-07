@@ -200,26 +200,43 @@ module.exports.addToGroup = async (req, res) => {
 //   成功时返回： 更新后的目标群组对象   *有管理员验证*
 module.exports.removeFromGroup = async (req, res) => {
   const { chatId, userId } = req.body;
-  console.log(req.body)
   const { _id } = req.user;
+  //判断用户是否为该群管理员，否则无权限进行操作
   if (await isAdmin(_id, chatId)) {
-    const removed = await Chat.findByIdAndUpdate(
-      chatId,
-      {
-        $pull: { users: userId },
-      },
-      {
-        new: true,
-      }
-    )
-      .populate("users", "-password -friends")
-      .populate("groupAdmin", "-password -friends");
-
-    if (!removed) {
-      res.status(404);
-      throw new Error("Chat Not Found");
+    //判断被删除用户是否为该群管理员，否则无法进行删除
+    if (await isAdmin(userId, chatId)) {
+      res.status(401).json("Group admin cannot be deleted");
     } else {
-      res.json(removed);
+          const chat = await Chat.findOne({
+            $and: [
+              { _id: chatId },
+              { "users.3": { $exists: true } },
+              { isGroupChat: true },
+            ],
+          });
+          //判断该群人数是否大于等于4人，否则无法进行删除（3人为组建群的最小人数，故至少4人才能进行删除操作）
+      if (chat) {
+        const removed = await Chat.findByIdAndUpdate(
+          chatId,
+          {
+            $pull: { users: userId },
+          },
+          {
+            new: true,
+          }
+        )
+          .populate("users", "-password -friends")
+          .populate("groupAdmin", "-password -friends");
+
+        if (!removed) {
+          res.status(404);
+          throw new Error("Chat Not Found");
+        } else {
+          res.json(removed);
+        }
+      } else {
+        res.status(401).json("Group member can't be less than 3");
+      }
     }
   } else {
     res.status(401).json("No permission in operating with current credit");
@@ -458,8 +475,6 @@ module.exports.deleteGroup = async (req, res, next) => {
 module.exports.exitFromGroup = async (req, res, next) => {
   const { group_id } = req.body;
   const { _id } = req.user;
-  console.log(_id)
-  console.log(group_id)
   const user_id = _id;
   try {
     const chat = await Chat.findByIdAndUpdate(
