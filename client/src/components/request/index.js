@@ -11,11 +11,11 @@ const Request = ({ request, refresh, setRefresh }) => {
   const { currentUser } = useContext(AuthContext);
   console.log(request);
   const accept = async () => {
-    await acceptFriendsAPI(currentUser._id, request._id);
+    await acceptFriendsAPI(request._id);
     setRefresh(!refresh);
   };
   const refuse = async () => {
-    await denyFriendsAPI(currentUser._id, request._id);
+    await denyFriendsAPI(request._id);
     setRefresh(!refresh);
   };
   return (

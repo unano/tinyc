@@ -24,25 +24,23 @@ const FriensArea = () => {
 
   useEffect(() => {
     const getFriendsFunc = async () => {
-      if (currentUser._id) {
-        let friendList = await getFriendsAPI(currentUser._id);
+        let friendList = await getFriendsAPI();
         let { friends } = friendList.data;
         if (friends.length === 0) setNoFriend(true);
         else setNoFriend(false);
         setFriends(friends);
         setShownFriends(friends);
-      }
     };
     getFriendsFunc();
   }, [currentUser, refresh]);
 
   useEffect(() => {
-    setSearchedUser({});
+    setSearchedUser();
     setHasSearchedUser(false);
   }, [noUser]);
 
   const applyFriend = async () => {
-    let apply = await applyFriendsAPI(currentUser._id, searchedUser._id);
+    let apply = await applyFriendsAPI(searchedUser._id);
     let msg = apply.data.msg;
     if (msg) setApplyResult(msg);
   };
@@ -64,7 +62,9 @@ const FriensArea = () => {
   const searchInputUser = async () => {
     setApplyResult("");
     let user = await searchUserAPI(searchInput);
-    if (user) {
+    console.log(user)
+    if (user?.data.user) {
+      console.log("dd")
       console.log(user.data.user)
       if(user.data.user._id!==currentUser._id){
         setSearchedUser(user.data.user);

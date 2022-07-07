@@ -1,4 +1,5 @@
 const {
+  refreshToken,
   login,
   register,
   friendRequest,
@@ -18,6 +19,7 @@ const {
 } = require("../controllers/userController");
 
 const router = require("express").Router();
+const { verify } = require("../authenticate");
 // const multer = require("multer");
 // const storage = multer.diskStorage({
 //     destination:(req, file, callback) =>{
@@ -28,22 +30,22 @@ const router = require("express").Router();
 //     }
 // });
 // const upload = multer({ storage: storage });
-
+router.post("/refreshToken", refreshToken);
 router.post("/login", login);
 router.post("/register", register);
-router.post("/applyFriend", friendRequest);
-router.post("/acceptFriend", acceptFriend);
-router.post("/denyFriend", denyFriend);
-router.post("/searchUser", searchUser);
-router.post("/getFriends", getFriends);
-router.post("/getFriendsReq", getFriendsRequest);
-router.post("/getSendedReq", getSendedRequest);
+router.get("/getFriends", verify, getFriends);
+router.get("/getFriendsReq", verify, getFriendsRequest);
+router.get("/getSendedReq", verify, getSendedRequest);
+router.get("/searchUser/:username", searchUser);
+router.post("/applyFriend", verify, friendRequest);
+router.post("/acceptFriend", verify, acceptFriend);
+router.post("/denyFriend", verify, denyFriend);
 // router.post("/uploadAvatar", upload.single("image"), uploadAvatar);
-router.post("/uploadAvatar", uploadAvatar);
-router.post("/deleteAvatar", deleteAvatar);
-router.put("/changeUsername", changeUsername);
-router.put("/changePassword", changePassword);
-router.put("/changeIntro", changeIntro);
-router.put("/setOnline", setIsOnline);
-router.put("/setOffline", setIsOffline);
+router.post("/uploadAvatar", verify, uploadAvatar);
+router.delete("/deleteAvatar", deleteAvatar);
+router.put("/changeUsername", verify, changeUsername);
+router.put("/changePassword", verify, changePassword);
+router.put("/changeIntro", verify, changeIntro);
+router.put("/setOnline", verify, setIsOnline);
+router.put("/setOffline", verify, setIsOffline);
 module.exports = router;

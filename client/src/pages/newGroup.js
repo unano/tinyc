@@ -34,12 +34,10 @@ const NewGroup = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const getFriendsFunc = async () => {
-      if (currentUser._id) {
-        let friendList = await getFriendsAPI(currentUser._id);
+        let friendList = await getFriendsAPI();
         let { friends } = friendList.data;
         setFriends(friends);
         setShownFriends(friends);
-      }
     };
     getFriendsFunc();
   }, [currentUser]);
@@ -111,7 +109,7 @@ const NewGroup = () => {
       // formData.append("chatName", GPName);
       // formData.append("image", preview);
       // formData.append("applyerId", currentUser._id);
-      const res = await createGroupChatsAPI(GPName, chosenUsers, currentUser._id, preview, background);
+      const res = await createGroupChatsAPI(GPName, chosenUsers, preview, background);
       if(res) navigate("/home");
     }
   };

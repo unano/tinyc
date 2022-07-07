@@ -3,7 +3,9 @@ const Users = require("../models/userModel");
 const Chat = require("../models/chatModel");
 module.exports.getMessages = async (req, res, next) => {
   try {
-    const { from, to } = req.body;
+    const { to } = req.body;
+    const { _id } = req.user;
+    const from = _id;
 
     const messages = await Messages.find({
       users: {
@@ -25,7 +27,9 @@ module.exports.getMessages = async (req, res, next) => {
 
 module.exports.addMessage = async (req, res, next) => {
   try {
-    const { from, to, message } = req.body;
+    const { to, message } = req.body;
+    const { _id } = req.user;
+    const from = _id;
     const data = await Messages.create({
       message: { text: message },
       users: [from, to],
@@ -41,7 +45,7 @@ module.exports.addMessage = async (req, res, next) => {
 
 module.exports.allMessages = async (req, res) => {
   try {
-    const messages = await Messages.find({ chat: req.body.chatId })
+    const messages = await Messages.find({ chat: req.query.chatId })
       .populate("sender", "username avatarImage")
       .populate("chat");
     res.json(messages);
@@ -52,7 +56,9 @@ module.exports.allMessages = async (req, res) => {
 };
 
 module.exports.sendMessage = async (req, res) => {
-  const { sender, content, chatId } = req.body;
+  const { content, chatId } = req.body;
+  const { _id } = req.user;
+  const sender = _id;
 
   if (!content || !chatId) {
     console.log("Invalid data passed into request");
@@ -68,18 +74,17 @@ module.exports.sendMessage = async (req, res) => {
   try {
     var message = await Messages.create(newMessage);
 
-      message = await message.populate("sender", "username avatarImage");
-      message = await message.populate("chat");
-      message = await Users.populate(message, {
-        path: "chat.users",
-        select: "username avatarImage",
-      });
+    message = await message.populate("sender", "username avatarImage");
+    message = await message.populate("chat");
+    message = await Users.populate(message, {
+      path: "chat.users",
+      select: "username avatarImage",
+    });
 
-      await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+    await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
     res.json(message);
   } catch (error) {
     res.status(400);
     throw new Error(error.message);
   }
 };
-

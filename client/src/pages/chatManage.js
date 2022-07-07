@@ -53,12 +53,12 @@ const Application = () => {
     getChat();
   }, [currentUser, refresh]);
   const accept = async (userId) => {
-    let result = await dealGroupChatApplyAPI(userId, currentUser._id, chat._id);
+    let result = await dealGroupChatApplyAPI(userId, chat._id);
     console.log(result);
     setRefresh(!refresh);
   };
   const refuse = async (userId) => {
-    let result = await refuseChatApplyAPI(userId, currentUser._id, chat._id);
+    let result = await refuseChatApplyAPI(userId, chat._id);
     console.log(result);
     setRefresh(!refresh);
   };

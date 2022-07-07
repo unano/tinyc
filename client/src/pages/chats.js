@@ -62,7 +62,7 @@ function Chat() {
   const { currentUser } = useContext(AuthContext);
 
   useBeforeunload(async () => {
-    await setOfflineAPI(currentUser._id);
+    await setOfflineAPI();
   });
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function Chat() {
     if (currentUser._id) {
       socket.emit("setup", currentUser);
       socket.on("connected", () => {
-        setOnlineAPI(currentUser._id);
+        setOnlineAPI();
         setRefresh(!refresh);
         setScoketConnected(true);
       });
@@ -104,7 +104,7 @@ function Chat() {
   useEffect(() => {
     const getChatsFunc = async () => {
       if (currentUser._id) {
-        let chatsList = await getChatsAPI(currentUser._id);
+        let chatsList = await getChatsAPI();
         let chats = chatsList.data;
         if (chats.length === 0) setNoChat(true);
         else setNoChat(false);
@@ -146,7 +146,7 @@ function Chat() {
     setCurrentChat(index);
     setCurrentChatUsername(currentChatUsername);
     setCurrentChatUserAvatar(currentChatAvatar);
-    const response = await getMsgsAPI(index);
+    const response = await getMsgsAPI(index._id);
     setMessages(response.data);
     socket.emit("join chat", index);
     selectedChatCompare = index;
@@ -198,7 +198,7 @@ function Chat() {
 
   const sendChat = async () => {
     if (msg.length > 0) {
-      const { data } = await sendMsgAPI(currentUser._id, msg, currentChat._id);
+      const { data } = await sendMsgAPI( msg, currentChat._id);
       socket.emit("stop typing", currentChat._id);
       socket.emit("new message", data);
       // const msgs = [...messages];

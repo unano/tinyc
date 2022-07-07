@@ -1,4 +1,5 @@
-import { HiOutlineUsers, HiOutlineUser } from "react-icons/hi";
+import { HiOutlineUsers } from "react-icons/hi";
+import { BiMessageSquareDetail } from "react-icons/bi";
 import {NavLink} from 'react-router-dom';
 import "./navBar.scss"
 const UserNavBar = () => {
@@ -11,14 +12,14 @@ const UserNavBar = () => {
         to="/user/users"
         replace={true}
       >
-        <HiOutlineUser />
+        <HiOutlineUsers />
       </NavLink>
       <NavLink
         className={({ isActive }) => classNameFunc(isActive, "nav1")}
         to="/user/chats"
         replace={true}
       >
-        <HiOutlineUsers />
+        <BiMessageSquareDetail />
       </NavLink>
     </div>
   );

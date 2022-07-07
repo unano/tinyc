@@ -14,7 +14,7 @@ const GroundChat = ({ chat }) => {
   };
 
     const apply = async (chatId) => {
-      const result = await applyGroupChatJoinAPI(currentUser._id, chatId);
+      const result = await applyGroupChatJoinAPI(chatId);
       if (result) {
         setIsApplying(true);
       }

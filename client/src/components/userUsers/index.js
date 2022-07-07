@@ -12,7 +12,7 @@ const UserUsers = () => {
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     const fetchRequest = async () => {
-      const requests = await getFriendsReqAPI(currentUser._id);
+      const requests = await getFriendsReqAPI();
       setRequests(requests.data.friends);
     };
     fetchRequest();
@@ -20,7 +20,7 @@ const UserUsers = () => {
 
   useEffect(() => {
     const fetchRequest = async () => {
-      const requests = await getsendedFriendRedAPI(currentUser._id);
+      const requests = await getsendedFriendRedAPI();
       setRequesting(requests.data.friends);
     };
     fetchRequest();

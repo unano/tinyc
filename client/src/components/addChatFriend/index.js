@@ -15,13 +15,11 @@ const AddChatFriend = ({
   const currentChatUsers = currentChat.users;
   useEffect(() => {
     const getFriendsFunc = async () => {
-      if (currentUser) {
-        let friendList = await getFriendsAPI(currentUser._id);
+        let friendList = await getFriendsAPI();
         let { friends } = friendList.data;
         let notInFriends = getDifference(friends, currentChatUsers);
         setFriends(notInFriends);
         setShownFriends(notInFriends);
-      }
     };
     getFriendsFunc();
   }, [currentUser, currentChat]);

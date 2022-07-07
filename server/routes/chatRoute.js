@@ -33,29 +33,33 @@ const storage = multer.diskStorage({
     callback(null, Date.now() + "-" + file.originalname);
   },
 });
+const { verify } = require("../authenticate");
+
+
 const upload = multer({ storage: storage });
-router.post("/access/", accessChat);
-router.post("/allChat/", fetchChat);
-router.post("/createGroup/", upload.single("image"), createGropuChat);
-router.post("/renameGroup/", renameGroup);
-router.post("/addUser/", addToGroup);
-router.post("/removeUser/", removeFromGroup);
-router.get("/group/all", getAllGroupChats);
-router.post("/group/apply", applyJoinGroupChat);
-router.post("/group/deal", dealJoinGroupChat);
-router.post("/group/refuse", dealRefuseGroupChat);
-router.get("/group/getApplies", fetchChatApplications);
-router.post("/group/MyJoinedChats", fetchMyJoinedChats);
-router.post("/group/MyCreatedChats", fetchMyCreatedChats);
-router.post("/getGroupChat", getGroupChat);
-router.post("/group/changeAvatar", changeGroupAvatar);
-router.post("/group/deleteAvatar",deleteGroupAvatar);
-router.post("/group/changeBackground", changeGroupBackground);
-router.post("/group/deleteBackground", deleteGroupBackground);
-router.post("/group/delete", deleteGroup);
-router.post("/exitGroup", exitFromGroup);
+router.post("/access/", accessChat);  //not used
+router.get("/allChat/", verify, fetchChat);
+// router.post("/createGroup/", upload.single("image"), createGropuChat);
+router.post("/createGroup/", verify, createGropuChat);
+router.put("/group/rename/", verify, renameGroup);
+router.post("/group/addUser/", verify, addToGroup);
+router.delete("/group/removeUser/", verify, removeFromGroup);
+router.get("/group/all", getAllGroupChats);  
+router.post("/group/apply", verify, applyJoinGroupChat);
+router.post("/group/deal", verify, dealJoinGroupChat);
+router.post("/group/refuse", verify, dealRefuseGroupChat);
+router.get("/group/getApplies", verify, fetchChatApplications);
+router.get("/group/MyJoinedChats", verify, fetchMyJoinedChats);
+router.get("/group/MyCreatedChats", verify, fetchMyCreatedChats);
+router.get("/getGroupChat/:_id", getGroupChat);
+router.put("/group/changeAvatar", verify, changeGroupAvatar);
+router.delete("/group/deleteAvatar", verify, deleteGroupAvatar);
+router.put("/group/changeBackground", verify, changeGroupBackground);
+router.delete("/group/deleteBackground", verify, deleteGroupBackground);
+router.delete("/group/delete", verify, deleteGroup);
+router.post("/group/exit", verify, exitFromGroup);
 router.get("/diceChats6", diceChats6);
 router.get("/diceChats20", diceChats20);
-router.post("/searchGroup", searchChats);
+router.get("/searchGroup/:keyword", searchChats);
 
 module.exports = router;

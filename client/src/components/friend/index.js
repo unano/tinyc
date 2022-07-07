@@ -25,7 +25,7 @@ const Friend = ({ friend, refresh, setRefresh }) => {
   };
 
   const deleteFriend = async () => {
-    await denyFriendsAPI(currentUser._id, friend._id);
+    await denyFriendsAPI(friend._id);
     setRefresh(!refresh);
   };
 

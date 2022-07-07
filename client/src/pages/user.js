@@ -33,7 +33,7 @@ function Personal() {
 
   const changeUsername = async () => {
     if (input !== "") {
-      let result = await changeUsernameAPI(currentUser._id, input);
+      let result = await changeUsernameAPI(input);
       if (result.status) resetUserData(result.data.upload);
       setShowChangeInput(false);
     }
@@ -41,7 +41,7 @@ function Personal() {
 
   const changeIntro = async () => {
     if (introInput !== "") {
-      let result = await changeIntroAPI(currentUser._id, introInput);
+      let result = await changeIntroAPI(introInput);
       if (result.status) resetUserData(result.data.upload);
       setShowChangeIntro(false);
     }
@@ -70,7 +70,7 @@ function Personal() {
 
   const submitAvatar = async () => {
     const previousImage = currentUser.avatarImage;
-    const updatedUser = await uploadAvatarAPI(currentUser._id, preview);
+    const updatedUser = await uploadAvatarAPI(preview);
     setTimeout(() => {
       resetUserData(updatedUser.data.upload);
       setPreview(null);

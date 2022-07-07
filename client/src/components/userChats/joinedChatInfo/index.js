@@ -11,10 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { exitGroupAPI } from "../../../api/api";
 import { AuthContext } from "../../../contexts/authContext";
 const ChatInfo = ({ chat, refresh, setRefresh }) => {
-  const { currentUser } = useContext(AuthContext);
   const [showDelete, setShowDelete] = useState(false);
   const exit = async () => {
-    await exitGroupAPI(chat._id, currentUser._id);
+    await exitGroupAPI(chat._id);
     setShowDelete(false);
     setRefresh(!refresh);
   };

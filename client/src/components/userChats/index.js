@@ -19,7 +19,7 @@ const UserUsers = () => {
   useEffect(() => {
     const fetchChat = async () => {
       if (currentUser._id) {
-        const createdChats = await getMyCreatedChatsAPI(currentUser._id);
+        const createdChats = await getMyCreatedChatsAPI();
         setCreatedChats(createdChats.data);
       }
     };
@@ -29,7 +29,7 @@ const UserUsers = () => {
   useEffect(() => {
     const fetchChat = async () => {
       if (currentUser._id) {
-        const joinedChats = await getMyJoinedChatsAPI(currentUser._id);
+        const joinedChats = await getMyJoinedChatsAPI();
         setJoinedChats(joinedChats.data);
       }
     };
@@ -39,15 +39,26 @@ const UserUsers = () => {
     <div className="allMyChatsContainer">
       <div className="allMyChats">
         <div className="title">Joined Chats</div>
-        {joinedChats.map((chat) => {
-          return <JoinedChatInfo chat={chat} key={chat._id} refersh={refresh}  setRefresh={setRefresh} />;
-        })}
+        <div className="myChatContainer">
+          {joinedChats.map((chat) => {
+            return (
+              <JoinedChatInfo
+                chat={chat}
+                key={chat._id}
+                refersh={refresh}
+                setRefresh={setRefresh}
+              />
+            );
+          })}
+        </div>
       </div>
       <div className="allMyChats myChats">
         <div className="title">Created Chats</div>
-        {createdChats.map((chat) => {
-          return <CreatedChatInfo chat={chat} key={chat._id} />;
-        })}
+        <div className="myChatContainer">
+          {createdChats.map((chat) => {
+            return <CreatedChatInfo chat={chat} key={chat._id} />;
+          })}
+        </div>
       </div>
     </div>
   );
