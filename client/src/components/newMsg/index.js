@@ -10,31 +10,35 @@ const NewMsg = ({ newMsg }) => {
       .avatarImage;
   };
   return (
-    <>{inform && <div className="informOutside">
-      <div className="chatLeftIcon informAnime">
-        {newMsg.chat.isGroupChat ? (
-          <img
-            src={
-              newMsg.chat.avatar
-                ? require(`../../images/${newMsg.chat.avatar}`)
-                : require(`../../images/default.png`)
-            }
-            alt="logo"
-            className="avatar"
-          ></img>
-        ) : (
-          <img
-            src={
-              getUser()
-                ? require(`../../images/${getUser()}`)
-                : require(`../../images/default.png`)
-            }
-            alt="logo"
-            className="avatar"
-          ></img>
-        )}
-      </div>
-    </div>}</>
+    <>
+      {inform && (
+        <div className="informOutside">
+          <div className="chatLeftIcon informAnime">
+            {newMsg.chat.isGroupChat ? (
+              <img
+                src={
+                  newMsg.chat.avatar
+                    ? require(`../../images/${newMsg.chat.avatar}`)
+                    : require(`../../images/default.png`)
+                }
+                alt="logo"
+                className="avatar"
+              ></img>
+            ) : (
+              <img
+                src={
+                  getUser()
+                    ? require(`../../images/${getUser()}`)
+                    : require(`../../images/default.png`)
+                }
+                alt="logo"
+                className="avatar"
+              ></img>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default NewMsg;

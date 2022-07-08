@@ -4,7 +4,7 @@ import "./chat.scss";
 import { AuthContext } from "../../contexts/authContext";
 import { SettingContext } from "../../contexts/settingContext";
 import LoadingBar from "../loadingBar";
-const Chat = ({ chat, switchs, left }) => {
+const Chat = ({ chat, switchs, right }) => {
   const { currentUser } = useContext(AuthContext);
   const { showBg } = useContext(SettingContext);
   const [avatar, setAvatar] = useState("default.png");
@@ -20,20 +20,20 @@ const Chat = ({ chat, switchs, left }) => {
     switchs(chat, currentChatUsername, currentChatAvatar);
   };
 
-  useEffect(()=>{
-    if(!left) setLoading(false);
+  useEffect(() => {
+    if (!right) setLoading(false);
     else setLoading(true);
-  },[left])
+  }, [right]);
 
-  useEffect(()=>{
-        if (chat.isGroupChat) {
-          if (chat.avatar) setAvatar(chat.avatar);
-          else setAvatar("defaultGroup.png");
-        } else {
-          if (chatUser[0].avatarImage) setAvatar(chatUser[0].avatarImage);
-          else setAvatar("default.png");
-        }
-  },[currentUser, chat, chatUser])
+  useEffect(() => {
+    if (chat.isGroupChat) {
+      if (chat.avatar) setAvatar(chat.avatar);
+      else setAvatar("defaultGroup.png");
+    } else {
+      if (chatUser[0].avatarImage) setAvatar(chatUser[0].avatarImage);
+      else setAvatar("default.png");
+    }
+  }, [currentUser, chat, chatUser]);
   return (
     <>
       <div className="friendList">
@@ -50,22 +50,34 @@ const Chat = ({ chat, switchs, left }) => {
           ></img>
         </div>
         <div className="friendNameAndWord">
-          {chat.isGroupChat && showBg && (
-            <div>
-              <img
-                src={
-                  chat.background
-                    ? require(`../../images/background/${chat.background}`)
-                    : require(`../../images/background/defaultBG.png`)
-                }
-                alt="logo"
-                className="background"
-                onClick={switchChat}
-              ></img>
-              <div className="bgCover"></div>
-              <div className="bgCover2"></div>
-            </div>
-          )}
+          {showBg &&
+            (chat.isGroupChat ? (
+              <div>
+                <img
+                  src={
+                    chat.background
+                      ? require(`../../images/background/${chat.background}`)
+                      : require(`../../images/background/defaultBG.png`)
+                  }
+                  alt="logo"
+                  className="background"
+                  onClick={switchChat}
+                ></img>
+                <div className="bgCover"></div>
+                <div className="bgCover2"></div>
+              </div>
+            ) : (
+              <div>
+                <img
+                  src={require(`../../images/background/defaultBGSingle.png`)}
+                  alt="logo"
+                  className="background"
+                  onClick={switchChat}
+                ></img>
+                <div className="bgCover"></div>
+                <div className="bgCover2"></div>
+              </div>
+            ))}
           <div className="friendName" onClick={switchChat}>
             {chat.isGroupChat ? chat.chatName : currentChatUsername}
           </div>

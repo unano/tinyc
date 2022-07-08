@@ -1,15 +1,12 @@
 import "../userChats.scss";
-import { useContext, useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  IoPencilOutline,
   IoCloseOutline,
   IoCheckmarkOutline,
 } from "react-icons/io5";
 import { IoMdExit } from "react-icons/io";
-import { StepContent } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { exitGroupAPI } from "../../../api/api";
-import { AuthContext } from "../../../contexts/authContext";
 const ChatInfo = ({ chat, refresh, setRefresh }) => {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);

@@ -1,11 +1,9 @@
 import './request.scss'
-import { useContext } from "react";
 import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
 import {
   acceptFriendsAPI,
   denyFriendsAPI
 } from "../../api/api";
-import { AuthContext } from "../../contexts/authContext";
 
 const Request = ({ request, refresh, setRefresh }) => {
   const accept = async () => {

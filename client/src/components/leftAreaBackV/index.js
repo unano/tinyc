@@ -1,7 +1,7 @@
 import "./leftArea.scss";
-import Settings from "../../imgs/settings.png";
 import { useNavigate } from "react-router-dom";
 import Back from "../../imgs/back2.png";
+import LeftAreaSetting from "../leftAreaSetting";
 
 const LeftIcons = () => {
   const navigate = useNavigate();
@@ -15,11 +15,7 @@ const LeftIcons = () => {
           <img src={Back} alt="logo" className="back" onClick={navigates}></img>
         </div>
       </div>
-      <div className="chatLeftIcon">
-        <div className="backOut borderBackout">
-          <img src={Settings} alt="logo" className="back rotate"></img>
-        </div>
-      </div>
+      <LeftAreaSetting />
     </>
   );
 };

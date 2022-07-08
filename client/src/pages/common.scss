@@ -31,6 +31,7 @@ textarea:focus{
     height: 100vh;
     display: flex;
     .chatBody{
+      transform: scale(112%);
       width: 700px;
       height: 700px;
       display: flex;
@@ -46,6 +47,93 @@ textarea:focus{
         flex-direction: column;
         gap: 0.5rem;
       }
+      .chat{
+        width: 600px;
+        height: 600px;
+        border-radius: 0 50px 50px 50px;
+        border: 1px solid black;
+        box-shadow: 0px 0px 0px $mainColor;
+        transition: all 0.5s;
+        box-sizing: border-box;
+        position: relative;
+        .chatOverflow{
+            width: 100%;
+            height: 100%;
+            border-radius: 0 50px 50px 50px;
+            display: flex;
+            flex-direction: column;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        .chatSwitch{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            transition: all 1s;
+            display: flex;
+            flex-direction: row;
+        }
+        .chatSwitchRight,.chatSwitchLeft{
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            vertical-align: middle;
+            overflow: hidden;
+            position: relative;
+            border-radius: 0 50px 50px 50px;
+        }
+        .chatSwitchLeft{
+            display: flex;
+            flex-direction: row;
+            .friendLists{
+                width: 83%;
+                display:flex;
+                flex-direction: column;
+                height: 98%;
+                vertical-align: middle;
+                gap: 0.3rem;
+                border-radius: 0 0 20px 0;
+            }
+            .loadingContainer{
+                height: 10px;
+            }
+            .searchContainer{
+              border:  1px solid black;
+              border-radius: 100px;
+              width: 460px;
+              height: 44px;
+              padding: 4px;
+              padding-left: 6px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              .searchIcon{
+                  color: white;
+                  font-size: 30px;
+                  border-radius: 50%;
+                  margin-right: 5px;
+                  padding: 5px;
+                  background-color: $mainColor;
+                  flex-shrink: 0;
+              }
+              .searchInput{
+                  width: 400px;
+                  height: 42px;
+                  border-radius: 100px;
+                  border: none;
+                  font-size: 30px;
+                  font-family: 'Raleway', sans-serif;
+                  &:focus{
+                      outline: none;
+                  }
+              }
+          }
+        }
+      }
     }
 }
 
@@ -56,6 +144,51 @@ textarea:focus{
     width: 230px;
 }
 
+.lazyLoading{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 200;
+  color: rgb(165, 165, 165);
+  animation-delay: 0.1s;
+  .lazyWord{
+      font-weight: 300;
+      animation: lazyWait 0.2s linear;
+      animation-fill-mode: forwards;
+      animation-delay: 0.5s;
+      opacity: 0;
+  }
+  .dot3,.dot2,.dot1{
+    opacity: 0;
+    animation: lazyWaitDot 1s infinite linear;
+    animation-delay: 0.5s;
+  }
+  .dot2{
+    animation-delay: 0.7s;
+  }
+  .dot3{
+    animation-delay: 0.9s;
+  }
+}
+
+#inputTag{
+    display: none;
+}
+
+@keyframes lazyWaitDot {
+    0% {transform: translateY(0%);opacity: 1;}
+    50% {transform: translateY(-40%); opacity: 1;}
+    100% {transform: translateY(0%); opacity: 1;}
+}
+
+@keyframes lazyWait {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
 
 input[type="range"] {
   height: 2px;
@@ -79,4 +212,32 @@ input[type=range]::-webkit-slider-runnable-track  {
   box-shadow: none;
   border: none;
   background-color: transparent;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+ 
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(240, 251, 255);
+}
+
+.tryAgain{
+  border: 1px solid gray;
+  background-color: white;
+  font-size: 20px;
+  border-radius: 100px;
+  padding: 10px;
+}
+
+.errorPage{
+  padding: 30px;
 }

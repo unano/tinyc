@@ -1,3 +1,5 @@
+import "./chatManage.scss";
+import "./common.scss";
 import { getGroupChat } from "../api/api";
 import { useContext, useState, useEffect } from "react";
 import {
@@ -20,8 +22,6 @@ import {
 import { BsUpload } from "react-icons/bs";
 import AvatarEditor from "../components/avatarEditor";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import LeftIcons from "../components/leftArea";
-import "./chatManage.scss";
 import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
 import LeftAreaBack from "../components/leftAreaBackV";
@@ -29,13 +29,13 @@ import Logo from "../imgs/tinyc.png";
 
 const Application = () => {
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [chat, setChat] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [showChangeInput, setShowChangeInput] = useState(false);
   const [input, setInput] = useState();
-  const [deleteStyle, setDeleteStyle] = useState({});
   const [showInform, setShowInform] = useState(false);
-  const { id } = useParams();
   const [preview, setPreview] = useState(null);
   const [showClipper, setShowClipper] = useState(false);
 
@@ -43,7 +43,6 @@ const Application = () => {
   const [photoURL, setPhotoURL] = useState();
   const [image, setImage] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-  const navigate = useNavigate();
   useEffect(() => {
     const getChat = async () => {
       let chat = await getGroupChat(id);
@@ -51,30 +50,29 @@ const Application = () => {
     };
     getChat();
   }, [currentUser, refresh]);
+  //接受用户的入群申请
   const accept = async (userId) => {
-    let result = await dealGroupChatApplyAPI(userId, chat._id);
+    await dealGroupChatApplyAPI(userId, chat._id);
     setRefresh(!refresh);
   };
+  //拒绝用户的入群申请
   const refuse = async (userId) => {
-    let result = await refuseChatApplyAPI(userId, chat._id);
+    await refuseChatApplyAPI(userId, chat._id);
     setRefresh(!refresh);
   };
 
   const changeUsername = async () => {
     if (input !== "") {
-      let result = await renameGroupAPI(chat._id, input);
+      await renameGroupAPI(chat._id, input);
       setShowChangeInput(false);
       setRefresh(!refresh);
     }
   };
 
-  const expand = () => {
-    setDeleteStyle({ marginLeft: 0 });
-  };
-
+  //提交更新后的头像
   const submitAvatar = async () => {
     const previousImage = chat.avatar;
-    const updatedChat = await changeGroupAvatar(chat._id, preview);
+    await changeGroupAvatar(chat._id, preview);
     setTimeout(() => {
       setRefresh(!refresh);
       setPreview(null);
@@ -82,6 +80,7 @@ const Application = () => {
     }, 1000);
   };
 
+  //读取上传的图片以进行后续裁剪
   const uploadImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -92,6 +91,7 @@ const Application = () => {
     }
   };
 
+  // 提交更新后的背景
   const submitBg = async () => {
     const previousImage = chat.background;
     const background = await dealImage(image);
@@ -107,6 +107,7 @@ const Application = () => {
     }, 1000);
   };
 
+  //将图像从Blob转为base64
   const dealImage = async (image) => {
     if (image) {
       let result = await blobToBase64(image);
@@ -121,6 +122,7 @@ const Application = () => {
     setShowInform(true);
   };
 
+  //删除群组并跳转回上个页面
   const deleteGroup = async () => {
     await deleteGroupAPI(chat._id);
     navigate(-1);
@@ -131,6 +133,7 @@ const Application = () => {
     setShowInform(false);
   };
 
+  //检查是否为当前群的管理员
   const isAdmin = chat.groupAdmin && currentUser._id === chat.groupAdmin._id;
 
   return (
@@ -144,6 +147,7 @@ const Application = () => {
           </div>
           <div className="chat">
             {/* <Cover /> */}
+            {/* 群头像裁剪及群背景裁剪 */}
             {showClipper && (
               <AvatarEditor
                 setPreview={setPreview}
@@ -159,6 +163,7 @@ const Application = () => {
                 setShowPreview={setShowPreview}
               />
             )}
+            {/* 新群头像预览及新群背景预览 */}
             {preview && !showClipper && (
               <div className="groupAvatarPreviewContainer">
                 <div>Preview</div>
@@ -195,6 +200,7 @@ const Application = () => {
             )}
             <div className="chatSwitchLeft">
               <div className="chatManage">
+                {/* 群背景修改按钮（仅管理员） */}
                 <label htmlFor="inputTag">
                   <input
                     type="file"
@@ -209,6 +215,7 @@ const Application = () => {
                   />
                   {isAdmin && <div className="changeBg">Change background</div>}
                 </label>
+                {/* 群头像及修改群头像按钮（仅管理员） */}
                 <div className="rowFlex head">
                   <div className="avatarContainer">
                     <img
@@ -259,6 +266,7 @@ const Application = () => {
                     </div>
                   )}
                 </div>
+                {/* 群背景 */}
                 <div className="bgContainer">
                   <img
                     src={
@@ -272,6 +280,7 @@ const Application = () => {
                   <div className="bgCover"></div>
                 </div>
                 <div className="rowFlex usersInfo">
+                  {/*  群所有者/管理员 (不会对当前群管理员展示) */}
                   {!isAdmin && (
                     <div className="columnFlex part zeroGap">
                       <div className="title">Group Owner</div>
@@ -293,6 +302,7 @@ const Application = () => {
                       </div>
                     </div>
                   )}
+                  {/*  申请入群用户（只展示给管理员） */}
                   {isAdmin && (
                     <div className="columnFlex part">
                       <div className="title">Applying users</div>
@@ -331,6 +341,7 @@ const Application = () => {
                       </div>
                     </div>
                   )}
+                  {/*  当前群内群员 */}
                   <div className="columnFlex part partRight">
                     <div className="title">Current members</div>
                     <div className="users columnFlex allUsers">
@@ -353,6 +364,7 @@ const Application = () => {
                         })}
                     </div>
                   </div>
+                  {/*  删除群（只展示给管理员） */}
                   {isAdmin && (
                     <div
                       className={

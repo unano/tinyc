@@ -4,7 +4,7 @@ import Logo from "../imgs/tinyc.png";
 import Cover from "../components/cover";
 import Register from "../components/register";
 import Login from "../components/login";
-
+import "./common.scss";
 function App() {
   const [loginExpand, setLoginExpand] = useState(true);
 

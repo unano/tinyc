@@ -8,6 +8,7 @@
     border:1px solid black;
     position: relative;
     overflow: hidden;
+    z-index: 10;
     .chatLeftIn{
         position: absolute;
         width: 180px;
@@ -43,29 +44,101 @@
             margin-right: 10px;
         }
     }
-    .settingContainer{
-        .chatLeftIcon{
-            position: relative;
-            z-index: 3;
-            transition: all 0.5s;
-        }
-        position: relative;
-        .setting01{
-            width: 60px;
-            height: 60px;
-            border: 1px solid black;
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            left: 10%;
-            top: 14%;
-            transition: all 1s;
-            z-index: 1;
-        }
-    }
     .borderBackout{
         border: 1px solid rgb(202, 202, 202);
         background-color: white;
 
     }
+    .settingOption{
+        width: 60px;
+        height: 60px;
+        border: 1px solid black;
+        border-radius: 50%;
+    }
 }
+
+    .settingContainer{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .chatLeftIcon{
+            position: relative;
+            z-index: 10;
+            transition: all 0.5s;
+            background-color: white;
+        }
+        .setting{
+            width: 100px;
+            height: 100px;
+            transition: all 0.6s cubic-bezier(.58,.32,.49,.68);
+            z-index: 10;
+            position: absolute;
+            border-radius: 50%;
+            // border: 1px solid gray;
+            &:nth-child(3){
+                transform: rotate(-135deg) scale(0%);
+                z-index: 4;
+            }
+            &:nth-child(3) div{
+                transform: rotate(15deg);
+            }
+            &:nth-child(4){
+                transform: rotate(-135deg) scale(0%);
+                z-index: 3;
+            }
+            &:nth-child(4) div{
+                transform: rotate(75deg);
+            }
+            &:nth-child(5){
+                transform: rotate(-135deg) scale(0%);
+                z-index: 2;
+            }
+            &:nth-child(5) div{
+                transform: rotate(135deg);
+            }
+        }
+        .ringLine,.BgLine{
+            position: absolute;
+            transform: rotate(105deg);
+            width: 40px;
+            height: 2px;
+            background-color: rgb(0, 0, 0);
+            border: 1px solid white;
+            outline: 2px solid white;
+            transition: all 0.5s;
+        }
+        .BgLine{
+            transform: rotate(0deg);
+        }
+        .hideRingLine, .hideBgLine{
+           width: 0px;
+           visibility: hidden;
+        }
+        .expandedSetting{
+            &:nth-child(3){
+                transform: rotate(-15deg) scale(100%);
+            }
+            &:nth-child(4){
+                transform: rotate(-75deg) scale(100%);
+            }
+            &:nth-child(5){
+                transform: rotate(-135deg) scale(100%);
+            }
+        }
+        .settingChoices{
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 70px;
+            height: 70px;
+            border: 1px solid black;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+        }
+    }

@@ -1,11 +1,6 @@
-import Request from "../request";
-import { v4 as uuidv4 } from "uuid";
-import Requestings from "../requestings";
-import Requests from "../requests";
 import "./userChats.scss";
 import { AuthContext } from "../../contexts/authContext";
 import { useContext, useState, useEffect } from "react";
-import { AiOutlineExclamation } from "react-icons/ai";
 import { getMyCreatedChatsAPI, getMyJoinedChatsAPI } from "../../api/api";
 import CreatedChatInfo from "./createdChatInfo";
 import JoinedChatInfo from "./joinedChatInfo";

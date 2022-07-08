@@ -1,11 +1,4 @@
 import "../userChats.scss";
-import { useContext, useState, useEffect } from "react";
-import {
-  IoPencilOutline,
-  IoCloseOutline,
-  IoCheckmarkOutline,
-} from "react-icons/io5";
-import { StepContent } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 const ChatInfo = ({ chat }) => {
   const navigate = useNavigate();
@@ -27,7 +20,7 @@ const ChatInfo = ({ chat }) => {
       <div className="chatName">{chat.chatName}</div>
       {chat.applyingUsers && chat.applyingUsers.length > 0 && (
         <>
-          <div className="inform" onClick={navigates}>
+          <div className="inform">
             {chat.applyingUsers.length}
           </div>
         </>

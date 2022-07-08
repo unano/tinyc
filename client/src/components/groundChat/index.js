@@ -1,38 +1,36 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { useNavigate } from "react-router-dom";
-import {
-  applyGroupChatJoinAPI,
-} from "../../api/api";
+import { applyGroupChatJoinAPI } from "../../api/api";
 const GroundChat = ({ chat }) => {
   const { currentUser } = useContext(AuthContext);
-    const [isApplying, setIsApplying] = useState(false);
-      const shownLength = 4;
+  const [isApplying, setIsApplying] = useState(false);
+  const shownLength = 4;
   const navigate = useNavigate();
   const navigates = (chatId) => {
     navigate(`/chat/${chatId}`);
   };
 
-    const apply = async (chatId) => {
-      const result = await applyGroupChatJoinAPI(chatId);
-      if (result) {
-        setIsApplying(true);
-      }
-    };
-    console.log(chat)
+  const apply = async (chatId) => {
+    const result = await applyGroupChatJoinAPI(chatId);
+    if (result) {
+      setIsApplying(true);
+    }
+  };
+  console.log(chat);
   return (
     <>
       <div className="GPchat">
         <div className="GPchatIn">
-            <img
-              src={
-                chat.background
-                  ? require(`../../images/background/${chat.background}`)
-                  : require(`../../images/background/defaultBG.png`)
-              }
-              alt="logo"
-              className="backgroundPic"
-            ></img>
+          <img
+            src={
+              chat.background
+                ? require(`../../images/background/${chat.background}`)
+                : require(`../../images/background/defaultBG.png`)
+            }
+            alt="logo"
+            className="backgroundPic"
+          ></img>
           <div className="transparentCover"></div>
           <div className="gpContent">
             <div className="flex">

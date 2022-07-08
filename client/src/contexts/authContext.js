@@ -1,6 +1,6 @@
-import {createContext,  useEffect, useState, } from 'react';
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setOfflineAPI } from "../api/api";   //refreshTokenAPI
+import { setOfflineAPI } from "../api/api"; //refreshTokenAPI
 // import axios from "axios";
 // import jwt_decode from "jwt-decode";
 export const AuthContext = createContext(null);
@@ -27,70 +27,70 @@ const AuthContextProvider = (props) => {
   //   }
   // };
 
-// const axiosJWT = axios.create();
-// axios.interceptors.request.use(async (config) => {
-//   let currentDate = new Date();
-//   const data = JSON.parse(localStorage.getItem("token"));
-//   console.log(data)
-//   if (data?.accessToken) {
-//     console.log(data);
-//     const decodeToken = jwt_decode(data.accessToken);
-//     if (decodeToken.exp * 1000 < currentDate.getTime()) {
-//       const data = await refreshToken();
-//       config.headers["authorization"] = "Bearer " + data.accessToken;
-//     }
-//   }
-//   return config;
-// },(error)=>{
-//   return Promise.reject(error);
-// });
+  // const axiosJWT = axios.create();
+  // axios.interceptors.request.use(async (config) => {
+  //   let currentDate = new Date();
+  //   const data = JSON.parse(localStorage.getItem("token"));
+  //   console.log(data)
+  //   if (data?.accessToken) {
+  //     console.log(data);
+  //     const decodeToken = jwt_decode(data.accessToken);
+  //     if (decodeToken.exp * 1000 < currentDate.getTime()) {
+  //       const data = await refreshToken();
+  //       config.headers["authorization"] = "Bearer " + data.accessToken;
+  //     }
+  //   }
+  //   return config;
+  // },(error)=>{
+  //   return Promise.reject(error);
+  // });
 
-// axios.interceptors.request.use(
-//   async (config) => {
-//     const session = JSON.parse(localStorage.getItem("session"));
+  // axios.interceptors.request.use(
+  //   async (config) => {
+  //     const session = JSON.parse(localStorage.getItem("session"));
 
-//     if (session?.accessToken) {
-//       config.headers = {
-//         ...config.headers,
-//         authorization: `Bearer ${session?.accessToken}`,
-//       };
-//     }
+  //     if (session?.accessToken) {
+  //       config.headers = {
+  //         ...config.headers,
+  //         authorization: `Bearer ${session?.accessToken}`,
+  //       };
+  //     }
 
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+  //     return config;
+  //   },
+  //   (error) => Promise.reject(error)
+  // );
 
-// axios.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const config = error?.config;
+  // axios.interceptors.response.use(
+  //   (response) => response,
+  //   async (error) => {
+  //     const config = error?.config;
 
-//     if (error?.response?.status === 401 && !config?.sent) {
-//       config.sent = true;
+  //     if (error?.response?.status === 401 && !config?.sent) {
+  //       config.sent = true;
 
-//       const result = await refreshToken();
+  //       const result = await refreshToken();
 
-//       if (result?.accessToken) {
-//         config.headers = {
-//           ...config.headers,
-//           authorization: `Bearer ${result?.accessToken}`,
-//         };
-//       }
+  //       if (result?.accessToken) {
+  //         config.headers = {
+  //           ...config.headers,
+  //           authorization: `Bearer ${result?.accessToken}`,
+  //         };
+  //       }
 
-//       return axios(config);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+  //       return axios(config);
+  //     }
+  //     return Promise.reject(error);
+  //   }
+  // );
 
+  //用户更新头像，姓名时，更新存储的token信息
   const resetUserData = (data) => {
     let prevUserData = JSON.parse(localStorage.getItem("token"));
     let newData = { ...prevUserData, ...data };
     setCurrentUser(newData);
     localStorage.setItem("token", JSON.stringify(newData));
   };
-
 
   // const resetUserData =(data)=>{
   //   setCurrentUser(data);
@@ -121,7 +121,7 @@ const AuthContextProvider = (props) => {
         currentUser,
         setRreloadStorage,
         resetUserData,
-        logout
+        logout,
       }}
     >
       {props.children}

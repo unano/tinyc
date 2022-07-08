@@ -1,25 +1,21 @@
 import "./addChatFriend.scss";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { getFriendsAPI, addGroupUserAPI } from "../../api/api";
 import { BiSearch } from "react-icons/bi";
 import { IoCloseOutline, IoAddOutline } from "react-icons/io5";
-const AddChatFriend = ({
-  currentChat,
-  showGPAddFriends,
-  setCurrentChat,
-}) => {
+const AddChatFriend = ({ currentChat, showGPAddFriends, setCurrentChat }) => {
   const { currentUser } = useContext(AuthContext);
   const [shownFriends, setShownFriends] = useState([]);
   const [friends, setFriends] = useState([]);
   const currentChatUsers = currentChat.users;
   useEffect(() => {
     const getFriendsFunc = async () => {
-        let friendList = await getFriendsAPI();
-        let { friends } = friendList.data;
-        let notInFriends = getDifference(friends, currentChatUsers);
-        setFriends(notInFriends);
-        setShownFriends(notInFriends);
+      let friendList = await getFriendsAPI();
+      let { friends } = friendList.data;
+      let notInFriends = getDifference(friends, currentChatUsers);
+      setFriends(notInFriends);
+      setShownFriends(notInFriends);
     };
     getFriendsFunc();
   }, [currentUser, currentChat]);

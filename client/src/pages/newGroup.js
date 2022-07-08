@@ -20,13 +20,14 @@ const NewGroup = () => {
   const [preview, setPreview] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [shownFriends, setShownFriends] = useState([]);
-  const [friends, setFriends] = useState([]);
-  const [chosenUsers, setChosenUsers] = useState([]);
+  const [friends, setFriends] = useState([]);   
+  const [chosenUsers, setChosenUsers] = useState([]);  //选中的要添加进群的好友
   const [GPName, setGPName] = useState("");
   const [warning, SetWarning] = useState(false);
   const [showClipper, setShowClipper] = useState(false);
   const [showBGClipper, setShowBGClipper] = useState(false);
   const [photoURL, setPhotoURL] = useState();
+  const [gpbgExpand, setGpbgExpand] = useState(false);  //是否展开群组背景选项
   const navigate = useNavigate();
   useEffect(() => {
     const getFriendsFunc = async () => {
@@ -66,7 +67,8 @@ const NewGroup = () => {
     }
   };
 
-  //查下选择和输出的数组是否一致
+
+  //选择组员
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
       chosenUsers.splice(chosenUsers.indexOf(id), 1);
@@ -78,6 +80,8 @@ const NewGroup = () => {
       setChosenUsers(choose);
     }
   };
+
+  //上传图片前将其转为base64
   const dealImage = async (image) => {
     if (image) {
       let result = await blobToBase64(image);
@@ -88,6 +92,8 @@ const NewGroup = () => {
     }
   };
 
+
+  //检查各项输入是否合法，合法则创建群组并进行跳转
   const check = async () => {
     if (GPName === "" || chosenUsers.length < 2 || !preview) {
       SetWarning(true);
@@ -113,16 +119,13 @@ const NewGroup = () => {
     }
   };
 
-  const [gpbgStyle, setGpbgStyle] = useState({});
   const clearBG = () => {
     setShowPreview(false);
     setImage(null);
     setPhotoURL(null);
   };
   const expandGPBG = () => {
-    if (gpbgStyle.bottom !== "-10px")
-      setGpbgStyle({ bottom: "-10px", width: "76%" });
-    else setGpbgStyle({ bottom: "-40%", width: "42%" });
+    setGpbgExpand(!gpbgExpand);
   };
 
   return (
@@ -135,6 +138,7 @@ const NewGroup = () => {
             <LeftIcons />
           </div>
           <div className="chat">
+            {/*  头像裁剪  */}
             {showClipper && (
               <AvatarEditor
                 setPreview={setPreview}
@@ -143,6 +147,7 @@ const NewGroup = () => {
                 height={200}
               />
             )}
+            {/*  背景裁剪  */}
             {showBGClipper && (
               <BGEditor
                 setShowClipper={setShowBGClipper}
@@ -155,6 +160,7 @@ const NewGroup = () => {
             <div className="chatOverflow">
               {/* <Cover /> */}
               <div className="chatSwitchLeft">
+                {/*  错误提示  */}
                 {warning && (
                   <div className="GPwarn">
                     Please fill in all data / add enough member
@@ -187,6 +193,7 @@ const NewGroup = () => {
                   {/* <div className="GPcontent">Group Tag:</div> */}
                   <div className="GPMember">
                     <div className="GPcontent">Group Member:</div>
+                    {/*  成员（好友）搜索  */}
                     <div className="searchArea">
                       <AiOutlineSearch />
                       <input
@@ -196,6 +203,7 @@ const NewGroup = () => {
                     </div>
                   </div>
                   <div className="infrom">Choose at least 2 members</div>
+                  {/*  显示自己的所有好友  */}
                   <div className="friends">
                     {shownFriends.map((friend) => {
                       return (
@@ -222,8 +230,7 @@ const NewGroup = () => {
                     })}
                   </div>
                   <div
-                    className="groupBG"
-                    style={gpbgStyle}
+                    className={gpbgExpand ? "groupBGExpand" : "groupBG"}
                     onClick={expandGPBG}
                   >
                     <div className="gpbdHeadDecoreate"></div>
@@ -233,6 +240,7 @@ const NewGroup = () => {
                     {showPreview && (
                       <IoCloseOutline className="gpbgClear" onClick={clearBG} />
                     )}
+                    {/*  上传群背景及预览  */}
                     <label htmlFor="inputTag">
                       <input
                         type="file"

@@ -31,6 +31,8 @@ const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {
+  //该界面分左右区域，左边显示登陆用户的所有聊天，点击一个聊天自动切换至右边聊天区域，聊天区域有返回按钮返回至左边
+
   const navigate = useNavigate();
   const scrollRefOut = useRef();
   const scrollRef = useRef();
@@ -51,17 +53,17 @@ function Chat() {
   const [currentChatUsername, setCurrentChatUsername] = useState(); //当前群名/当前聊天对象名字
   const [currentChatUserAvatar, setCurrentChatUserAvatar] = useState(); //当前群头像/当前聊天对象头像
   const [refresh, setRefresh] = useState(false); //用于刷新更新内容
-  const [noChat, setNoChat] = useState(false);  //当前页面是否显示聊天
+  const [noChat, setNoChat] = useState(false); //当前页面是否显示聊天
 
-  const [left, setLeft] = useState(false);  //当前在聊天页面左侧还是右侧
-  const [stretchBar, setStretchBar] = useState(false);  // 是否展开聊天界面右边的用户栏
+  const [right, setRight] = useState(false); //当前在聊天页面左侧还是右侧
+  const [stretchBar, setStretchBar] = useState(false); // 是否展开聊天界面右边的用户栏
 
   const { currentUser } = useContext(AuthContext);
 
+  //页面被关闭时触发登出
   useBeforeunload(async () => {
     await setOfflineAPI();
   });
-
 
   //socket 初始化及检测聊天对象是否在输入
   useEffect(() => {
@@ -78,8 +80,9 @@ function Chat() {
     }
   }, [currentUser]);
 
+  //切换到右侧时滑动至消息最底部
   useEffect(() => {
-    if (!left) {
+    if (!right) {
       const scrollHeight = scrollRefOut.current.scrollHeight;
       const height = scrollRefOut.current.clientHeight;
       const maxScrollTop = scrollHeight - height;
@@ -87,13 +90,15 @@ function Chat() {
     }
   }, [messages]);
 
+  //发送聊天消息滑动至底部（smooth）
   useEffect(() => {
-    if (left)
+    if (right)
       scrollRef.current?.scrollIntoView({
         behavior: "smooth",
       });
   }, [messages]);
 
+  //根据用户输入改变输入框高度
   useEffect(() => {
     inputRef.current.style.height = "inherit";
     const scrollHeight = inputRef.current.scrollHeight;
@@ -101,12 +106,14 @@ function Chat() {
   }, [msg]);
 
   useEffect(() => {
+    // 获取用户所有聊天
     const getChatsFunc = async () => {
       if (currentUser._id) {
         let chatsList = await getChatsAPI();
         let chats = chatsList.data;
         if (chats.length === 0) setNoChat(true);
         else setNoChat(false);
+        //根据最新消息时间排序
         let sortedChat = chats.sort((a, b) => {
           let aDate0 = new Date(a.latestMessage.createdAt);
           let bDate0 = new Date(b.latestMessage.createdAt);
@@ -121,8 +128,10 @@ function Chat() {
     getChatsFunc();
   }, [currentUser, refresh]);
   useEffect(() => {
+    //接收消息时刷新
     socket.on("message received", (newMsgReceived) => {
       setRefresh(!refresh);
+      //判断接收的消息是否时当天聊天界面的消息，是则直接在当前界面显示，不是则当作新消息提醒在侧边显示
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMsgReceived.chat._id
@@ -141,30 +150,39 @@ function Chat() {
     });
   });
 
+  //左右区域切换
   const switchs = async (index, currentChatUsername, currentChatAvatar) => {
+    //点击一个聊天后首先标记当天选择的聊天，之后更新当天聊天的名字和头像
     setCurrentChat(index);
     setCurrentChatUsername(currentChatUsername);
     setCurrentChatUserAvatar(currentChatAvatar);
+    //根据选择获取聊天内容
     const response = await getMsgsAPI(index._id);
     setMessages(response.data);
+    //socket加入聊天标记room
     socket.emit("join chat", index._id);
     selectedChatCompare = index;
 
+    //切换至右侧聊天
     setChatSwitch({ left: "-100%" });
     setChatBtnSwitch({ left: "-85px" });
     setTimeout(() => {
-      setLeft(true);
+      setRight(true);
     }, 1000);
   };
+
+  //切换回左侧，*清空输入框内容
   const switchsBack = () => {
-    setLeft(false);
+    setRight(false);
     setStretchBar(false);
     setRefresh(!refresh);
     setShowAddFriends(false);
     setChatSwitch({ left: "0px" });
     setChatBtnSwitch({ left: "5px" });
+    setMsg("");
   };
 
+  //根据用户搜索显示过滤后的聊天
   const setInput = (input) => {
     let filtered = chats.filter((chat) => {
       if (chat.isGroupChat) return chat.chatName.match(input);
@@ -176,25 +194,29 @@ function Chat() {
     setShownChats(filtered);
   };
 
+  //向socket发送自己是否正在打字，自己是否已经停止打字(仅私人聊天)
   const handleType = (e) => {
     setMsg(e.target.value);
     if (!socketConnected) return;
-    if (!typing) {
-      setTyping(true);
-      socket.emit("typing", currentChat._id);
-    }
-    let lastTypingTime = new Date().getTime();
-    var timerLength = 2000;
-    setTimeout(() => {
-      var timeNow = new Date().getTime();
-      var timeDiff = timeNow - lastTypingTime;
-      if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", currentChat._id);
-        setTyping(false);
+    if(!currentChat.isGroupChat){
+      if (!typing) {
+        setTyping(true);
+        socket.emit("typing", currentChat._id);
       }
-    }, timerLength);
+      let lastTypingTime = new Date().getTime();
+      var timerLength = 2000;
+      setTimeout(() => {
+        var timeNow = new Date().getTime();
+        var timeDiff = timeNow - lastTypingTime;
+        if (timeDiff >= timerLength && typing) {
+          socket.emit("stop typing", currentChat._id);
+          setTyping(false);
+        }
+      }, timerLength);
+    }
   };
 
+  //发送输入框的内容，向socket发送停止打字的信号和输入框的内容，清空输入框
   const sendChat = async () => {
     if (msg.length > 0) {
       const { data } = await sendMsgAPI(msg, currentChat._id);
@@ -206,18 +228,21 @@ function Chat() {
       setMsg("");
     }
   };
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false); //是否展现emoji选择器
 
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  //控制emoji选择器的展示与隐藏
   const handleEmojiPickerhideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
+  //往输入框添加选择的emoji
   const handleEmojiClick = (event, emojiObject) => {
     let message = msg;
     message += emojiObject.emoji;
     setMsg(message);
   };
 
+  //删除群成员
   const removeUser = async (user) => {
     let result = await removeGroupUserAPI(currentChat._id, user._id);
     if (result) {
@@ -225,6 +250,7 @@ function Chat() {
     }
   };
 
+  //添加群成员
   const AddFriendsToChat = (value) => {
     setShowAddFriends(value);
   };
@@ -232,7 +258,7 @@ function Chat() {
   const navigateToUser = () => {
     navigate("/user");
   };
-  console.log(isTyping)
+
   return (
     <div className="chatContainer">
       <img src={Logo} alt="logo" className="logo"></img>
@@ -246,6 +272,8 @@ function Chat() {
           />
           <NewMsgs newMsgs={notification} />
         </div>
+
+        {/* 右侧  */}
         <div className="chat">
           <div className="chatOverflow">
             {/* <Cover /> */}
@@ -253,6 +281,7 @@ function Chat() {
               <div className="chatSwitchLeft">
                 <NavBar />
                 <div className="friendLists">
+                  {/* 聊天搜索  */}
                   <div className="searchContainer">
                     <BiSearch className="searchIcon" />
                     <input
@@ -260,14 +289,16 @@ function Chat() {
                       onChange={(e) => setInput(e.target.value)}
                     ></input>
                   </div>
+                  {/* loading  */}
                   <div className="loadingContainer">
                     {!chats.length && !noChat && <LoadingBar />}
                   </div>
                   {/* <FriendList friends={shownFriends} switchs={switchs} /> */}
-                  <Chats chats={shownChats} switchs={switchs} left={left} />
+                  <Chats chats={shownChats} switchs={switchs} right={right} />
                 </div>
               </div>
               <div className="chatSwitchRight">
+                {/*  此处是群组聊天才会有的侧边栏，显示群员，管理员可在此添加删除用户 */}
                 {currentChat.isGroupChat && (
                   <div
                     className={
@@ -297,6 +328,7 @@ function Chat() {
                               <div className="chatUsername">
                                 {user.username}
                               </div>
+                              {/* 如果是管理员则显示删除群员的按钮 */}
                               {currentChat.groupAdmin._id === currentUser._id &&
                                 user._id !== currentUser._id && (
                                   <IoRemoveCircleSharp
@@ -307,6 +339,7 @@ function Chat() {
                             </div>
                           );
                         })}
+                      {/* 如果是管理员则显示打开添加群员区域的按钮 */}
                       {currentChat.groupAdmin._id === currentUser._id && (
                         <div className="newGroupMate">
                           <IoAddOutline
@@ -317,6 +350,7 @@ function Chat() {
                     </div>
                   </div>
                 )}
+                {/* 当前聊天的头像（群头像或用户头像）以及聊天名(群名或用户名）*/}
                 <div className="chatInfo">
                   <img
                     src={
@@ -338,9 +372,11 @@ function Chat() {
                       : currentChatUsername}
                   </div>
                 </div>
+                {/*   聊天内容  */}
                 <div className="chatbox" ref={scrollRefOut}>
                   <Messages messages={messages} scrollRef={scrollRef} />
                 </div>
+                {/*   EmojiPicke   */}
                 {showEmojiPicker && (
                   <div className="emojiPickerContainer">
                     <Picker
@@ -353,6 +389,7 @@ function Chat() {
                     />
                   </div>
                 )}
+                {/*  聊天输入框，以及提示对方是否在输入（仅私人聊天） */}
                 <div className="chatInputSubmitContainer">
                   {isTyping && (
                     <div className="isTyping">The other side is typing...</div>
@@ -377,6 +414,7 @@ function Chat() {
               </div>
             </div>
           </div>
+          {/* 如果是管理员且打开该区域的状态为true则显示添加群员区域 */}
           {currentChat._id && showAddFriends && (
             <div className="findFriends">
               <AddChatFriend
