@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoute');
 const messageRoutes = require("./routes/messageRoute");
 const chatRoutes = require("./routes/chatRoute");
 const path = require("path");
+const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json({ limit: "5mb" }));
@@ -27,6 +28,11 @@ try {
     console.log(err.message);
   }
 
+
+app.use("/api/user", userRoutes);
+app.use("/api/message", messageRoutes);
+app.use("/api/chat", chatRoutes);
+
 const __dirname1 = path.resolve();
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname1, "/client/build")));
@@ -39,10 +45,6 @@ const __dirname1 = path.resolve();
     });
   }
 
-const PORT = process.env.PORT || 8080;
-app.use("/api/user", userRoutes);
-app.use("/api/message", messageRoutes);
-app.use("/api/chat", chatRoutes);
 
 const server = app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)
