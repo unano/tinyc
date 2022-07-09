@@ -39,7 +39,7 @@ const __dirname1 = path.resolve();
     });
   }
 
-const PORT = process.env.port || 8080;
+const PORT = process.env.PORT || 8080;
 app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/chat", chatRoutes);
