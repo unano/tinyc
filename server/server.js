@@ -14,20 +14,6 @@ app.use(cors());
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb" }));
 
-try {
-    mongoose
-      .connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      })
-      .then(() => {
-        console.log("DB Connetion Successfull");
-      });
-  } 
-  catch (err) {
-    console.log(err.message);
-  }
-
 
 app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
@@ -44,6 +30,19 @@ const __dirname1 = path.resolve();
       res.send("API is running..");
     });
   }
+
+try {
+  mongoose
+    .connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("DB Connetion Successfull");
+    });
+} catch (err) {
+  console.log(err.message);
+}
 
 
 const server = app.listen(PORT, () =>
