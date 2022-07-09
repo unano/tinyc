@@ -27,7 +27,7 @@ import { useBeforeunload } from "react-beforeunload";
 import LoadingBar from "../components/loadingBar";
 import LeftArea from "../components/leftArea";
 import Logo from "../imgs/tinyc.png";
-const ENDPOINT = "http://localhost:8080";
+const ENDPOINT = "https://tinyc-chat.herokuapp.com/";
 var socket, selectedChatCompare;
 
 function Chat() {

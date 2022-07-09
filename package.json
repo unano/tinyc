@@ -10,7 +10,8 @@
     "dev0": "concurrently \"npm run server\" \"npm run client\"",
     "dev": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --node production"
+    "build": "webpack --node production",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
