@@ -265,14 +265,14 @@
                 width: 96%;
                 bottom: 2%;
                 padding: 4px;
-                align-items: center;
+                align-items: flex-end;
                     .isTyping{
                         position: absolute;
                         top: -1.4rem;
                         left: 2%;
                     }
                 .chatInputContiner{
-                    width:80%;
+                    width:84%;
                     height: 80%;
                     border:1px solid silver;
                     border-radius: 28px;
@@ -327,6 +327,7 @@
                         border: 0px;
                         overflow: scroll;
                         margin-bottom: -16px;
+                        white-space: pre-wrap;
                         &:focus{
                             outline: none;
                         }

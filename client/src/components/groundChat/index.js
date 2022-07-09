@@ -17,7 +17,6 @@ const GroundChat = ({ chat }) => {
       setIsApplying(true);
     }
   };
-  console.log(chat);
   return (
     <>
       <div className="GPchat">

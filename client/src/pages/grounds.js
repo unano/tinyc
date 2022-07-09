@@ -57,7 +57,6 @@ const NewGroup = () => {
   const sortRandomly = () => {
     const ramdomOrederChats = chats.sort(() => 0.5 - Math.random());
     setChats([...ramdomOrederChats]);
-    console.log(chats);
   };
 
   const search = async () => {

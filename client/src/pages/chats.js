@@ -259,6 +259,13 @@ function Chat() {
     navigate("/user");
   };
 
+  const onEnterPress = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      e.preventDefault();
+      sendChat();
+    }
+  };
+
   return (
     <div className="chatContainer">
       <img src={Logo} alt="logo" className="logo"></img>
@@ -405,6 +412,7 @@ function Chat() {
                       className="chatInput"
                       onChange={handleType}
                       value={msg}
+                      onKeyDown={onEnterPress}
                     ></textarea>
                   </div>
                   <div className="chatSubmitContiner" onClick={sendChat}>

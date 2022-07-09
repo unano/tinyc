@@ -1,4 +1,3 @@
-import Avatar from "react-avatar-edit";
 import { useState } from "react";
 import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
 import Cropper from "react-easy-crop";
