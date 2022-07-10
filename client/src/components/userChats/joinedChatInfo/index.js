@@ -11,10 +11,14 @@ import { userAvatarHandler } from "../../../functions";
 const ChatInfo = ({ chat, refresh, setRefresh }) => {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const exit = async () => {
+    if (disabled) return;
+    setDisabled(true);
     await exitGroupAPI(chat._id);
     setShowDelete(false);
     setRefresh(!refresh);
+    setDisabled(false);
   };
   const navigates = () => {
     navigate(`/chat/${chat._id}`);

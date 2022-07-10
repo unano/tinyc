@@ -9,6 +9,7 @@ import { userAvatarHandler } from "../../functions";
 const Friend = ({ friend, refresh, setRefresh }) => {
   const [friendInfo, setFriendInfo] = useState();
   const [deleteInfo, setDeleteInfo] = useState();
+  const [disabled, setDisabled] = useState(false);
   const showInfo = () => {
     setFriendInfo({ width: "506px" });
   };
@@ -24,8 +25,11 @@ const Friend = ({ friend, refresh, setRefresh }) => {
   };
 
   const deleteFriend = async () => {
+    if(disabled) return;
+    setDisabled(true);
     await denyFriendsAPI(friend._id);
     setRefresh(!refresh);
+    setDisabled(false);
   };
 
   return (

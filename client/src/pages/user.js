@@ -33,20 +33,27 @@ function Personal() {
   const [preview, setPreview] = useState(null); //新头像预览
   const [showClipper, setShowClipper] = useState(false); //控制裁剪组建的展示
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const changeUsername = async () => {
+    if (disabled) return;
     if (nameInput !== "") {
+      setDisabled(true);
       let result = await changeUsernameAPI(nameInput);
       if (result.status) resetUserData(result.data.upload);
       setShowChangeInput(false);
+      setDisabled(false);
     }
   };
 
   const changeIntro = async () => {
+    if (disabled) return;
     if (introInput !== "") {
+      setDisabled(true);
       let result = await changeIntroAPI(introInput);
       if (result.status) resetUserData(result.data.upload);
       setShowChangeIntro(false);
+      setDisabled(false);
     }
   };
 
@@ -67,12 +74,15 @@ function Personal() {
   //   }, [currentUser]);
 
     const submitAvatar = async () => {
+      if (disabled) return;
     setLoading(true);
+    setDisabled(true);
     const updatedUser = await uploadAvatarAPI(preview);
     // setTimeout(() => {
     await resetUserData(updatedUser.data.user);
     setLoading(false);
     setPreview(null);
+    setDisabled(false);
     if (currentUser.avatarId){
       setTimeout(async () => await deleteAvatarAPI(currentUser.avatarId), 2000);
     }

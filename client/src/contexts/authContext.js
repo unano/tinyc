@@ -8,6 +8,7 @@ export const AuthContext = createContext(null);
 const AuthContextProvider = (props) => {
   const [currentUser, setCurrentUser] = useState({});
   const [reloadStorage, setRreloadStorage] = useState();
+  const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
 
   // const refreshToken = async () => {
@@ -100,8 +101,11 @@ const AuthContextProvider = (props) => {
   //   );
   // }
   const logout = async () => {
+    if (disabled) return;
+    setDisabled(true);
     await setOfflineAPI(currentUser._id);
     localStorage.clear();
+    setDisabled(false);
     navigate("/");
   };
   useEffect(() => {

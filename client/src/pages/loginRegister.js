@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./loginRegister.scss";
 import Logo from "../imgs/tinyc.png";
 import Cover from "../components/cover";
 import Register from "../components/register";
 import Login from "../components/login";
+import { useNavigate } from "react-router-dom";
 import "./common.scss";
 function App() {
   const [loginExpand, setLoginExpand] = useState(true);
+  const navigate = useNavigate();
 
   const expandLogin = () => {
     setLoginExpand(true);
@@ -15,6 +17,13 @@ function App() {
   const expandRegister = () => {
     setLoginExpand(false);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      console.log("dd");
+      navigate("/home");
+    }
+  }, []);
 
   return (
     <div className="loginContainer">

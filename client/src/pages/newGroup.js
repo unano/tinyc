@@ -29,6 +29,7 @@ const NewGroup = () => {
   const [showBGClipper, setShowBGClipper] = useState(false);
   const [photoURL, setPhotoURL] = useState();
   const [gpbgExpand, setGpbgExpand] = useState(false); //是否展开群组背景选项
+  const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const getFriendsFunc = async () => {
@@ -94,11 +95,14 @@ const NewGroup = () => {
 
   //检查各项输入是否合法，合法则创建群组并进行跳转
   const check = async () => {
+    if (disabled) return;
+    setDisabled(true);
     if (GPName === "" || chosenUsers.length < 2 || !preview) {
       SetWarning(true);
       setTimeout(() => {
         SetWarning(false);
       }, 2000);
+      setDisabled(false);
     } else {
       const background = await dealImage(image);
       // const formData = new FormData();
@@ -114,6 +118,7 @@ const NewGroup = () => {
         preview,
         background
       );
+      setDisabled(false);
       if (res) navigate("/home");
     }
   };

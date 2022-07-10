@@ -13,17 +13,21 @@ const BGEditor = ({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [disabled, setDisabled] = useState(false);
   const cropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
   const cropImage = async () => {
+    if (disabled) return;
     try {
+      setDisabled(true);
       const { file, url } = await getCroppedImg(photoURL, croppedAreaPixels);
       setPhotoURL(url);
       setFile(file);
       setShowClipper(false);
       setShowPreview(true);
+      setDisabled(false);
     } catch (error) {
       console.log(error);
     }

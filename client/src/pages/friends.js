@@ -21,6 +21,7 @@ const FriensArea = () => {
   const [searchedUser, setSearchedUser] = useState({});
   const [applyResult, setApplyResult] = useState(); //显示申请结果（申请成功/重复的申请）
   const [refresh, setRefresh] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [noFriend, setNoFriend] =
     useState(false); /*判断该用户是否有好友，该项主要消除loading的误会，
   因为loading会在未读取到用户时显示，而没有好友的用户也符合触发条件，故需判断用户是否有好友消除歧义*/
@@ -45,9 +46,12 @@ const FriensArea = () => {
 
   //申请好友
   const applyFriend = async () => {
+    if (disabled) return;
+    setDisabled(true);
     let apply = await applyFriendsAPI(searchedUser._id);
     let msg = apply.data.msg;
     if (msg) setApplyResult(msg);
+    setDisabled(false);
   };
 
   const setInput = (input) => {
@@ -65,6 +69,8 @@ const FriensArea = () => {
   };
 
   const searchInputUser = async () => {
+    if (disabled) return;
+    setDisabled(true);
     setApplyResult("");
     let user = await searchUserAPI(searchInput);
     if (user?.data.user) {
@@ -73,6 +79,7 @@ const FriensArea = () => {
       }
     }
     setHasSearchedUser(true);
+    setDisabled(false);
   };
 
   const handleInput = (e) => {

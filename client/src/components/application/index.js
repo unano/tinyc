@@ -13,6 +13,7 @@ import {
   renameGroupAPI,
 } from "../../api/api";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { userAvatarHandler, groupAvatarHandler } from "../../functions";
 import "./application.scss";
 const Application = () => {
   const { currentUser } = useContext(AuthContext);
@@ -21,6 +22,7 @@ const Application = () => {
   const [showChangeInput, setShowChangeInput] = useState(false);
   const [input, setInput] = useState();
   const [deleteStyle, setDeleteStyle] = useState({});
+  const [disabled, setDisabled] = useState(false);
   const { id } = useParams();
   useEffect(() => {
     const getChat = async () => {
@@ -30,19 +32,28 @@ const Application = () => {
     getChat();
   }, [currentUser, refresh]);
   const accept = async (userId) => {
+    if (disabled) return;
+    setDisabled(true);
     let result = await dealGroupChatApplyAPI(userId, chat._id);
+    setDisabled(false);
     setRefresh(!refresh);
   };
   const refuse = async (userId) => {
+    if (disabled) return;
+    setDisabled(true);
     let result = await refuseChatApplyAPI(userId, chat._id);
     setRefresh(!refresh);
+    setDisabled(false);
   };
 
   const changeUsername = async () => {
     if (input !== "") {
+      if (disabled) return;
+      setDisabled(true);
       let result = await renameGroupAPI(chat._id, input);
       setShowChangeInput(false);
       setRefresh(!refresh);
+      setDisabled(false);
     }
   };
 
@@ -59,11 +70,7 @@ const Application = () => {
             style={deleteStyle}
           />
           <img
-            src={
-              chat.avatar
-                ? require(`../../images/${chat.avatar}`)
-                : require(`../../images/defaultGroup.png`)
-            }
+            src={groupAvatarHandler(chat.avatar)}
             alt="avatar"
             className="avatar"
           ></img>
@@ -102,11 +109,7 @@ const Application = () => {
                   return (
                     <div className="rowFlex">
                       <img
-                        src={
-                          user.avatarImage
-                            ? require(`../../images/${user.avatarImage}`)
-                            : require(`../../images/default.png`)
-                        }
+                        src={userAvatarHandler(user.avatarImage)}
                         alt="avatar"
                         className="avatar"
                       ></img>
@@ -136,11 +139,7 @@ const Application = () => {
                   return (
                     <div className="rowFlex">
                       <img
-                        src={
-                          user.avatarImage
-                            ? require(`../../images/${user.avatarImage}`)
-                            : require(`../../images/default.png`)
-                        }
+                        src={userAvatarHandler(user.avatarImage)}
                         alt="avatar"
                         className="avatar"
                       ></img>

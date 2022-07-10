@@ -10,6 +10,7 @@ const UserUsers = () => {
   const [requests, setRequests] = useState([]);
   const [requesting, setRequesting] = useState([]);
   const [refresh, setRefresh] = useState(false);
+
   useEffect(() => {
     const fetchRequest = async () => {
       const requests = await getFriendsReqAPI();

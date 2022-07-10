@@ -8,8 +8,8 @@ const Login = () => {
   const [passwordWord, setPasswordWord] = useState("password");
   const [usernameInform, setUsernameInform] = useState(false);
   const [passwordInform, setPasswordInform] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
-
   const { resetUserData } = useContext(AuthContext);
 
   //save login data
@@ -25,7 +25,9 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (disabled) return;
     if (validateForm()) {
+      setDisabled(true);
       const { username, password } = loginValues;
       const { data } = await loginAPI(username, password);
       if (data.status === false && data.err === "username") {
@@ -38,6 +40,7 @@ const Login = () => {
         resetUserData(data.user);
         navigate("/home");
       }
+      setDisabled(false);
     }
   };
 

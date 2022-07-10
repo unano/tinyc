@@ -13,6 +13,7 @@ const Register = ({ expandLogin }) => {
   const registerPasswordRef = useRef({});
   const registerConfirmPswdRef = useRef({});
 
+  const [disabled, setDisabled] = useState(false);
 
   //inform style setting
   const [usernameInform, setUsernameInform] = useState(false);
@@ -82,7 +83,9 @@ const Register = ({ expandLogin }) => {
 
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
+    if (disabled) return;
     if (validateRegisterForm()) {
+      setDisabled(true);
       const { username, password } = registerValues;
       const { data } = await registerAPI(username, password);
       if (data.status === false && data.err === "username") {
@@ -102,6 +105,7 @@ const Register = ({ expandLogin }) => {
           expandLogin();
         }, 2000);
       }
+      setDisabled(false);
     }
   };
 

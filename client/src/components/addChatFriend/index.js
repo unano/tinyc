@@ -4,10 +4,13 @@ import { AuthContext } from "../../contexts/authContext";
 import { getFriendsAPI, addGroupUserAPI } from "../../api/api";
 import { BiSearch } from "react-icons/bi";
 import { IoCloseOutline, IoAddOutline } from "react-icons/io5";
+import { userAvatarHandler } from "../../functions";
+
 const AddChatFriend = ({ currentChat, showGPAddFriends, setCurrentChat }) => {
   const { currentUser } = useContext(AuthContext);
   const [shownFriends, setShownFriends] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [disabled, setDisabled] = useState(false);
   const currentChatUsers = currentChat.users;
   useEffect(() => {
     const getFriendsFunc = async () => {
@@ -36,9 +39,12 @@ const AddChatFriend = ({ currentChat, showGPAddFriends, setCurrentChat }) => {
   };
 
   const addToChat = async (friendId) => {
+    if (disabled) return;
+    setDisabled(true);
     // setRefresh(!refresh);
     let result = await addGroupUserAPI(currentChat._id, friendId);
     setCurrentChat(result.data);
+    setDisabled(false);
   };
   return (
     <>
@@ -52,9 +58,7 @@ const AddChatFriend = ({ currentChat, showGPAddFriends, setCurrentChat }) => {
               />
               <img
                 src={
-                  friend.avatarImage
-                    ? require(`../../images/${friend.avatarImage}`)
-                    : require(`../../images/default.png`)
+                  userAvatarHandler(friend.avatarImage)
                 }
                 alt="avatar"
                 className="friendAvatar"

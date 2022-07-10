@@ -25,6 +25,7 @@ const NewGroup = () => {
   const [searching, setSearching] = useState(false);
   const [stopDice20, setStopDice20] = useState(true); //控制动画的停止
   const [stopDice6, setStopDice6] = useState(true); //控制动画的停止
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     const getChats = async () => {
       const chats = await diceChats20();
@@ -60,33 +61,45 @@ const NewGroup = () => {
   };
 
   const search = async () => {
+    if (disabled) return;
     if (searchInput) {
+      setDisabled(true);
       const result = await searchGroupChatsAPI(searchInput);
       setChats(result.data);
       setSearching(true);
+      setDisabled(false);
     }
   };
 
   //根据输入搜索群组
   const dealInput = async (value) => {
+    if (disabled) return;
+    setDisabled(true);
     setSearchIput(value);
     if (!value) {
       setSearching(false);
       const chats = await getAllGroupChatAPI();
       setChats(chats.data);
     }
+    setDisabled(false);
   };
 
   const dice20 = async () => {
+    if (disabled) return;
+    setDisabled(true);
     const chats = await diceChats20();
     setStopDice20(false);
     setChats(chats.data);
+    setDisabled(false);
   };
 
   const dice6 = async () => {
+    if (disabled) return;
+    setDisabled(true);
     const chats = await diceChats6();
     setStopDice6(false);
     setChats(chats.data);
+    setDisabled(false);
   };
 
   return (

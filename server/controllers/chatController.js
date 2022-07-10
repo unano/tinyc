@@ -85,18 +85,35 @@ module.exports.createGropuChat = async (req, res, next) => {
   const { chatName, users, avatar, background } = req.body;
   const { _id } = req.user;
   const applyerId = _id;
-  var bgName;
-  const avatarName = "avatar" + Date.now() + ".png";
-  const avatarPath = PATH + avatarName;
-  const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-  fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
-  if (background) {
-    bgName = "gpbg" + Date.now() + ".png";
-    const bgPath = PATH + "background/" + bgName;
-    const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
-  } else {
-    bgName = null;
+  // const avatarName = "avatar" + Date.now() + ".png";
+  // const avatarPath = PATH + avatarName;
+  // const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+  // fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
+  // if (background) {
+  //   bgName = "gpbg" + Date.now() + ".png";
+  //   const bgPath = PATH + "background/" + bgName;
+  //   const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+  //   fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
+  //   } else {
+  //   bgName = null;
+  // }
+  var bgUrl;
+  var bgId;
+  const response = await cloudinary.uploader.upload(avatar, {
+      upload_preset: "groupAvatar",
+    });
+  const avatarUrl = response.secure_url;
+  const avatarId = response.public_id;
+  if(background){
+  const responseBg = await cloudinary.uploader.upload(background, {
+    upload_preset: "groupBg",
+  });
+    bgUrl = responseBg.secure_url;
+    bgId = responseBg.public_id;
+  }
+  else{
+      bgUrl = "";
+      bgId = "";
   }
 
   const user = await User.findById(applyerId).select("-password");
@@ -113,8 +130,10 @@ module.exports.createGropuChat = async (req, res, next) => {
       users: users,
       isGroupChat: true,
       groupAdmin: user,
-      avatar: avatarName,
-      background: bgName,
+      avatar: avatarUrl,
+      avatarId: avatarId,
+      background: bgUrl,
+      backgroundId: bgId
     });
     var newMessage = {
       sender: applyerId,
@@ -477,6 +496,11 @@ module.exports.deleteGroup = async (req, res, next) => {
   const { chatId } = req.body;
   if (await isAdmin(_id, chatId)) {
     try {
+      const imageIds = await Chat.findOne({ _id: chatId },{avatarId:1, backgroundId:1});
+      const avatarId = imageIds["avatarId"];
+      const bgId = imageIds["backgroundId"];
+      if(avatarId)  await cloudinary.uploader.destroy(avatarId);
+      if (bgId) await cloudinary.uploader.destroy(bgId);
       await Chat.deleteOne({ _id: chatId });
       return res.json({ status: true, result: "deleted" });
     } catch (ex) {

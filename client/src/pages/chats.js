@@ -30,7 +30,7 @@ import Logo from "../imgs/tinyc.png";
 import { userAvatarHandler, groupAvatarHandler } from "../functions";
 
 const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
-//"http://localhost:8080";
+// const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {
@@ -60,7 +60,7 @@ function Chat() {
 
   const [right, setRight] = useState(false); //当前在聊天页面左侧还是右侧
   const [stretchBar, setStretchBar] = useState(false); // 是否展开聊天界面右边的用户栏
-
+  const [disabled, setDisabled] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
   //页面被关闭时触发登出
@@ -156,6 +156,8 @@ function Chat() {
   //左右区域切换
   const switchs = async (index, currentChatUsername, currentChatAvatar) => {
     //点击一个聊天后首先标记当天选择的聊天，之后更新当天聊天的名字和头像
+    if (disabled) return;
+    setDisabled(true);
     setCurrentChat(index);
     setCurrentChatUsername(currentChatUsername);
     setCurrentChatUserAvatar(currentChatAvatar);
@@ -172,6 +174,7 @@ function Chat() {
     setTimeout(() => {
       setRight(true);
     }, 1000);
+    setDisabled(false);
   };
 
   //切换回左侧，*清空输入框内容
@@ -221,7 +224,9 @@ function Chat() {
 
   //发送输入框的内容，向socket发送停止打字的信号和输入框的内容，清空输入框
   const sendChat = async () => {
+    if (disabled) return;
     if (msg.length > 0) {
+      setDisabled(true);
       const { data } = await sendMsgAPI(msg, currentChat._id);
       socket.emit("stop typing", currentChat._id);
       socket.emit("new message", data);
@@ -229,6 +234,7 @@ function Chat() {
       // msgs.push({ sender: {_id:currentUser._id}, message: msg });
       setMessages([...messages, data]);
       setMsg("");
+      setDisabled(false);
     }
   };
   const [showEmojiPicker, setShowEmojiPicker] = useState(false); //是否展现emoji选择器
@@ -247,10 +253,13 @@ function Chat() {
 
   //删除群成员
   const removeUser = async (user) => {
+    if (disabled) return;
+    setDisabled(true);
     let result = await removeGroupUserAPI(currentChat._id, user._id);
     if (result) {
       setCurrentChat(result.data);
     }
+    setDisabled(false);
   };
 
   //添加群成员

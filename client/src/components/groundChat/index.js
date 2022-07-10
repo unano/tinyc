@@ -7,6 +7,7 @@ import { userAvatarHandler, groupBgHandler, groupAvatarHandler } from "../../fun
 const GroundChat = ({ chat }) => {
   const { currentUser } = useContext(AuthContext);
   const [isApplying, setIsApplying] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const shownLength = 4;
   const navigate = useNavigate();
   const navigates = (chatId) => {
@@ -14,7 +15,10 @@ const GroundChat = ({ chat }) => {
   };
 
   const apply = async (chatId) => {
+    if (disabled) return;
+    setDisabled(true);
     const result = await applyGroupChatJoinAPI(chatId);
+    setDisabled(false);
     if (result) {
       setIsApplying(true);
     }

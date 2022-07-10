@@ -45,6 +45,7 @@ const Application = () => {
   const [image, setImage] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     const getChat = async () => {
       let chat = await getGroupChat(id);
@@ -54,27 +55,38 @@ const Application = () => {
   }, [currentUser, refresh]);
   //接受用户的入群申请
   const accept = async (userId) => {
+    if (disabled) return;
+    setDisabled(true);
     await dealGroupChatApplyAPI(userId, chat._id);
     setRefresh(!refresh);
+    setDisabled(false);
   };
   //拒绝用户的入群申请
   const refuse = async (userId) => {
+    if (disabled) return;
+    setDisabled(true);
     await refuseChatApplyAPI(userId, chat._id);
     setRefresh(!refresh);
+    setDisabled(false);
   };
 
   const changeUsername = async () => {
+    if (disabled) return;
     if (input !== "") {
+      setDisabled(true);
       await renameGroupAPI(chat._id, input);
       setShowChangeInput(false);
       setRefresh(!refresh);
+      setDisabled(false);
     }
   };
 
   //提交更新后的头像
   const submitAvatar = async () => {
     setLoading(true);
+    if (disabled) return;
     const previousImageId = chat.avatarId;
+    setDisabled(true);
     await changeGroupAvatar(chat._id, preview);
     // setTimeout(() => {
       setRefresh(!refresh);
@@ -83,6 +95,7 @@ const Application = () => {
       if (previousImageId) {
         setTimeout(async () => await deleteGroupAvatarAPI(previousImageId), 2000);
       }
+    setDisabled(false);
     // }, 1000);
   };
 
@@ -99,6 +112,8 @@ const Application = () => {
 
   // 提交更新后的背景
   const submitBg = async () => {
+    if (disabled) return;
+    setDisabled(true);
     const previousImageId = chat.backgroundId;
     const background = await dealImage(image);
     setLoading(true);
@@ -114,6 +129,7 @@ const Application = () => {
         2000
       );
     }
+    setDisabled(false);
     // }, 1000);
   };
 
@@ -134,7 +150,10 @@ const Application = () => {
 
   //删除群组并跳转回上个页面
   const deleteGroup = async () => {
+    if (disabled) return;
+    setDisabled(true);
     await deleteGroupAPI(chat._id);
+    setDisabled(false);
     navigate(-1);
   };
 
