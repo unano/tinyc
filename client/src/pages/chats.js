@@ -29,8 +29,8 @@ import LeftArea from "../components/leftArea";
 import Logo from "../imgs/tinyc.png";
 import { userAvatarHandler, groupAvatarHandler } from "../functions";
 
-const ENDPOINT = "http://localhost:8080";
-//"https://tinyc-chat-app.herokuapp.com";
+const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
+//"http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {

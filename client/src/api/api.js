@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const host = "http://localhost:8080";
-//"https://tinyc-chat-app.herokuapp.com";
+const host = "https://tinyc-chat-app.herokuapp.com";
+//"http://localhost:8080";
 const userRoot = `${host}/api/user`;
 const messageRoot = `${host}/api/message`;
 const chatRoot = `${host}/api/chat`;
