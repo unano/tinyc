@@ -1,10 +1,7 @@
-import './request.scss'
+import "./request.scss";
 import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
-import {
-  acceptFriendsAPI,
-  denyFriendsAPI
-} from "../../api/api";
-
+import { acceptFriendsAPI, denyFriendsAPI } from "../../api/api";
+import { userAvatarHandler } from "../../functions";
 const Request = ({ request, refresh, setRefresh }) => {
   const accept = async () => {
     await acceptFriendsAPI(request._id);
@@ -17,11 +14,7 @@ const Request = ({ request, refresh, setRefresh }) => {
   return (
     <div className="request">
       <img
-        src={
-          request.avatarImage
-            ? require(`../../images/${request.avatarImage}`)
-            : require(`../../images/default.png`)
-        }
+        src={userAvatarHandler(request.avatarImage)}
         alt="logo"
         className="avatar"
       ></img>

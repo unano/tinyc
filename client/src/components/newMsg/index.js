@@ -2,6 +2,7 @@ import "./newMsg.css";
 import { AuthContext } from "../../contexts/authContext";
 import { SettingContext } from "../../contexts/settingContext";
 import { useContext } from "react";
+import { userAvatarHandler } from "../../functions";
 const NewMsg = ({ newMsg }) => {
   const { currentUser } = useContext(AuthContext);
   const { inform } = useContext(SettingContext);
@@ -16,21 +17,13 @@ const NewMsg = ({ newMsg }) => {
           <div className="chatLeftIcon informAnime">
             {newMsg.chat.isGroupChat ? (
               <img
-                src={
-                  newMsg.chat.avatar
-                    ? require(`../../images/${newMsg.chat.avatar}`)
-                    : require(`../../images/default.png`)
-                }
+                src={userAvatarHandler(newMsg.chat.avatar)}
                 alt="logo"
                 className="avatar"
               ></img>
             ) : (
               <img
-                src={
-                  getUser()
-                    ? require(`../../images/${getUser()}`)
-                    : require(`../../images/default.png`)
-                }
+                src={userAvatarHandler(getUser())}
                 alt="logo"
                 className="avatar"
               ></img>

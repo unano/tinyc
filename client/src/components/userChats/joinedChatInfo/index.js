@@ -7,6 +7,7 @@ import {
 import { IoMdExit } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { exitGroupAPI } from "../../../api/api";
+import { userAvatarHandler } from "../../../functions";
 const ChatInfo = ({ chat, refresh, setRefresh }) => {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
@@ -37,9 +38,7 @@ const ChatInfo = ({ chat, refresh, setRefresh }) => {
       </div>
       <img
         src={
-          chat.avatar
-            ? require(`../../../images/${chat.avatar}`)
-            : require(`../../../images/default.png`)
+          userAvatarHandler(chat.avatar)
         }
         alt="logo"
         className="icon"

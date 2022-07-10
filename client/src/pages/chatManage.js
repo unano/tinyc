@@ -26,6 +26,7 @@ import BGEditor from "../components/bgEditor";
 import { blobToBase64 } from "../functions";
 import LeftAreaBack from "../components/leftAreaBackV";
 import Logo from "../imgs/tinyc.png";
+import { userAvatarHandler, groupAvatarHandler, groupBgHandler } from "../functions";
 
 const Application = () => {
   const { currentUser } = useContext(AuthContext);
@@ -43,6 +44,7 @@ const Application = () => {
   const [photoURL, setPhotoURL] = useState();
   const [image, setImage] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getChat = async () => {
       let chat = await getGroupChat(id);
@@ -71,13 +73,17 @@ const Application = () => {
 
   //提交更新后的头像
   const submitAvatar = async () => {
-    const previousImage = chat.avatar;
+    setLoading(true);
+    const previousImageId = chat.avatarId;
     await changeGroupAvatar(chat._id, preview);
-    setTimeout(() => {
+    // setTimeout(() => {
       setRefresh(!refresh);
       setPreview(null);
-      setTimeout(async () => await deleteGroupAvatarAPI(previousImage), 2000);
-    }, 1000);
+      setLoading(false);
+      if (previousImageId) {
+        setTimeout(async () => await deleteGroupAvatarAPI(previousImageId), 2000);
+      }
+    // }, 1000);
   };
 
   //读取上传的图片以进行后续裁剪
@@ -93,18 +99,22 @@ const Application = () => {
 
   // 提交更新后的背景
   const submitBg = async () => {
-    const previousImage = chat.background;
+    const previousImageId = chat.backgroundId;
     const background = await dealImage(image);
+    setLoading(true);
     await changeGroupBackgroundAPI(chat._id, background);
-    setTimeout(() => {
-      setShowPreview(false);
-      setRefresh(!refresh);
-      setPreview(null);
+    // setTimeout(() => {
+    setShowPreview(false);
+    setRefresh(!refresh);
+    setPreview(null);
+    setLoading(false);
+    if (previousImageId) {
       setTimeout(
-        async () => await deleteGroupBackgroundAPI(previousImage),
+        async () => await deleteGroupBackgroundAPI(previousImageId),
         2000
       );
-    }, 1000);
+    }
+    // }, 1000);
   };
 
   //将图像从Blob转为base64
@@ -178,14 +188,13 @@ const Application = () => {
                     onClick={() => setPreview(null)}
                   />
                 </div>
+                {loading && <div>Loading...</div>}
               </div>
             )}
             {showPreview && !showBGClipper && (
               <div className="groupAvatarPreviewContainer">
                 <div>Preview</div>
-                <>
                   <img src={photoURL} alt="" className="previewBG" />
-                </>
                 <div className="buttonsContainer">
                   <BsUpload
                     className="usernameBtn smallBtn"
@@ -196,6 +205,7 @@ const Application = () => {
                     onClick={() => setShowPreview(null)}
                   />
                 </div>
+                {loading && <div>Loading...</div>}
               </div>
             )}
             <div className="chatSwitchLeft">
@@ -219,11 +229,7 @@ const Application = () => {
                 <div className="rowFlex head">
                   <div className="avatarContainer">
                     <img
-                      src={
-                        chat.avatar
-                          ? require(`../images/${chat.avatar}`)
-                          : require(`../images/defaultGroup.png`)
-                      }
+                      src={groupAvatarHandler(chat.avatar)}
                       alt="avatar"
                       className="avatar"
                     ></img>
@@ -269,11 +275,7 @@ const Application = () => {
                 {/* 群背景 */}
                 <div className="bgContainer">
                   <img
-                    src={
-                      chat.background
-                        ? require(`../images/background/${chat.background}`)
-                        : require(`../images/background/defaultBG.png`)
-                    }
+                    src={groupBgHandler(chat.background)}
                     alt="avatar"
                     className="bg"
                   ></img>
@@ -288,11 +290,9 @@ const Application = () => {
                         {chat.groupAdmin && (
                           <>
                             <img
-                              src={
+                              src={userAvatarHandler(
                                 chat.groupAdmin.avatarImage
-                                  ? require(`../images/${chat.groupAdmin.avatarImage}`)
-                                  : require(`../images/default.png`)
-                              }
+                              )}
                               alt="avatar"
                               className="avatarSmall"
                             ></img>
@@ -312,11 +312,7 @@ const Application = () => {
                             return (
                               <div className="rowFlex memberFull">
                                 <img
-                                  src={
-                                    user.avatarImage
-                                      ? require(`../images/${user.avatarImage}`)
-                                      : require(`../images/defaultGroup.png`)
-                                  }
+                                  src={userAvatarHandler(user.avatarImage)}
                                   alt="avatar"
                                   className="avatarSmall"
                                 ></img>
@@ -350,11 +346,7 @@ const Application = () => {
                           return (
                             <div className="rowFlex member">
                               <img
-                                src={
-                                  user.avatarImage
-                                    ? require(`../images/${user.avatarImage}`)
-                                    : require(`../images/defaultGroup.png`)
-                                }
+                                src={userAvatarHandler(user.avatarImage)}
                                 alt="avatar"
                                 className="avatarSmall"
                               ></img>

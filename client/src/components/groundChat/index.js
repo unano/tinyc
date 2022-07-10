@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../../contexts/authContext";
 import { useNavigate } from "react-router-dom";
 import { applyGroupChatJoinAPI } from "../../api/api";
+import { userAvatarHandler, groupBgHandler, groupAvatarHandler } from "../../functions"; 
+
 const GroundChat = ({ chat }) => {
   const { currentUser } = useContext(AuthContext);
   const [isApplying, setIsApplying] = useState(false);
@@ -22,11 +24,7 @@ const GroundChat = ({ chat }) => {
       <div className="GPchat">
         <div className="GPchatIn">
           <img
-            src={
-              chat.background
-                ? require(`../../images/background/${chat.background}`)
-                : require(`../../images/background/defaultBG.png`)
-            }
+            src={groupBgHandler(chat.background)}
             alt="logo"
             className="backgroundPic"
           ></img>
@@ -34,7 +32,7 @@ const GroundChat = ({ chat }) => {
           <div className="gpContent">
             <div className="flex">
               <img
-                src={require(`../../images/${chat.avatar}`)}
+                src={groupAvatarHandler(chat.avatar)}
                 alt="avatar"
                 className="gpAvatar"
                 onClick={() => navigates(chat._id)}
@@ -46,11 +44,7 @@ const GroundChat = ({ chat }) => {
                 return (
                   <div className="avatarContainer">
                     <img
-                      src={
-                        user.avatarImage
-                          ? require(`../../images/${user.avatarImage}`)
-                          : require(`../../images/default.png`)
-                      }
+                      src={userAvatarHandler(user.avatarImage)}
                       alt="logo"
                       className="avatar"
                     ></img>

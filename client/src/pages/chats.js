@@ -27,7 +27,10 @@ import { useBeforeunload } from "react-beforeunload";
 import LoadingBar from "../components/loadingBar";
 import LeftArea from "../components/leftArea";
 import Logo from "../imgs/tinyc.png";
-const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
+import { userAvatarHandler, groupAvatarHandler } from "../functions";
+
+const ENDPOINT = "http://localhost:8080";
+//"https://tinyc-chat-app.herokuapp.com";
 var socket, selectedChatCompare;
 
 function Chat() {
@@ -198,7 +201,7 @@ function Chat() {
   const handleType = (e) => {
     setMsg(e.target.value);
     if (!socketConnected) return;
-    if(!currentChat.isGroupChat){
+    if (!currentChat.isGroupChat) {
       if (!typing) {
         setTyping(true);
         socket.emit("typing", currentChat._id);
@@ -324,11 +327,7 @@ function Chat() {
                           return (
                             <div className="chatUser" key={user._id}>
                               <img
-                                src={
-                                  user.avatarImage
-                                    ? require(`../images/${user.avatarImage}`)
-                                    : require(`../images/default.png`)
-                                }
+                                src={userAvatarHandler(user.avatarImage)}
                                 alt="logo"
                                 className="icon"
                               ></img>
@@ -362,12 +361,8 @@ function Chat() {
                   <img
                     src={
                       currentChat.isGroupChat
-                        ? currentChat.avatar
-                          ? require(`../images/${currentChat.avatar}`)
-                          : require(`../images/defaultGroup.png`)
-                        : currentChatUserAvatar
-                        ? require(`../images/${currentChatUserAvatar}`)
-                        : require(`../images/default.png`)
+                        ? groupAvatarHandler(currentChat.avatar)
+                        : userAvatarHandler(currentChatUserAvatar)
                     }
                     alt="logo"
                     className="chatAvatar"

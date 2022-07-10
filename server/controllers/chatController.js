@@ -2,8 +2,9 @@ const Chat = require("../models/chatModel");
 const User = require("../models/userModel");
 const Messages = require("../models/messageModel");
 let fs = require("fs");
+const { cloudinary } = require("../utils/cloudinary");
 
-var PATH = `${__dirname}/client/src/images/`;
+var PATH = `./client/src/images/`;
 
 const isAdmin = async (user_id, chat_id) => {
   const result = await Chat.findOne({
@@ -375,6 +376,8 @@ module.exports.getGroupChat = async (req, res, next) => {
         applyingUsers: 1,
         background: 1,
         groupAdmin: 1,
+        avatarId: 1,
+        backgroundId: 1
       }
     )
       .populate("applyingUsers", "-password -friends")
@@ -391,13 +394,17 @@ module.exports.changeGroupAvatar = async (req, res) => {
   const { chatId, avatar } = req.body;
   const { _id } = req.user;
   if (await isAdmin(_id, chatId)) {
-    const avatarName = "avatar" + Date.now() + ".png";
-    const avatarPath = PATH + avatarName;
-    const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
-
+    // const avatarName = "avatar" + Date.now() + ".png";
+    // const avatarPath = PATH + avatarName;
+    // const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    // fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
+    const response = await cloudinary.uploader.upload(avatar, {
+      upload_preset: "groupAvatar",
+    });
+    const url = response.secure_url;
+    const image_id = response.public_id;
     try {
-      await Chat.findByIdAndUpdate(chatId, { avatar: avatarName });
+      await Chat.findByIdAndUpdate(chatId, { avatar: url, avatarId: image_id });
       res.status(200).json({ msg: "updated" });
     } catch (err) {
       next(err);
@@ -410,11 +417,13 @@ module.exports.changeGroupAvatar = async (req, res) => {
 //  method:DELETE  route: /group/deleteAvatar
 module.exports.deleteGroupAvatar = async (req, res, next) => {
   try {
-    const path = PATH;
-    const { avatar } = req.body;
-    if (avatar !== "default.png") {
-      fs.unlinkSync(path + avatar);
-    }
+    // const path = PATH;
+    const { avatarId } = req.body;
+    // if (avatar !== "default.png") {
+    //   fs.unlinkSync(path + avatar);
+    // }
+    const response = await cloudinary.uploader.destroy(avatarId);
+    if (response.result)
     return res.json({ status: true, result: "deleted" });
   } catch (ex) {
     next(ex);
@@ -426,17 +435,20 @@ module.exports.changeGroupBackground = async (req, res) => {
   const { chatId, background } = req.body;
   const { _id } = req.user;
   if (await isAdmin(_id, chatId)) {
-    const bgName = "gpbg" + Date.now() + ".png";
-    const bgPath = PATH + "background/" + bgName;
-    const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
-
+    // const bgName = "gpbg" + Date.now() + ".png";
+    // const bgPath = PATH + "background/" + bgName;
+    // const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    // fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
+    const response = await cloudinary.uploader.upload(background, {
+      upload_preset: "groupBg",
+    });
+    const url = response.secure_url;
+    const image_id = response.public_id;
     try {
-      await Chat.findByIdAndUpdate(chatId, { background: bgName });
+      await Chat.findByIdAndUpdate(chatId, { background: url, backgroundId: image_id });
       res.status(200).json({ msg: "updated" });
     } catch (error) {
-      res.status(400);
-      throw new Error(error.message);
+      next(err);
     }
   } else {
     res.status(401).json("No permission in operating with current credit");
@@ -446,11 +458,13 @@ module.exports.changeGroupBackground = async (req, res) => {
 // method:DELETE  route:  /group/deleteBackground
 module.exports.deleteGroupBackground = async (req, res, next) => {
   try {
-    const path = PATH+"background/";
-    const { avatar } = req.body;
-    if (avatar && avatar !== "default.png") {
-      fs.unlinkSync(path + avatar);
-    }
+    // const path = PATH+"background/";
+    const { avatarId } = req.body;
+    // if (avatar && avatar !== "default.png") {
+    //   fs.unlinkSync(path + avatar);
+    // }
+    const response = await cloudinary.uploader.destroy(avatarId);
+    if (response.result)
     return res.json({ status: true, result: "deleted" });
   } catch (ex) {
     next(ex);

@@ -5,11 +5,10 @@ import "./friend.scss";
 import { TiUserDeleteOutline } from "react-icons/ti";
 import { IoCloseOutline, IoCheckmarkOutline } from "react-icons/io5";
 import { denyFriendsAPI } from "../../api/api";
-import { AuthContext } from "../../contexts/authContext";
+import { userAvatarHandler } from "../../functions";
 const Friend = ({ friend, refresh, setRefresh }) => {
   const [friendInfo, setFriendInfo] = useState();
   const [deleteInfo, setDeleteInfo] = useState();
-  const { currentUser } = useContext(AuthContext);
   const showInfo = () => {
     setFriendInfo({ width: "506px" });
   };
@@ -34,11 +33,7 @@ const Friend = ({ friend, refresh, setRefresh }) => {
       <div className="friendListi">
         <div className={`friendIcon ${friend.isOnline ? "onlined" : ""}`}>
           <img
-            src={
-              friend.avatarImage
-                ? require(`../../images/${friend.avatarImage}`)
-                : require(`../../images/default.png`)
-            }
+            src={userAvatarHandler(friend.avatarImage)}
             alt="avatar"
             className="icon showBtn"
           ></img>

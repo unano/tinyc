@@ -6,11 +6,11 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 let fs = require("fs");
 const jwt = require("jsonwebtoken");
-
+const { cloudinary } = require("../utils/cloudinary");
 let refreshTokens = [];
 //route: /user
 
-var PATH = `${__dirname}/client/src/images/`;
+var PATH = `./client/src/images/`;
 
 const generateAccessToken = (user) =>{
   return jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -393,22 +393,28 @@ module.exports.denyFriend = async (req, res, next) => {
 //   method:POST  route: /uploadAvatar
 module.exports.uploadAvatar = async (req, res, next) => {
   try {
-    const name = Date.now() + ".png";
-    const path = PATH + name;
+    // const name = Date.now() + ".png";
+    // const path = PATH + name;
     const { _id } = req.user;
     const { base64image } = req.body;
+    
+    const response = await cloudinary.uploader.upload(base64image, {
+      upload_preset: "userAvatar",
+    });
+    const url = response.secure_url;
+    const image_id = response.public_id;
 
     // to convert base64 format into random filename
-    const base64Data = base64image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    // const base64Data = base64image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
 
-    fs.writeFileSync(path, base64Data, { encoding: "base64" });
+    // fs.writeFileSync(path, base64Data, { encoding: "base64" });
 
     const upload = await User.findOneAndUpdate(
       { _id: _id },
-      { $set: { avatarImage: name } },
+      { $set: { avatarImage: url, avatarId: image_id } },
       { new: true }
     ).select("-password -friends");
-    return res.json({ status: true, upload });
+    return res.json({ status: true, user: upload });
   } catch (ex) {
     next(ex);
   }
@@ -417,11 +423,13 @@ module.exports.uploadAvatar = async (req, res, next) => {
 //   method:DELETE  route: /deleteAvatar
 module.exports.deleteAvatar = async (req, res, next) => {
   try {
-    const path = PATH;
-    const { avatar } = req.body;
-    if (avatar !== "default.png") {
-      fs.unlinkSync(path + avatar);
-    }
+    // const path = PATH;
+    const { avatarId } = req.body;
+    // if (avatar !== "default.png") {
+    //   fs.unlinkSync(path + avatar);
+    // }
+    const response = await cloudinary.uploader.destroy(avatarId);
+    if(response.result)
     return res.json({ status: true, result: "deleted" });
   } catch (ex) {
     next(ex);

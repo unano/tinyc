@@ -4,7 +4,7 @@ import { AuthContext } from "../../contexts/authContext";
 import { useNavigate } from "react-router-dom";
 import Back from "../../imgs/back2.png";
 import LeftAreaSetting from "../leftAreaSetting";
-
+import { userAvatarHandler } from "../../functions";
 const LeftIcons = ({
   ischat = false,
   chatBtnSwitch = {},
@@ -23,11 +23,7 @@ const LeftIcons = ({
           <div className="chatLeftIn" style={chatBtnSwitch}>
             <div className="backOut">
               <img
-                src={
-                  currentUser.avatarImage
-                    ? require(`../../images/${currentUser.avatarImage}`)
-                    : require(`../../images/default.png`)
-                }
+                src={userAvatarHandler(currentUser.avatarImage)}
                 alt="logo"
                 className="back"
                 onClick={navigateToUser}
@@ -40,11 +36,7 @@ const LeftIcons = ({
         ) : (
           <div className="backOut">
             <img
-              src={
-                currentUser.avatarImage
-                  ? require(`../../images/${currentUser.avatarImage}`)
-                  : require(`../../images/default.png`)
-              }
+              src={userAvatarHandler(currentUser.avatarImage)}
               alt="logo"
               className="back"
               onClick={navigateToUser}
@@ -52,7 +44,7 @@ const LeftIcons = ({
           </div>
         )}
       </div>
-      <LeftAreaSetting/>
+      <LeftAreaSetting />
     </>
   );
 };

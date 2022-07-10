@@ -22,6 +22,7 @@ import AvatarEditor from "../components/avatarEditor";
 import LeftAreaBack from "../components/leftAreaBackV";
 import Logo from "../imgs/tinyc.png";
 import LoadingBar from "../components/loadingBar";
+import {userAvatarHandler} from "../functions"
 
 function Personal() {
   const { currentUser, resetUserData, logout } = useContext(AuthContext);
@@ -66,17 +67,19 @@ function Personal() {
   //   }, [currentUser]);
 
     const submitAvatar = async () => {
-    const previousImage = currentUser.avatarImage;
-    const updatedUser = await uploadAvatarAPI(preview);
     setLoading(true);
-    setTimeout(() => {
-      resetUserData(updatedUser.data.upload);
-      setLoading(false);
-      setPreview(null);
-      setTimeout(async () => await deleteAvatarAPI(previousImage), 2000);
-    }, 1200);
+    const updatedUser = await uploadAvatarAPI(preview);
+    // setTimeout(() => {
+    await resetUserData(updatedUser.data.user);
+    setLoading(false);
+    setPreview(null);
+    if (currentUser.avatarId){
+      setTimeout(async () => await deleteAvatarAPI(currentUser.avatarId), 2000);
+    }
+    // }, 200);
   };
 
+  console.log(userAvatarHandler(currentUser.avatarImage));
   return (
     <div className="chatContainer">
       <img src={Logo} alt="logo" className="logo"></img>
@@ -93,16 +96,12 @@ function Personal() {
             />
           )}
           <div className="userOverflow">
-            <div className="loadingCon">
-              {loading && <LoadingBar />}
-            </div>
+            <div className="loadingCon">{loading && <LoadingBar />}</div>
             <div className="flex">
               <div className="avatarContainer">
                 <img
                   src={
-                    currentUser.avatarImage
-                      ? require(`../images/${currentUser.avatarImage}`)
-                      : require(`../images/default.png`)
+                    userAvatarHandler(currentUser.avatarImage)
                   }
                   alt="avatar"
                   className="avatar"

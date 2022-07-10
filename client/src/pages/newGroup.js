@@ -14,20 +14,21 @@ import { blobToBase64 } from "../functions";
 import { useNavigate } from "react-router-dom";
 import Logo from "../imgs/tinyc.png";
 import "./common.scss";
+import { userAvatarHandler } from "../functions";
 const NewGroup = () => {
   const { currentUser } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [shownFriends, setShownFriends] = useState([]);
-  const [friends, setFriends] = useState([]);   
-  const [chosenUsers, setChosenUsers] = useState([]);  //选中的要添加进群的好友
+  const [friends, setFriends] = useState([]);
+  const [chosenUsers, setChosenUsers] = useState([]); //选中的要添加进群的好友
   const [GPName, setGPName] = useState("");
   const [warning, SetWarning] = useState(false);
   const [showClipper, setShowClipper] = useState(false);
   const [showBGClipper, setShowBGClipper] = useState(false);
   const [photoURL, setPhotoURL] = useState();
-  const [gpbgExpand, setGpbgExpand] = useState(false);  //是否展开群组背景选项
+  const [gpbgExpand, setGpbgExpand] = useState(false); //是否展开群组背景选项
   const navigate = useNavigate();
   useEffect(() => {
     const getFriendsFunc = async () => {
@@ -67,7 +68,6 @@ const NewGroup = () => {
     }
   };
 
-
   //选择组员
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
@@ -91,7 +91,6 @@ const NewGroup = () => {
       return result;
     }
   };
-
 
   //检查各项输入是否合法，合法则创建群组并进行跳转
   const check = async () => {
@@ -213,11 +212,7 @@ const NewGroup = () => {
                           onClick={() => chooseOrNot(friend._id)}
                         >
                           <img
-                            src={
-                              friend.avatarImage
-                                ? require(`../images/${friend.avatarImage}`)
-                                : require(`../images/default.png`)
-                            }
+                            src={userAvatarHandler(friend.avatarImage)}
                             alt="avatar"
                             className="friendAvatar"
                           ></img>

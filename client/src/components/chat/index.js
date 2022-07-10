@@ -4,6 +4,9 @@ import "./chat.scss";
 import { AuthContext } from "../../contexts/authContext";
 import { SettingContext } from "../../contexts/settingContext";
 import LoadingBar from "../loadingBar";
+import { userAvatarHandler, groupBgHandler ,groupAvatarHandler } from "../../functions"; 
+import { DEFAULT_BG_URL_SINGLE } from "../../common";
+
 const Chat = ({ chat, switchs, right }) => {
   const { currentUser } = useContext(AuthContext);
   const { showBg } = useContext(SettingContext);
@@ -40,9 +43,9 @@ const Chat = ({ chat, switchs, right }) => {
         <div className="chatIcon">
           <img
             src={
-              currentUser.avatarImage
-                ? require(`../../images/${avatar}`)
-                : require(`../../images/default.png`)
+              chat.isGroupChat
+                ? groupAvatarHandler(chat.avatar)
+                : userAvatarHandler(currentChatAvatar)
             }
             alt="logo"
             className="icon"
@@ -54,11 +57,7 @@ const Chat = ({ chat, switchs, right }) => {
             (chat.isGroupChat ? (
               <div>
                 <img
-                  src={
-                    chat.background
-                      ? require(`../../images/background/${chat.background}`)
-                      : require(`../../images/background/defaultBG.png`)
-                  }
+                  src={groupBgHandler(chat.background)}
                   alt="logo"
                   className="background"
                   onClick={switchChat}
@@ -69,7 +68,7 @@ const Chat = ({ chat, switchs, right }) => {
             ) : (
               <div>
                 <img
-                  src={require(`../../images/background/defaultBGSingle.png`)}
+                  src={DEFAULT_BG_URL_SINGLE}
                   alt="logo"
                   className="background"
                   onClick={switchChat}

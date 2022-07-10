@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const host = "https://tinyc-chat-app.herokuapp.com";
+const host = "http://localhost:8080";
+//"https://tinyc-chat-app.herokuapp.com";
 const userRoot = `${host}/api/user`;
 const messageRoot = `${host}/api/message`;
 const chatRoot = `${host}/api/chat`;
@@ -136,9 +137,9 @@ export const uploadAvatarAPI = (base64image) => {
 
 //   /deleteAvatar
 // 更新头像后删除  发送： 头像文件名
-export const deleteAvatarAPI = (avatar) => {
+export const deleteAvatarAPI = (avatarId) => {
   return axios
-    .delete(deleteAvatarRoute, { data: { avatar } })
+    .delete(deleteAvatarRoute, { data: { avatarId } })
     .then((res) => res);
 };
 
@@ -304,9 +305,9 @@ export const changeGroupAvatar = (chatId, avatar) => {
 
 //   /group/deleteAvatar
 // （换头像后）删除旧头像   发送：群头像
-export const deleteGroupAvatarAPI = (avatar) => {
+export const deleteGroupAvatarAPI = (avatarId) => {
   return axios
-    .delete(deleteGroupAvatarRoute, { data: { avatar } })
+    .delete(deleteGroupAvatarRoute, { data: { avatarId } })
     .then((res) => res);
 };
 
@@ -320,9 +321,9 @@ export const changeGroupBackgroundAPI = (chatId, background) => {
 
 //   /group/deleteBackground
 // （换背景后）删除旧背景  发送： 群背景
-export const deleteGroupBackgroundAPI = (avatar) => {
+export const deleteGroupBackgroundAPI = (avatarId) => {
   return axios
-    .delete(deleteGroupBackgroundRoute, { data: { avatar } })
+    .delete(deleteGroupBackgroundRoute, { data: { avatarId } })
     .then((res) => res);
 };
 
