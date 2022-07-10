@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 let refreshTokens = [];
 //route: /user
 
+var PATH = `${__dirname}/client/src/images/`;
 
 const generateAccessToken = (user) =>{
   return jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -393,7 +394,7 @@ module.exports.denyFriend = async (req, res, next) => {
 module.exports.uploadAvatar = async (req, res, next) => {
   try {
     const name = Date.now() + ".png";
-    const path = "./client/src/images/" + name;
+    const path = PATH + name;
     const { _id } = req.user;
     const { base64image } = req.body;
 
@@ -416,7 +417,7 @@ module.exports.uploadAvatar = async (req, res, next) => {
 //   method:DELETE  route: /deleteAvatar
 module.exports.deleteAvatar = async (req, res, next) => {
   try {
-    const path = "./client/src/images/";
+    const path = PATH;
     const { avatar } = req.body;
     if (avatar !== "default.png") {
       fs.unlinkSync(path + avatar);

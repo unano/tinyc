@@ -3,6 +3,8 @@ const User = require("../models/userModel");
 const Messages = require("../models/messageModel");
 let fs = require("fs");
 
+var PATH = `${__dirname}/client/src/images/`;
+
 const isAdmin = async (user_id, chat_id) => {
   const result = await Chat.findOne({
     $and: [{ _id: chat_id }, { groupAdmin: user_id }],
@@ -84,12 +86,12 @@ module.exports.createGropuChat = async (req, res, next) => {
   const applyerId = _id;
   var bgName;
   const avatarName = "avatar" + Date.now() + ".png";
-  const avatarPath = "./client/src/images/" + avatarName;
+  const avatarPath = PATH + avatarName;
   const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
   fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
   if (background) {
     bgName = "gpbg" + Date.now() + ".png";
-    const bgPath = "./client/src/images/background/" + bgName;
+    const bgPath = PATH + "background/" + bgName;
     const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
     fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
   } else {
@@ -390,7 +392,7 @@ module.exports.changeGroupAvatar = async (req, res) => {
   const { _id } = req.user;
   if (await isAdmin(_id, chatId)) {
     const avatarName = "avatar" + Date.now() + ".png";
-    const avatarPath = "./client/src/images/" + avatarName;
+    const avatarPath = PATH + avatarName;
     const avatarImage = avatar.replace(/^data:([A-Za-z-+/]+);base64,/, "");
     fs.writeFileSync(avatarPath, avatarImage, { encoding: "base64" });
 
@@ -408,7 +410,7 @@ module.exports.changeGroupAvatar = async (req, res) => {
 //  method:DELETE  route: /group/deleteAvatar
 module.exports.deleteGroupAvatar = async (req, res, next) => {
   try {
-    const path = "./client/src/images/";
+    const path = PATH;
     const { avatar } = req.body;
     if (avatar !== "default.png") {
       fs.unlinkSync(path + avatar);
@@ -425,7 +427,7 @@ module.exports.changeGroupBackground = async (req, res) => {
   const { _id } = req.user;
   if (await isAdmin(_id, chatId)) {
     const bgName = "gpbg" + Date.now() + ".png";
-    const bgPath = "./client/src/images/background/" + bgName;
+    const bgPath = PATH + "background/" + bgName;
     const bgImage = background.replace(/^data:([A-Za-z-+/]+);base64,/, "");
     fs.writeFileSync(bgPath, bgImage, { encoding: "base64" });
 
@@ -444,7 +446,7 @@ module.exports.changeGroupBackground = async (req, res) => {
 // method:DELETE  route:  /group/deleteBackground
 module.exports.deleteGroupBackground = async (req, res, next) => {
   try {
-    const path = "./client/src/images/background/";
+    const path = PATH+"background/";
     const { avatar } = req.body;
     if (avatar && avatar !== "default.png") {
       fs.unlinkSync(path + avatar);
