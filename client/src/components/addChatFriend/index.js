@@ -51,18 +51,18 @@ const AddChatFriend = ({ currentChat, showGPAddFriends, setCurrentChat }) => {
       <div className="chatFriendAdd">
         {shownFriends.map((friend) => {
           return (
-            <div className="friendInfo" key={friend._id}>
-              <IoAddOutline
-                className="add"
-                onClick={() => addToChat(friend._id)}
-              />
-              <img
-                src={
-                  userAvatarHandler(friend.avatarImage)
-                }
-                alt="avatar"
-                className="friendAvatar"
-              ></img>
+            <div className="friendInfos">
+              <div className="friendInfo" key={friend._id}>
+                <IoAddOutline
+                  className="add"
+                  onClick={() => addToChat(friend._id)}
+                />
+                <img
+                  src={userAvatarHandler(friend.avatarImage)}
+                  alt="avatar"
+                  className="friendAvatar"
+                ></img>
+              </div>
               <div className="name">{friend.username}</div>
             </div>
           );
