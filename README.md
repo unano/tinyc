@@ -14,6 +14,16 @@ The chat app is now deployed on https://tinyc-chat-app.herokuapp.com/ and you ca
 
 TinyC部署于https://tinyc-chat-app.herokuapp.com/
 
+To quickly experience, you can use the proived accunt: 
+
+> Username: passenger Password: Passenger0101
+
+login with this account so that you don't need to create several accounts and add friends to experience all kinds of functions,since we cretated several chats and add several friends in this account:
+
+为了能方便快速体验各种功能，而不用创建多个新账号后互加好友才能体验各种功能，这里提供了一个账户以供体验和测试：
+
+> Username: passenger Password: Passenger0101
+
 ## deploy locally
 
 follow the code below to clone the whole project, install and run it:
@@ -27,16 +37,6 @@ npm run dev
 > For deploying on heroku, the backend is connected to heroku by default, please change the route from "https://tinyc-chat-app.herokuapp.com" to localhost like "http://localhost:8080" in \client\src\api\api.js and in \client\src\pages\chats.js to connect to the local server before running client and server.
 
 > 代码默认连接于部署于heroku的后端，如果想连接本地服务器端，请修改\client\src\api\api.js 和 \client\src\pages\chats.js路径下的端口,将“https://tinyc-chat-app.herokuapp.com”改为例如“http://localhost:8080”。
-
-To quickly experience, you can use the proived accunt: 
-
-> Username: passenger Password: Passenger0101
-
-login with this account so that you don't need to create several accounts and add friends to experience all kinds of functions,since we cretated several chats and add several friends in this account:
-
-为了能方便快速体验各种功能，而不用创建多个新账号后互加好友才能体验各种功能，这里提供了一个账户以供体验和测试：
-
-> Username: passenger Password: Passenger0101
 
 
 ## Features & Function introduction
