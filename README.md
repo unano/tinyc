@@ -77,7 +77,7 @@ npm run dev
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526051/gitHubIntro/groupChat_xbcwxq.png" width=70%>
 
-右侧有个抽卡条可以查看该群群员，非管理员只能查看群员。
+右侧有个抽拉条可以查看该群群员，非管理员只能查看群员。
 群管理（群创建者）可以在此添加和删除群员：
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525994/gitHubIntro/adminChat_kecb5c.png" width=70%>
@@ -90,7 +90,7 @@ npm run dev
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657527173/gitHubIntro/typing_u7ae9j.png" width=50%>
 
-当你在某群聊时，其他群聊在右侧有新消息会进行提醒（可关闭，详见Settings）。
+当你在某群聊时，其他聊天在右侧有新消息会进行提醒（可关闭，详见Settings）。
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526082/gitHubIntro/newMsg_rpkube.png" width=70%>
 
@@ -128,7 +128,7 @@ npm run dev
 
 支持群头像以及群背景的裁剪：
 
-<img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525997/gitHubIntro/clip01_wojqfw.png" width=70%>
+<img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525997/gitHubIntro/clip01_wojqfw.png" width=100%>
 
 ### **Personal page**
 
@@ -145,13 +145,13 @@ npm run dev
 
 可以更改自己的头像，用户名和签名，同时支持头像裁剪：
 
-<img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525995/gitHubIntro/avatarClip_aee48q.png" width=70%>
+<img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525995/gitHubIntro/avatarClip_aee48q.png" width=90%>
 
 点击右侧导航栏可以切换至查看自己创建的群和自己加入的群，
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526076/gitHubIntro/join_create_aogwjk.png" width=70%>
 
-可以鼠标悬浮于左侧小红快并点击退出加入的群聊，退出前会有二次确认(红块体积小是为了防止误触)
+可以鼠标悬浮于左侧小红块并点击退出加入的群聊，退出前会有二次确认(红块体积小是为了防止误触)
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525997/gitHubIntro/delete1_dcafu5.png" width=50%>
 
@@ -196,7 +196,9 @@ npm run dev
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526039/gitHubIntro/gpSearch_sepjpa.png" width=60%>
 
 用户可以对群聊广场的群聊进行随机排序，按创建时间排序和按群总人数排序。
-右下角有一个六面骰子和20面骰子，点击它们分别是重新随机获取6个群聊和20个群聊。由于在群聊狠多的情况下全部取出群聊是不现实的，所以采用随机抽取的方式来让用户随机查看群聊。
+右下角有一个六面骰子和20面骰子，点击它们分别是重新随机获取6个群聊和20个群聊。由于在网站总群聊很多的情况下全部取出群聊是不现实的，所以采用随机抽取的方式来让用户随机查看群聊。
+
+<img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657530613/gitHubIntro/dice_pzpuhv.png" width=30%>
 
 用户点击群头像或者群名可查看群聊详细信息，该布局与管理员管理群页面类似，不同的是普通用户不能进行群内容修改，也无法看到申请加入该群的用户，取而代之的是能看到群管理员是谁。
 
