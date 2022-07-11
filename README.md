@@ -38,6 +38,20 @@ npm run dev
 
 > 代码默认连接于部署于heroku的后端，如果想连接本地服务器端，请修改\client\src\api\api.js 和 \client\src\pages\chats.js路径下的端口,将“https://tinyc-chat-app.herokuapp.com”改为例如“http://localhost:8080”。
 
+API Configuration:
+
+```bat
+PORT
+MONGO_URL
+JWT_SECRET
+//JWT_REFRESH_SECRET
+NODE_ENV
+CLOUDINARY_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+
+```
+
 
 ## Features & Function introduction
 

@@ -29,8 +29,8 @@ import LeftArea from "../components/leftArea";
 import Logo from "../imgs/tinyc.png";
 import { userAvatarHandler, groupAvatarHandler } from "../functions";
 
-const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
-// const ENDPOINT = "http://localhost:8080";
+// const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
+const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {
@@ -85,7 +85,7 @@ function Chat() {
       });
       socket.on("stop typingBro", () => setIsTyping(false));
     }
-  }, [currentUser]);
+  }, [currentUser._id]);
 
   //切换到右侧时滑动至消息最底部
   useEffect(() => {
