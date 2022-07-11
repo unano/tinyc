@@ -43,7 +43,7 @@ login with this account so that you don't need to create several accounts and ad
 
 由于本网页的设计上有些奇怪之处，有些可能的功能会被忽视，所以在此简略介绍该网站的大致功能。
 
-### User login and register
+### **User login and register**
 
 注册相对简单，只需输入用户名密码。
 登录界面和注册界面是一体的，默认登录框为展开注册框为收起，点击注册区域或者登录区域以进行切换：
@@ -61,7 +61,7 @@ login with this account so that you don't need to create several accounts and ad
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526084/gitHubIntro/registerSucceed_rodxnk.png" width=50%>
 
-### Chats page
+### **Chats page**
 
 登录成功默认进入聊天区域：
 
@@ -94,7 +94,7 @@ login with this account so that you don't need to create several accounts and ad
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526082/gitHubIntro/newMsg_rpkube.png" width=70%>
 
-### Friends page
+### **Friends page**
 
 查看所有好友及其个性签名，其中绿色背景为在线，白色背景为下线：
 
@@ -117,7 +117,7 @@ login with this account so that you don't need to create several accounts and ad
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525998/gitHubIntro/duplicate_fx8laz.png"  width=70%>
 
 
-### Create Group page
+### **Create Group page**
 
 创建群组须要填写群名，群头像以及群员，群员不能少于2个（不包括自己）。群背景可以不填写：
 
@@ -130,7 +130,7 @@ login with this account so that you don't need to create several accounts and ad
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525997/gitHubIntro/clip01_wojqfw.png" width=70%>
 
-### Personal page
+### **Personal page**
 
 点击左上角头像进入个人主页:
 
@@ -177,7 +177,7 @@ login with this account so that you don't need to create several accounts and ad
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657525998/gitHubIntro/clipGp_tuq8bs.png" width=90%>
 
 
-### Ground page
+### **Ground page**
 
 该页面为群组广场，初进入该页面网站会为用户从数据库随机抽取20个群聊展示（不满20则全拿出）。用户可以将鼠标悬浮在任何一个群信息框以展开信息：
 
@@ -202,7 +202,7 @@ login with this account so that you don't need to create several accounts and ad
 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526060/gitHubIntro/gpInfo_hishth.png" width=70%>
 
-### Settings
+### **Settings**
 
 点击左侧设置按钮可展开设置，第一个按钮为关闭/打开新消息提醒，关闭后新消息不会在左侧显示。
 
