@@ -29,8 +29,8 @@ import LeftArea from "../components/leftArea";
 import Logo from "../imgs/tinyc.png";
 import { userAvatarHandler, groupAvatarHandler } from "../functions";
 
-const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
-// const ENDPOINT = "http://localhost:8080";
+// const ENDPOINT = "https://tinyc-chat-app.herokuapp.com";
+const ENDPOINT = "http://localhost:8080";
 var socket, selectedChatCompare;
 
 function Chat() {
@@ -78,7 +78,11 @@ function Chat() {
         setRefresh(!refresh);
         setScoketConnected(true);
       });
-      socket.on("typingBro", () => setIsTyping(true));
+      socket.on("typingBro", () => {
+        if (!currentChat.isGroupChat){
+          setIsTyping(true);
+        }
+      });
       socket.on("stop typingBro", () => setIsTyping(false));
     }
   }, [currentUser]);
@@ -229,7 +233,7 @@ function Chat() {
       setDisabled(true);
       const { data } = await sendMsgAPI(msg, currentChat._id);
       socket.emit("stop typing", currentChat._id);
-      socket.emit("new message", data);
+      socket.emit("new message", data, currentChat._id);
       // const msgs = [...messages];
       // msgs.push({ sender: {_id:currentUser._id}, message: msg });
       setMessages([...messages, data]);

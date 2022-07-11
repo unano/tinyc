@@ -19,17 +19,17 @@ app.use("/api/user", userRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/chat", chatRoutes);
 
-const __dirname1 = path.resolve();
-  if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname1, "/client/build")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
-    });
-  } else {
-    app.get("/", (req, res) => {
-      res.send("API is running..");
-    });
-  }
+// const __dirname1 = path.resolve();
+//   if (process.env.NODE_ENV === "production") {
+//     app.use(express.static(path.join(__dirname1, "/client/build")));
+//     app.get("*", (req, res) => {
+//       res.sendFile(path.resolve(__dirname1, "client", "build", "index.html"));
+//     });
+//   } else {
+//     app.get("/", (req, res) => {
+//       res.send("API is running..");
+//     });
+//   }
 
 try {
   mongoose
@@ -72,12 +72,12 @@ io.on("connection",(socket)=>{
     socket.broadcast.to(room).emit("stop typingBro")
   );
 
-  socket.on('new message', (newMsgReceived) =>{
+  socket.on('new message', (newMsgReceived, roomId) =>{
     var chat = newMsgReceived.chat;
     if(!chat.users) return console.log('chat.users not defined');
     chat.users.forEach(user => {
       if(user._id == newMsgReceived.sender._id) return;
-      socket.in(user._id).emit('message received',newMsgReceived);
+      socket.in(roomId).emit('message received',newMsgReceived);
       
     });
 
