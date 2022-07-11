@@ -1,12 +1,12 @@
-# Tinyc 
+# tinyc 
 <img src="https://res.cloudinary.com/drspqpjo3/image/upload/v1657526085/gitHubIntro/tinyc_zbwc2t.png" width=50% height=50%>
 
 
 ## Introduction
 
-Tinyc, which means Tiny Chat, is a lightweight instant chat app based on web platform. It is mainly made by React, Node.js, express, MongoDB and socket.io.
+tinyc, which means 'tiny chat', is a lightweight instant chat app based on web platform. It is mainly made by React, Node.js, express, MongoDB and socket.io.
 
-Tinyc是一款轻量级的，基于web开发的一款即时线上聊天软件,主要技术栈为React, Node.js, express, MongoDB and socket.io。
+tinyc，意思为tiny chat, 是一款轻量级的，基于web开发的一款即时线上聊天软件,主要技术栈为React, Node.js, express, MongoDB and socket.io。
 
 ## See it yourself
 
