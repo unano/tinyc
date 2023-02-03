@@ -10,9 +10,9 @@ tinyc，意思为tiny chat, 是一款轻量级的，基于web开发的一款即�
 
 ## See it yourself
 
-The chat app is now deployed on https://tinyc-chat-app.herokuapp.com/ and you can have a view of that.
+The chat app is now deployed on https://aquamarine-longma-96e11d.netlify.app and you can have a view of that.
 
-TinyC部署于https://tinyc-chat-app.herokuapp.com/
+TinyC部署于https://aquamarine-longma-96e11d.netlify.app
 
 To quickly experience, you can use the proived accunt: 
 
@@ -34,9 +34,11 @@ git clone https://github.com/unano/tinyc
 npm install
 npm run dev
 ```
-> For deploying on heroku, the backend is connected to heroku by default, please change the route from "https://tinyc-chat-app.herokuapp.com" to localhost like "http://localhost:8080" in \client\src\api\api.js and in \client\src\pages\chats.js to connect to the local server before running client and server.
+> ~~For deploying on heroku, the backend is connected to heroku by default, please change the route from "https://tinyc-chat-app.herokuapp.com" to localhost like "http://localhost:8080" in \client\src\api\api.js and in \client\src\pages\chats.js to connect to the local server before running client and server.~~
 
-> 代码默认连接于部署于heroku的后端，如果想连接本地服务器端，请修改\client\src\api\api.js 和 \client\src\pages\chats.js路径下的端口,将“https://tinyc-chat-app.herokuapp.com”改为例如“http://localhost:8080”。
+> ~~代码默认连接于部署于heroku的后端，如果想连接本地服务器端，请修改\client\src\api\api.js 和 \client\src\pages\chats.js路径下的端口,将“https://tinyc-chat-app.herokuapp.com”改为例如“http://localhost:8080”。~~
+
+请不要连接至heroku,因为heroku已经开始收费,所以部署于heroku的后端已被抛弃,服务器现在部署在render上,这里不提供该链接,请运行本地服务器
 
 API Configuration:
 
