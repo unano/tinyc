@@ -10,7 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "dev0": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --node production",
+    "build": "react-scripts build",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "",
