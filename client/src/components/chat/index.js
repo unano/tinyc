@@ -10,6 +10,8 @@ import {
   groupAvatarHandler,
 } from '../../functions'
 import { DEFAULT_BG_URL_SINGLE } from '../../common'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 
 const Chat = ({ chat, switchs, right }) => {
   const { currentUser } = useContext(AuthContext)
@@ -45,7 +47,7 @@ const Chat = ({ chat, switchs, right }) => {
     <>
       <div className="friendList">
         <div className="chatIcon">
-          <img
+          <LazyLoadImage
             src={
               chat.isGroupChat
                 ? groupAvatarHandler(chat.avatar)
@@ -54,7 +56,8 @@ const Chat = ({ chat, switchs, right }) => {
             alt="logo"
             className="icon"
             onClick={switchChat}
-          ></img>
+            effect="blur"
+          ></LazyLoadImage>
         </div>
         <div className="friendNameAndWord">
           {showBg &&

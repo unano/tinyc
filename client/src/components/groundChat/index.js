@@ -7,6 +7,8 @@ import {
   groupBgHandler,
   groupAvatarHandler,
 } from '../../functions'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 
 const GroundChat = ({ chat }) => {
   const { currentUser } = useContext(AuthContext)
@@ -31,20 +33,22 @@ const GroundChat = ({ chat }) => {
     <>
       <div className="GPchat">
         <div className="GPchatIn">
-          <img
+          <LazyLoadImage
             src={groupBgHandler(chat.background)}
             alt="logo"
             className="backgroundPic"
-          ></img>
+            effect="blur"
+          ></LazyLoadImage>
           <div className="transparentCover"></div>
           <div className="gpContent">
             <div className="flex">
-              <img
+              <LazyLoadImage
                 src={groupAvatarHandler(chat.avatar)}
                 alt="avatar"
                 className="gpAvatar"
                 onClick={() => navigates(chat._id)}
-              ></img>
+                effect="blur"
+              ></LazyLoadImage>
               <div
                 onClick={() => navigates(chat._id)}
                 style={{ cursor: 'pointer' }}
