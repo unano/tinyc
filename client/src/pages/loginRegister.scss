@@ -1,102 +1,115 @@
 @import '../styleVariables/variables.scss';
 
-@keyframes enlarge
-{
-0% {transform: scale(60%); opacity: 0.4;}
-100% {transform: scale(100%); opacity: 1;}
+@keyframes enlarge {
+  0% {
+    transform: scale(60%);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(100%);
+    opacity: 1;
+  }
 }
 
-.loginContainer{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
+.loginContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
 }
-.loginBody{
-    transform: scale(112%);
-    width: 700px;
-    height: 700px;
+.loginBody {
+  transform: scale(112%);
+  width: 700px;
+  height: 700px;
+  display: flex;
+  margin: auto;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 1rem;
+  .loginAndRegister {
+    width: 600px;
+    height: 600px;
+    box-sizing: border-box;
+    padding: 50px;
+    padding-top: 80px;
     display: flex;
-    margin: auto;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-end;
-    gap: 1rem;
-    .loginAndRegister{
-      width: 600px;
-      height: 600px;
-      box-sizing: border-box;
-      padding: 50px;
-      padding-top: 80px;
-      display: flex;
-      flex-direction: column;
-      border-radius: 0 50px 50px 50px;
-      border: 1px solid transparent;
-      box-shadow: 0px 0px 0px $mainColor;
-      animation:showLogin 2s linear;
-      transform-origin: top left;
-      transition: all 0.5s;
-      position: relative;
-      overflow: hidden;
-      &:hover{
-        border: 1px solid black;
-      }
-      .head{
-        margin-bottom: 80px;
-        .logoInLogin{
-          width: 220px;
-        }
-      }
-      .body{
-        display: flex;
-        flex-direction: row;
-        .login,.loginExpand{
-          width: 103px;
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          transition: all 0.5s;
-          margin-right: 30px;
-          position: relative;
-          padding-left: 2px;
-          flex-shrink: 0;
-          opacity: 0.3;
-        }
-        .loginExpand{
-          width: 380px;
-          opacity: 1 
-        }
-      }
-      
+    flex-direction: column;
+    border-radius: 0 50px 50px 50px;
+    border: 1px solid transparent;
+    box-shadow: 0px 0px 0px $mainColor;
+    animation: showLogin 2s linear;
+    transform-origin: top left;
+    transition: all 0.5s;
+    position: relative;
+    overflow: hidden;
+    &:hover {
+      border: 1px solid black;
     }
+    .head {
+      margin-bottom: 80px;
+      .logoInLogin {
+        width: 220px;
+      }
+    }
+    .body {
+      display: flex;
+      flex-direction: row;
+      .login,
+      .loginExpand {
+        width: 103px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transition: all 0.5s;
+        margin-right: 30px;
+        position: relative;
+        padding-left: 2px;
+        flex-shrink: 0;
+        opacity: 0.3;
+      }
+      .loginExpand {
+        width: 380px;
+        opacity: 1;
+      }
+    }
+  }
 }
 
-@keyframes showLogin
-{
-0% {border: 1px solid transparent;}
-50% { border: 1px solid transparent;}
-80% { border: 1px solid black;}
-100% {border: 1px solid transparent;}
+@keyframes showLogin {
+  0% {
+    border: 1px solid transparent;
+  }
+  50% {
+    border: 1px solid transparent;
+  }
+  80% {
+    border: 1px solid black;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
 }
 
-.simpWordIntro{
+.simpWordIntro {
   font-family: 'Raleway', sans-serif;
   display: inline-block;
   font-size: 20px;
   margin-left: 20px;
 }
 
-.body{
+.body {
   display: flex;
   flex-direction: row;
 }
 
-.loginForm{
+.loginForm {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.loginWord,.loginWordStretch{
+.loginWord,
+.loginWordStretch {
   font-family: 'Raleway', sans-serif;
   font-size: 30px;
   padding-left: 15px;
@@ -109,70 +122,73 @@
   z-index: 10;
 }
 
-.loginWord{
+.loginWord {
   height: 30px;
 }
 
-
-
-.loginInputContiner{
-  width:100%;
-  height:46px;
-  border:1.5px solid black;
+.loginInputContiner {
+  width: 100%;
+  height: 46px;
+  border: 1.5px solid black;
   border-radius: 100px;
-  padding:2px;
+  padding: 2px;
   transition: all 0.5s;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
 }
 
-.loginInputContiner2{
-  width:102%;
-  height:46px;
+.loginInputContiner2 {
+  width: 102%;
+  height: 46px;
   border-radius: 100px;
-  padding:2px;
+  padding: 2px;
   transition: all 0.5s;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.loginInputContiner:hover>.loginInputName{
+.loginInputContiner:hover > .loginInputName {
   width: 100px;
   color: white;
   background-color: $mainColorDark;
   border-color: $mainColorDark;
 }
 
-.loginInputName,.loginInputBtn, .loginInputBtn2, .loginInputBtn3, .loginInputInform,.loginInputSuccess{
-    width: 43px;
-    height: 43px;
-    border-radius: 100px;
-    border:1.5px solid $mainColor;
-    background-color: $mainColor;
-    transition: all 0.5s;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 40px;
-    text-align: center;
-    color: transparent;
-    overflow: hidden;
-    font-family: 'Raleway', sans-serif;
-    user-select: none;
+.loginInputName,
+.loginInputBtn,
+.loginInputBtn2,
+.loginInputBtn3,
+.loginInputInform,
+.loginInputSuccess {
+  width: 43px;
+  height: 43px;
+  border-radius: 100px;
+  border: 1.5px solid $mainColor;
+  background-color: $mainColor;
+  transition: all 0.5s;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 40px;
+  text-align: center;
+  color: transparent;
+  overflow: hidden;
+  font-family: 'Raleway', sans-serif;
+  user-select: none;
 }
-.loginInputInform{
+.loginInputInform {
   width: 376px;
   background-color: rgb(251, 89, 83);
   border-color: rgb(251, 89, 83);
   color: white;
 }
-.loginInputSuccess{
-    width: 376px;
-    color: white;
-    background-color: rgb(114, 226, 168);
-    border-color: rgb(114, 226, 168)
+.loginInputSuccess {
+  width: 376px;
+  color: white;
+  background-color: rgb(114, 226, 168);
+  border-color: rgb(114, 226, 168);
 }
-.loginInput{
+.loginInput {
   display: inline-block;
   height: 40px;
   vertical-align: middle;
@@ -185,36 +201,36 @@
   transition: all 0.5s;
   border: 0px;
 }
-.loginInput:focus{
+.loginInput:focus {
   outline: none;
 }
 
-.loginInputName:hover{
+.loginInputName:hover {
   width: 100px;
   color: $mainColorDark;
   border-color: $mainColorDark;
 }
 
-.loginInputBtn2{
+.loginInputBtn2 {
   float: right;
 }
 
-.loginInputBtn3{
-  border:1.5px solid black;
+.loginInputBtn3 {
+  border: 1.5px solid black;
   background-color: white;
 }
 
-.loginInputBtn2:hover{
+.loginInputBtn2:hover {
   width: 103px;
   background-color: $mainColorDark;
   border-color: $mainColorDark;
   color: white;
 }
-.loginInputBtn3:hover{
+.loginInputBtn3:hover {
   width: 103px;
   color: black;
 }
 
-.loginInputNameSmall{
+.loginInputNameSmall {
   font-size: 10px;
 }

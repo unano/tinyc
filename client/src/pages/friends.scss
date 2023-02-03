@@ -1,79 +1,79 @@
 @import '../styleVariables/variables.scss';
 
-.searchContainer{
-    border:  1px solid black;
-    border-radius: 100px;
-    width: 460px;
-    height: 44px;
-    padding: 4px;
-    padding-left: 6px;
+.searchContainer {
+  border: 1px solid black;
+  border-radius: 100px;
+  width: 460px;
+  height: 44px;
+  padding: 4px;
+  padding-left: 6px;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: 20px;
+  .searchIcon {
+    color: white;
+    font-size: 30px;
+    border-radius: 50%;
     display: inline-block;
-    vertical-align: top;
-    margin-bottom: 20px;
-    .searchIcon{
-        color: white;
-        font-size: 30px;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 5px;
-        padding: 5px;
-        background-color: $mainColor;
+    vertical-align: middle;
+    margin-right: 5px;
+    padding: 5px;
+    background-color: $mainColor;
+  }
+  .searchInput {
+    width: 400px;
+    display: inline-block;
+    height: 42px;
+    vertical-align: middle;
+    border-radius: 100px;
+    border: none;
+    font-size: 30px;
+    font-family: 'Raleway', sans-serif;
+    &:focus {
+      outline: none;
     }
-    .searchInput{
-        width: 400px;
-        display: inline-block;
-        height: 42px;
-        vertical-align: middle;
-        border-radius: 100px;
-        border: none;
-        font-size: 30px;
-        font-family: 'Raleway', sans-serif;
-        &:focus{
-            outline: none;
-        }
-    }
-    .waitLine{
-        width: 470px;
-        height: 2px;
-        background-color: rgb(255, 255, 255);
-        margin-top: 10px;
-    }
+  }
+  .waitLine {
+    width: 470px;
+    height: 2px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 10px;
+  }
 }
-.searchNewFriend{
-    .searchUser{
-        color: $mainColor;
-        cursor: default;
-        &:hover{
-            color: $mainColorDark;
-        }
+.searchNewFriend {
+  .searchUser {
+    color: $mainColor;
+    cursor: default;
+    &:hover {
+      color: $mainColorDark;
     }
-    .searchedUser{
-        margin-top: 15px;
-        width: 98%;
-        background-color: azure;
-        border-radius: 100px;
-        padding: 2px;
-        vertical-align: middle;
-        .searchFriendIcon{
-            background-color: transparent;
-            border: none;
-            vertical-align: middle;
-        }
-        .searchedUsername{
-            vertical-align: middle;
-            font-size: 30px;
-            position: relative;
-        }
-        .addFriendIcon{
-            margin: 0;
-            border: none;
-            background-color: transparent;
-        }
-        .smallName{
-            font-size: 16px;
-            position: absolute;
-            right: 100px;
-        }
+  }
+  .searchedUser {
+    margin-top: 15px;
+    width: 98%;
+    background-color: azure;
+    border-radius: 100px;
+    padding: 2px;
+    vertical-align: middle;
+    .searchFriendIcon {
+      background-color: transparent;
+      border: none;
+      vertical-align: middle;
     }
+    .searchedUsername {
+      vertical-align: middle;
+      font-size: 30px;
+      position: relative;
+    }
+    .addFriendIcon {
+      margin: 0;
+      border: none;
+      background-color: transparent;
+    }
+    .smallName {
+      font-size: 16px;
+      position: absolute;
+      right: 100px;
+    }
+  }
 }

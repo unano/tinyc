@@ -1,29 +1,29 @@
-import { useState, useEffect } from "react";
-import "./loginRegister.scss";
-import Logo from "../imgs/tinyc.png";
-import Cover from "../components/cover";
-import Register from "../components/register";
-import Login from "../components/login";
-import { useNavigate } from "react-router-dom";
-import "./common.scss";
+import { useState, useEffect } from 'react'
+import './loginRegister.scss'
+import Logo from '../imgs/tinyc.png'
+import Cover from '../components/cover'
+import Register from '../components/register'
+import Login from '../components/login'
+import { useNavigate } from 'react-router-dom'
+import './common.scss'
 function App() {
-  const [loginExpand, setLoginExpand] = useState(true);
-  const navigate = useNavigate();
+  const [loginExpand, setLoginExpand] = useState(true)
+  const navigate = useNavigate()
 
   const expandLogin = () => {
-    setLoginExpand(true);
-  };
+    setLoginExpand(true)
+  }
 
   const expandRegister = () => {
-    setLoginExpand(false);
-  };
+    setLoginExpand(false)
+  }
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      console.log("dd");
-      navigate("/home");
+    if (localStorage.getItem('token')) {
+      console.log('dd')
+      navigate('/home')
     }
-  }, []);
+  }, [])
 
   return (
     <div className="loginContainer">
@@ -42,33 +42,31 @@ function App() {
           {/* Login & register */}
           <div className="body">
             {/* Login */}
-            <div className={loginExpand ? "loginExpand" : "login"}>
+            <div className={loginExpand ? 'loginExpand' : 'login'}>
               <div
-                className={loginExpand ? " loginWord" : "loginWordStretch"}
+                className={loginExpand ? ' loginWord' : 'loginWordStretch'}
                 onClick={expandLogin}
               >
                 Login
               </div>
-              <Login/>
+              <Login />
             </div>
 
             {/* Register */}
-            <div className={!loginExpand ? "loginExpand" : "login"}>
+            <div className={!loginExpand ? 'loginExpand' : 'login'}>
               <div
-                className={!loginExpand ? " loginWord" : "loginWordStretch"}
+                className={!loginExpand ? ' loginWord' : 'loginWordStretch'}
                 onClick={expandRegister}
               >
                 Regist
               </div>
-              <Register
-                expandLogin={expandLogin}
-              />
+              <Register expandLogin={expandLogin} />
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

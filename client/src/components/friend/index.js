@@ -1,41 +1,41 @@
-import { useState, useContext } from "react";
-import Close from "../../imgs/close.png";
-import Info from "../../imgs/info.png";
-import "./friend.scss";
-import { TiUserDeleteOutline } from "react-icons/ti";
-import { IoCloseOutline, IoCheckmarkOutline } from "react-icons/io5";
-import { denyFriendsAPI } from "../../api/api";
-import { userAvatarHandler } from "../../functions";
+import { useState, useContext } from 'react'
+import Close from '../../imgs/close.png'
+import Info from '../../imgs/info.png'
+import './friend.scss'
+import { TiUserDeleteOutline } from 'react-icons/ti'
+import { IoCloseOutline, IoCheckmarkOutline } from 'react-icons/io5'
+import { denyFriendsAPI } from '../../api/api'
+import { userAvatarHandler } from '../../functions'
 const Friend = ({ friend, refresh, setRefresh }) => {
-  const [friendInfo, setFriendInfo] = useState();
-  const [deleteInfo, setDeleteInfo] = useState();
-  const [disabled, setDisabled] = useState(false);
+  const [friendInfo, setFriendInfo] = useState()
+  const [deleteInfo, setDeleteInfo] = useState()
+  const [disabled, setDisabled] = useState(false)
   const showInfo = () => {
-    setFriendInfo({ width: "506px" });
-  };
+    setFriendInfo({ width: '506px' })
+  }
   const closeInfo = () => {
-    setFriendInfo({ width: "70px" });
-  };
+    setFriendInfo({ width: '70px' })
+  }
 
   const deleteAlert = () => {
-    setDeleteInfo({ width: "506px" });
-  };
+    setDeleteInfo({ width: '506px' })
+  }
   const cancelDeleteAlert = () => {
-    setDeleteInfo({ width: "70px" });
-  };
+    setDeleteInfo({ width: '70px' })
+  }
 
   const deleteFriend = async () => {
-    if(disabled) return;
-    setDisabled(true);
-    await denyFriendsAPI(friend._id);
-    setRefresh(!refresh);
-    setDisabled(false);
-  };
+    if (disabled) return
+    setDisabled(true)
+    await denyFriendsAPI(friend._id)
+    setRefresh(!refresh)
+    setDisabled(false)
+  }
 
   return (
     <>
       <div className="friendListi">
-        <div className={`friendIcon ${friend.isOnline ? "onlined" : ""}`}>
+        <div className={`friendIcon ${friend.isOnline ? 'onlined' : ''}`}>
           <img
             src={userAvatarHandler(friend.avatarImage)}
             alt="avatar"
@@ -98,7 +98,7 @@ const Friend = ({ friend, refresh, setRefresh }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Friend;
+export default Friend

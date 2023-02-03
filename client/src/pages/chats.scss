@@ -1,417 +1,434 @@
 @import '../styleVariables/variables.scss';
 
-.chatBody{
-    .chat{
-        width: 600px;
-        height: 600px;
-        border-radius: 0 50px 50px 50px;
-        border: 1px solid black;
-        box-shadow: 0px 0px 0px $mainColor;
-        transition: all 0.5s;
-        box-sizing: border-box;
-        position: relative;
-        .chatOverflow{
-            width: 100%;
-            height: 100%;
-            border-radius: 0 50px 50px 50px;
-            display: flex;
-            flex-direction: column;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-        }
-        .chatSwitch{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            transition: all 1s;
-            display: flex;
-            flex-direction: row;
-        }
-        .chatSwitchRight,.chatSwitchLeft{
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-            padding: 10px;
-            vertical-align: middle;
-            overflow: hidden;
-            position: relative;
-            border-radius: 0 50px 50px 50px;
-        }
-        .chatSwitchLeft{
-            display: flex;
-            flex-direction: row;
-            .friendLists{
-                width: 83%;
-                display:flex;
-                flex-direction: column;
-                height: 98%;
-                vertical-align: middle;
-                gap: 0.3rem;
-                border-radius: 0 0 20px 0;
-                .searchContainer{
-                    border:  1px solid black;
-                    border-radius: 100px;
-                    width: 460px;
-                    height: 44px;
-                    padding: 4px;
-                    padding-left: 6px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    .searchIcon{
-                        color: white;
-                        font-size: 30px;
-                        border-radius: 50%;
-                        margin-right: 5px;
-                        padding: 5px;
-                        background-color: $mainColor;
-                        flex-shrink: 0;
-                    }
-                    .searchInput{
-                        width: 400px;
-                        height: 42px;
-                        border-radius: 100px;
-                        border: none;
-                        font-size: 30px;
-                        font-family: 'Raleway', sans-serif;
-                        &:focus{
-                            outline: none;
-                        }
-                    }
-                }
-                .loadingContainer{
-                    height: 10px;
-                }
-                .searchNewFriend{
-                    .searchUser{
-                        color: $mainColor;
-                        cursor: default;
-                        &:hover{
-                            color: $mainColorDark;
-                        }
-                    }
-                    .searchedUser{
-                        margin-top: 15px;
-                        width: 98%;
-                        display: flex;
-                        background-color: azure;
-                        border: 1px solid silver;
-                        border-radius: 100px;
-                        padding: 4px;
-                        vertical-align: middle;
-                        gap: 1rem;
-                        .icon{
-                            height: 60px;
-                            width: 60px;
-                            position: relative;
-                            border-radius: 50%;
-                            display: inline-block;
-                        }
-                        .searchedUsername{
-                            font-size: 26px;
-                        }
-                        .addFriendIcon{
-                            border: 1px solid transparent;
-                            margin-left: auto;
-                            font-size: 26px;
-                            display: flex;
-                            width: 60px;
-                            height: 60px;
-                            justify-content: center;
-                            align-items: center;
-                            box-sizing: border-box;
-                            border-radius: 50%;
-                            transition: all 0.5s;
-                            &:hover{
-                                border: 1px solid black;
-                                font-size: 36px;
-                            }
-                        }
-                        .smallName{
-                            font-size: 16px;
-                            position: absolute;
-                            right: 100px;
-                        }
-                    }
-                }
-            }
-        }
-        .chatSwitchRight{
-            padding-left: 20px;
-            position: relative;
-            .rightBar{
-                width: 15%;
-                height: 76%;
-                border: 1px solid silver;
-                background-color: white;
-                position: absolute;
-                top: 9%;
-                right: -16.2%;
-                margin-top: -10px;
-                border-radius: 0 0 0 20px;
-                box-shadow: 0 0 4px 0 silver;
-                transition: all 0.5s;
-                .rightBarInside{
-                    height: 100%;
-                    width: 100%;
-                    padding: 10px 3px;
-                    background-color: transparent;
-                    overflow: auto;
-                    overflow-x: hidden;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 1rem;
-                    box-sizing: border-box;
-                    .stretchBtn{
-                        position: absolute;
-                        left: -30px;
-                        width: 28px;
-                        height: 15%;
-                        top: -1px;
-                        border: 1px solid silver;
-                        border-radius: 10px 0 0 10px;
-                        border-right: 1px solid white;
-                        background-color: rgb(189, 232, 241);   
-                        text-align: center;    
-                        line-height: 75px; 
-                        font-size: 20px;
-                        color: white;
-                    }
-                    .chatUser{
-                        position: relative;
-                        display: flex;
-                        align-items: center;
-                        flex-direction: column;
-                        width: 100%;
-                        .icon{
-                            width: 50px;
-                            height: 50px;
-                            border-radius: 50%;
-                        }
-                        .chatUsername{
-                            border-bottom: 1px solid $mainColor;
-                        }
-                        .removeGroupMate{
-                            font-size: 20px;
-                            color: $warn;
-                            position: absolute;
-                            right: 10%;
-                            top: -8%;
-                            background-color: white;
-                            border-radius: 50%;
-                        }
-                    }
-                    .newGroupMate{
-                        padding: 15px;
-                        font-size: 20px;
-                        background-color: white;
-                        border: 1px solid black;
-                        border-radius: 50%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        flex-shrink: 0;
-                    }
-                }
-            }
-            .rightBarExpand{
-                right: -1%;
-            }
-            .chatInfo{
-                width: 60%;
-                display: flex;
-                gap: 1rem;
-                flex-direction: row;
-                align-items: center;
-                font-size: 2rem;
-                padding-bottom: 8px;
-                margin-bottom: 6px;
-                margin-left: -5px;
-                padding-left: 8px;
-                box-shadow: 0px 8px 6px -6px rgba(220, 220, 220, 0.621);
-                border-bottom: 1px solid $mainColor;
-                .chatAvatar{
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                }
-            }
-            .emojiPickerContainer{
-                position: absolute;
-                bottom: 80px;
-                z-index: 10;
-            }
-            .chatbox{
-                height: 450px;
-                width: 96%;
-                margin-bottom: 20px;
-                background-color: rgb(255, 255, 255);
-                /* border-radius: 0 40px 20px 20px; */
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                overflow: scroll;
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-            }
-            .chatInputSubmitContainer{
-                display: flex;
-                flex-direction: row;
-                position: absolute;
-                width: 96%;
-                bottom: 2%;
-                padding: 4px;
-                align-items: flex-end;
-                    .isTyping{
-                        position: absolute;
-                        top: -1.4rem;
-                        left: 2%;
-                        background-color: white;
-                    }
-                .chatInputContiner{
-                    width:84%;
-                    height: 80%;
-                    border:1px solid silver;
-                    border-radius: 28px;
-                    padding:2px;
-                    transition: all 0.5s;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    margin-right: 20px;
-                    bottom: 20px;
-                    background-color: white;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: flex-end;
-                    .openEmoji{
-                        color: white;
-                        font-size: 43px;
-                        border-radius: 50%;
-                        display: inline-block;
-                        vertical-align: middle;
-                        margin-right: 5px;
-                        padding: 2px;
-                        background-color: white;
-                        color: $mainColor;
-                        transition: all 0.5s;
-                        &:hover{
-                        background-color: $mainColor;
-                        color: white;
-                        }
-                    }
-                    .chatInputName{
-                        width: 43px;
-                        height: 43px;
-                        border-radius: 100px;
-                        border:1.5px solid $mainColor;
-                        background-color: $mainColor;
-                        transition: all 0.5s;
-                        display: inline-block;
-                        vertical-align: middle;
-                        line-height: 40px;
-                        text-align: center;
-                        color: transparent;
-                        overflow: hidden;
-                        font-family: 'Raleway', sans-serif;
-                        user-select: none;
-                    }
-                    .chatInput{
-                        max-height: 310px;
-                        display: inline-block;
-                        vertical-align: middle;
-                        width: 85%;
-                        font-size: 25px;
-                        padding-left: 5px;
-                        font-family: 'Raleway', sans-serif;
-                        transition: all 0.5s;
-                        border: 0px;
-                        overflow: scroll;
-                        margin-bottom: -16px;
-                        margin-top: 10px;
-                        white-space: pre-wrap;
-                        &:focus{
-                            outline: none;
-                        }
-                        &::-webkit-scrollbar {
-                            display: none;
-                        }
-                    }
-                }
-                .chatSubmitContiner{
-                    width:58px;
-                    height: 58px;
-                    border:1px solid silver;
-                    border-radius: 50%;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    bottom: 20px;
-                    right: 20px;
-                    background-color: white;
-                    transition: all 0.5s;
-                    font-size: 40px;
-                    &:hover{
-                        border:1px solid silver;
-                        box-shadow: 0 0 3px 2px rgb(221, 221, 221) inset;
-                        font-size: 30px;
-                    }
-                    &:hover>.chatSend{
-                        font-size: 30px;
-                    }
-                    svg path {
-                        stroke: $mainColor;
-                    }
-                }
-
-            }
-        }
-        .findFriends{
-            position: absolute;
-            border: 1px solid black;
-            border-radius: 50px 50px 50px 50px ;
-            width: 15%;
-            height: 80%;
-            background-color: white;
-            top: 0%;
-            right: -19%;
-            padding: 5px 0px;
-            animation: showFriends 0.3s linear;
-        }
+.chatBody {
+  .chat {
+    width: 600px;
+    height: 600px;
+    border-radius: 0 50px 50px 50px;
+    border: 1px solid black;
+    box-shadow: 0px 0px 0px $mainColor;
+    transition: all 0.5s;
+    box-sizing: border-box;
+    position: relative;
+    .chatOverflow {
+      width: 100%;
+      height: 100%;
+      border-radius: 0 50px 50px 50px;
+      display: flex;
+      flex-direction: column;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
     }
+    .chatSwitch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      transition: all 1s;
+      display: flex;
+      flex-direction: row;
+    }
+    .chatSwitchRight,
+    .chatSwitchLeft {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      vertical-align: middle;
+      overflow: hidden;
+      position: relative;
+      border-radius: 0 50px 50px 50px;
+    }
+    .chatSwitchLeft {
+      display: flex;
+      flex-direction: row;
+      .friendLists {
+        width: 83%;
+        display: flex;
+        flex-direction: column;
+        height: 98%;
+        vertical-align: middle;
+        gap: 0.3rem;
+        border-radius: 0 0 20px 0;
+        .searchContainer {
+          border: 1px solid black;
+          border-radius: 100px;
+          width: 460px;
+          height: 44px;
+          padding: 4px;
+          padding-left: 6px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .searchIcon {
+            color: white;
+            font-size: 30px;
+            border-radius: 50%;
+            margin-right: 5px;
+            padding: 5px;
+            background-color: $mainColor;
+            flex-shrink: 0;
+          }
+          .searchInput {
+            width: 400px;
+            height: 42px;
+            border-radius: 100px;
+            border: none;
+            font-size: 30px;
+            font-family: 'Raleway', sans-serif;
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+        .loadingContainer {
+          height: 10px;
+        }
+        .searchNewFriend {
+          .searchUser {
+            color: $mainColor;
+            cursor: default;
+            &:hover {
+              color: $mainColorDark;
+            }
+          }
+          .searchedUser {
+            margin-top: 15px;
+            width: 98%;
+            display: flex;
+            background-color: azure;
+            border: 1px solid silver;
+            border-radius: 100px;
+            padding: 4px;
+            vertical-align: middle;
+            gap: 1rem;
+            .icon {
+              height: 60px;
+              width: 60px;
+              position: relative;
+              border-radius: 50%;
+              display: inline-block;
+            }
+            .searchedUsername {
+              font-size: 26px;
+            }
+            .addFriendIcon {
+              border: 1px solid transparent;
+              margin-left: auto;
+              font-size: 26px;
+              display: flex;
+              width: 60px;
+              height: 60px;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+              border-radius: 50%;
+              transition: all 0.5s;
+              &:hover {
+                border: 1px solid black;
+                font-size: 36px;
+              }
+            }
+            .smallName {
+              font-size: 16px;
+              position: absolute;
+              right: 100px;
+            }
+          }
+        }
+      }
+    }
+    .chatSwitchRight {
+      padding-left: 20px;
+      position: relative;
+      .rightBar {
+        width: 15%;
+        height: 76%;
+        border: 1px solid silver;
+        background-color: white;
+        position: absolute;
+        top: 9%;
+        right: -16.2%;
+        margin-top: -10px;
+        border-radius: 0 0 0 20px;
+        box-shadow: 0 0 4px 0 silver;
+        transition: all 0.5s;
+        .rightBarInside {
+          height: 100%;
+          width: 100%;
+          padding: 10px 3px;
+          background-color: transparent;
+          overflow: auto;
+          overflow-x: hidden;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          box-sizing: border-box;
+          .stretchBtn {
+            position: absolute;
+            left: -30px;
+            width: 28px;
+            height: 15%;
+            top: -1px;
+            border: 1px solid silver;
+            border-radius: 10px 0 0 10px;
+            border-right: 1px solid white;
+            background-color: rgb(189, 232, 241);
+            text-align: center;
+            line-height: 75px;
+            font-size: 20px;
+            color: white;
+          }
+          .chatUser {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            .icon {
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+            }
+            .chatUsername {
+              border-bottom: 1px solid $mainColor;
+            }
+            .removeGroupMate {
+              font-size: 20px;
+              color: $warn;
+              position: absolute;
+              right: 10%;
+              top: -8%;
+              background-color: white;
+              border-radius: 50%;
+            }
+          }
+          .newGroupMate {
+            padding: 15px;
+            font-size: 20px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+          }
+        }
+      }
+      .rightBarExpand {
+        right: -1%;
+      }
+      .chatInfo {
+        width: 60%;
+        display: flex;
+        gap: 1rem;
+        flex-direction: row;
+        align-items: center;
+        font-size: 2rem;
+        padding-bottom: 8px;
+        margin-bottom: 6px;
+        margin-left: -5px;
+        padding-left: 8px;
+        box-shadow: 0px 8px 6px -6px rgba(220, 220, 220, 0.621);
+        border-bottom: 1px solid $mainColor;
+        .chatAvatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+      }
+      .emojiPickerContainer {
+        position: absolute;
+        bottom: 80px;
+        z-index: 10;
+      }
+      .chatbox {
+        height: 450px;
+        width: 96%;
+        margin-bottom: 20px;
+        background-color: rgb(255, 255, 255);
+        /* border-radius: 0 40px 20px 20px; */
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow: scroll;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      .chatInputSubmitContainer {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        width: 96%;
+        bottom: 2%;
+        padding: 4px;
+        align-items: flex-end;
+        .isTyping {
+          position: absolute;
+          top: -1.4rem;
+          left: 2%;
+          background-color: white;
+        }
+        .chatInputContiner {
+          width: 84%;
+          height: 80%;
+          border: 1px solid silver;
+          border-radius: 28px;
+          padding: 2px;
+          transition: all 0.5s;
+          overflow: hidden;
+          white-space: nowrap;
+          margin-right: 20px;
+          bottom: 20px;
+          background-color: white;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+          .openEmoji {
+            color: white;
+            font-size: 43px;
+            border-radius: 50%;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 5px;
+            padding: 2px;
+            background-color: white;
+            color: $mainColor;
+            transition: all 0.5s;
+            &:hover {
+              background-color: $mainColor;
+              color: white;
+            }
+          }
+          .chatInputName {
+            width: 43px;
+            height: 43px;
+            border-radius: 100px;
+            border: 1.5px solid $mainColor;
+            background-color: $mainColor;
+            transition: all 0.5s;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 40px;
+            text-align: center;
+            color: transparent;
+            overflow: hidden;
+            font-family: 'Raleway', sans-serif;
+            user-select: none;
+          }
+          .chatInput {
+            max-height: 310px;
+            display: inline-block;
+            vertical-align: middle;
+            width: 85%;
+            font-size: 25px;
+            padding-left: 5px;
+            font-family: 'Raleway', sans-serif;
+            transition: all 0.5s;
+            border: 0px;
+            overflow: scroll;
+            margin-bottom: -16px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            &:focus {
+              outline: none;
+            }
+            &::-webkit-scrollbar {
+              display: none;
+            }
+          }
+        }
+        .chatSubmitContiner {
+          width: 58px;
+          height: 58px;
+          border: 1px solid silver;
+          border-radius: 50%;
+          overflow: hidden;
+          white-space: nowrap;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          bottom: 20px;
+          right: 20px;
+          background-color: white;
+          transition: all 0.5s;
+          font-size: 40px;
+          &:hover {
+            border: 1px solid silver;
+            box-shadow: 0 0 3px 2px rgb(221, 221, 221) inset;
+            font-size: 30px;
+          }
+          &:hover > .chatSend {
+            font-size: 30px;
+          }
+          svg path {
+            stroke: $mainColor;
+          }
+        }
+      }
+    }
+    .findFriends {
+      position: absolute;
+      border: 1px solid black;
+      border-radius: 50px 50px 50px 50px;
+      width: 15%;
+      height: 80%;
+      background-color: white;
+      top: 0%;
+      right: -19%;
+      padding: 5px 0px;
+      animation: showFriends 0.3s linear;
+    }
+  }
 }
 
-@keyframes showLogin2
-{
-0% {border: 1px solid transparent;}
-50% { border: 1px solid transparent;}
-80% { border: 1px solid black;}
-100% {border: 1px solid black;}
+@keyframes showLogin2 {
+  0% {
+    border: 1px solid transparent;
+  }
+  50% {
+    border: 1px solid transparent;
+  }
+  80% {
+    border: 1px solid black;
+  }
+  100% {
+    border: 1px solid black;
+  }
 }
 
-@keyframes showEmojis
-{
-0% { opacity: 0.3;}
-60% { opacity: 0.9;}
-100% { opacity: 1;}
-}
-
-@keyframes showFriends
-{
-0% { transform: translateX(50%); opacity: 0;}
-100% { transform: translateX(0%); opacity: 1;}
-}
-
-.showBtn{
+@keyframes showEmojis {
+  0% {
+    opacity: 0.3;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
     opacity: 1;
-    transition: all 0.8s;
-    box-shadow: 0 0 4px  rgba(112, 112, 112, 0.574);
+  }
+}
+
+@keyframes showFriends {
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.showBtn {
+  opacity: 1;
+  transition: all 0.8s;
+  box-shadow: 0 0 4px rgba(112, 112, 112, 0.574);
 }
 
 /* .friendIcon:hover>.showBtn{

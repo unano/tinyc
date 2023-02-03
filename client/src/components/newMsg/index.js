@@ -1,15 +1,15 @@
-import "./newMsg.css";
-import { AuthContext } from "../../contexts/authContext";
-import { SettingContext } from "../../contexts/settingContext";
-import { useContext } from "react";
-import { userAvatarHandler } from "../../functions";
+import './newMsg.css'
+import { AuthContext } from '../../contexts/authContext'
+import { SettingContext } from '../../contexts/settingContext'
+import { useContext } from 'react'
+import { userAvatarHandler } from '../../functions'
 const NewMsg = ({ newMsg }) => {
-  const { currentUser } = useContext(AuthContext);
-  const { inform } = useContext(SettingContext);
+  const { currentUser } = useContext(AuthContext)
+  const { inform } = useContext(SettingContext)
   const getUser = () => {
     return newMsg.chat.users.filter((user) => user._id !== currentUser.id)[0]
-      .avatarImage;
-  };
+      .avatarImage
+  }
   return (
     <>
       {inform && (
@@ -32,6 +32,6 @@ const NewMsg = ({ newMsg }) => {
         </div>
       )}
     </>
-  );
-};
-export default NewMsg;
+  )
+}
+export default NewMsg

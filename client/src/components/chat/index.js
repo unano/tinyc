@@ -1,42 +1,46 @@
-import { useContext, useEffect, useState } from "react";
-import Info from "../../imgs/info.png";
-import "./chat.scss";
-import { AuthContext } from "../../contexts/authContext";
-import { SettingContext } from "../../contexts/settingContext";
-import LoadingBar from "../loadingBar";
-import { userAvatarHandler, groupBgHandler ,groupAvatarHandler } from "../../functions"; 
-import { DEFAULT_BG_URL_SINGLE } from "../../common";
+import { useContext, useEffect, useState } from 'react'
+import Info from '../../imgs/info.png'
+import './chat.scss'
+import { AuthContext } from '../../contexts/authContext'
+import { SettingContext } from '../../contexts/settingContext'
+import LoadingBar from '../loadingBar'
+import {
+  userAvatarHandler,
+  groupBgHandler,
+  groupAvatarHandler,
+} from '../../functions'
+import { DEFAULT_BG_URL_SINGLE } from '../../common'
 
 const Chat = ({ chat, switchs, right }) => {
-  const { currentUser } = useContext(AuthContext);
-  const { showBg } = useContext(SettingContext);
-  const [avatar, setAvatar] = useState("default.png");
-  const [loading, setLoading] = useState(false);
+  const { currentUser } = useContext(AuthContext)
+  const { showBg } = useContext(SettingContext)
+  const [avatar, setAvatar] = useState('default.png')
+  const [loading, setLoading] = useState(false)
   const chatUser = chat.users.filter((u) => {
-    return u._id !== currentUser._id;
-  });
-  const currentChatUsername = chatUser[0].username;
-  const currentChatAvatar = chatUser[0].avatarImage;
+    return u._id !== currentUser._id
+  })
+  const currentChatUsername = chatUser[0].username
+  const currentChatAvatar = chatUser[0].avatarImage
 
   const switchChat = () => {
-    setLoading(true);
-    switchs(chat, currentChatUsername, currentChatAvatar);
-  };
+    setLoading(true)
+    switchs(chat, currentChatUsername, currentChatAvatar)
+  }
 
   useEffect(() => {
-    if (!right) setLoading(false);
-    else setLoading(true);
-  }, [right]);
+    if (!right) setLoading(false)
+    else setLoading(true)
+  }, [right])
 
   useEffect(() => {
     if (chat.isGroupChat) {
-      if (chat.avatar) setAvatar(chat.avatar);
-      else setAvatar("defaultGroup.png");
+      if (chat.avatar) setAvatar(chat.avatar)
+      else setAvatar('defaultGroup.png')
     } else {
-      if (chatUser[0].avatarImage) setAvatar(chatUser[0].avatarImage);
-      else setAvatar("default.png");
+      if (chatUser[0].avatarImage) setAvatar(chatUser[0].avatarImage)
+      else setAvatar('default.png')
     }
-  }, [currentUser, chat, chatUser]);
+  }, [currentUser, chat, chatUser])
   return (
     <>
       <div className="friendList">
@@ -90,7 +94,7 @@ const Chat = ({ chat, switchs, right }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Chat;
+export default Chat

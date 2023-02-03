@@ -1,12 +1,12 @@
-import "../userChats.scss";
-import { useNavigate } from "react-router-dom";
-import { groupAvatarHandler } from "../../../functions";
+import '../userChats.scss'
+import { useNavigate } from 'react-router-dom'
+import { groupAvatarHandler } from '../../../functions'
 const ChatInfo = ({ chat }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const navigates = () => {
-    navigate(`/chat/${chat._id}`);
-  };
+    navigate(`/chat/${chat._id}`)
+  }
   return (
     <div className="container" key={chat._id} onClick={navigates}>
       <img
@@ -21,6 +21,6 @@ const ChatInfo = ({ chat }) => {
         </>
       )}
     </div>
-  );
-};
-export default ChatInfo;
+  )
+}
+export default ChatInfo

@@ -1,106 +1,106 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from 'react'
 import {
   getAllGroupChatAPI,
   diceChats20,
   diceChats6,
   searchGroupChatsAPI,
-} from "../api/api";
-import { AuthContext } from "../contexts/authContext";
-import LeftIcons from "../components/leftArea";
-import LoadingBar from "../components/loadingBar";
-import NavBar from "../components/navBar";
-import { BiSearch } from "react-icons/bi";
-import "./grounds.scss";
-import "./common.scss";
+} from '../api/api'
+import { AuthContext } from '../contexts/authContext'
+import LeftIcons from '../components/leftArea'
+import LoadingBar from '../components/loadingBar'
+import NavBar from '../components/navBar'
+import { BiSearch } from 'react-icons/bi'
+import './grounds.scss'
+import './common.scss'
 import {
   GiDiceTwentyFacesTwenty,
   GiPerspectiveDiceSixFacesSix,
-} from "react-icons/gi";
-import GroundChat from "../components/groundChat";
-import Logo from "../imgs/tinyc.png";
+} from 'react-icons/gi'
+import GroundChat from '../components/groundChat'
+import Logo from '../imgs/tinyc.png'
 const NewGroup = () => {
-  const [chats, setChats] = useState([]);
-  const [searchInput, setSearchIput] = useState();
-  const { currentUser } = useContext(AuthContext);
-  const [searching, setSearching] = useState(false);
-  const [stopDice20, setStopDice20] = useState(true); //控制动画的停止
-  const [stopDice6, setStopDice6] = useState(true); //控制动画的停止
-  const [disabled, setDisabled] = useState(false);
+  const [chats, setChats] = useState([])
+  const [searchInput, setSearchIput] = useState()
+  const { currentUser } = useContext(AuthContext)
+  const [searching, setSearching] = useState(false)
+  const [stopDice20, setStopDice20] = useState(true) //控制动画的停止
+  const [stopDice6, setStopDice6] = useState(true) //控制动画的停止
+  const [disabled, setDisabled] = useState(false)
   useEffect(() => {
     const getChats = async () => {
-      const chats = await diceChats20();
-      setChats(chats.data);
-    };
-    getChats();
-  }, [currentUser]);
+      const chats = await diceChats20()
+      setChats(chats.data)
+    }
+    getChats()
+  }, [currentUser])
 
   //根据群组群员个数由大到小排列
   const sortByMember = () => {
     const MemberChats = chats.sort((a, b) => {
-      return b.users.length - a.users.length;
-    });
-    setChats([...MemberChats]);
-  };
+      return b.users.length - a.users.length
+    })
+    setChats([...MemberChats])
+  }
 
   //根据群的创建时间由新到旧排序
   const sortByTime = () => {
     const TimecChats = chats.sort((a, b) => {
-      let ATime;
-      let BTime;
-      if (a.createdAt) ATime = new Date(a.createdAt);
-      else ATime = 0;
-      if (b.createdAt) BTime = new Date(b.createdAt);
-      else BTime = 0;
-      return BTime - ATime;
-    });
-    setChats([...TimecChats]);
-  };
+      let ATime
+      let BTime
+      if (a.createdAt) ATime = new Date(a.createdAt)
+      else ATime = 0
+      if (b.createdAt) BTime = new Date(b.createdAt)
+      else BTime = 0
+      return BTime - ATime
+    })
+    setChats([...TimecChats])
+  }
   const sortRandomly = () => {
-    const ramdomOrederChats = chats.sort(() => 0.5 - Math.random());
-    setChats([...ramdomOrederChats]);
-  };
+    const ramdomOrederChats = chats.sort(() => 0.5 - Math.random())
+    setChats([...ramdomOrederChats])
+  }
 
   const search = async () => {
-    if (disabled) return;
+    if (disabled) return
     if (searchInput) {
-      setDisabled(true);
-      const result = await searchGroupChatsAPI(searchInput);
-      setChats(result.data);
-      setSearching(true);
-      setDisabled(false);
+      setDisabled(true)
+      const result = await searchGroupChatsAPI(searchInput)
+      setChats(result.data)
+      setSearching(true)
+      setDisabled(false)
     }
-  };
+  }
 
   //根据输入搜索群组
   const dealInput = async (value) => {
-    if (disabled) return;
-    setDisabled(true);
-    setSearchIput(value);
+    if (disabled) return
+    setDisabled(true)
+    setSearchIput(value)
     if (!value) {
-      setSearching(false);
-      const chats = await getAllGroupChatAPI();
-      setChats(chats.data);
+      setSearching(false)
+      const chats = await getAllGroupChatAPI()
+      setChats(chats.data)
     }
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   const dice20 = async () => {
-    if (disabled) return;
-    setDisabled(true);
-    const chats = await diceChats20();
-    setStopDice20(false);
-    setChats(chats.data);
-    setDisabled(false);
-  };
+    if (disabled) return
+    setDisabled(true)
+    const chats = await diceChats20()
+    setStopDice20(false)
+    setChats(chats.data)
+    setDisabled(false)
+  }
 
   const dice6 = async () => {
-    if (disabled) return;
-    setDisabled(true);
-    const chats = await diceChats6();
-    setStopDice6(false);
-    setChats(chats.data);
-    setDisabled(false);
-  };
+    if (disabled) return
+    setDisabled(true)
+    const chats = await diceChats6()
+    setStopDice6(false)
+    setChats(chats.data)
+    setDisabled(false)
+  }
 
   return (
     <>
@@ -148,19 +148,19 @@ const NewGroup = () => {
                 <div className="grounds">
                   {chats &&
                     chats.map((chat) => {
-                      return <GroundChat chat={chat} key={chat._id} />;
+                      return <GroundChat chat={chat} key={chat._id} />
                     })}
                 </div>
                 <div className="diceContainer">
                   {/* 重新获取20个群组  */}
                   <GiDiceTwentyFacesTwenty
-                    className={stopDice20 ? "dice20" : "dice20 diceAnime"}
+                    className={stopDice20 ? 'dice20' : 'dice20 diceAnime'}
                     onClick={dice20}
                     onAnimationEnd={() => setStopDice20(true)}
                   />
                   {/* 重新获取6个群组  */}
                   <GiPerspectiveDiceSixFacesSix
-                    className={stopDice6 ? "dice6" : "dice6 diceAnime"}
+                    className={stopDice6 ? 'dice6' : 'dice6 diceAnime'}
                     onClick={dice6}
                     onAnimationEnd={() => setStopDice6(true)}
                   />
@@ -171,6 +171,6 @@ const NewGroup = () => {
         </div>
       </div>
     </>
-  );
-};
-export default NewGroup;
+  )
+}
+export default NewGroup

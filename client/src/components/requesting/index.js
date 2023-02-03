@@ -1,5 +1,5 @@
-import "./requesting.scss";
-import { userAvatarHandler } from "../../functions";
+import './requesting.scss'
+import { userAvatarHandler } from '../../functions'
 const Requesting = ({ requesting }) => {
   return (
     <div className="requesting">
@@ -12,7 +12,7 @@ const Requesting = ({ requesting }) => {
         <div className="name">{requesting.username}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Requesting;
+export default Requesting

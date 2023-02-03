@@ -1,6 +1,6 @@
-import Friend from "../friend";
+import Friend from '../friend'
 
-const FriendList = ({ friends, refresh , setRefresh }) => {
+const FriendList = ({ friends, refresh, setRefresh }) => {
   const allFriends = friends
     .filter((f) => f.friendsStatus === 3)
     .map((f) => (
@@ -10,8 +10,8 @@ const FriendList = ({ friends, refresh , setRefresh }) => {
         refresh={refresh}
         setRefresh={setRefresh}
       />
-    ));
-  return <>{allFriends}</>;
-};
+    ))
+  return <>{allFriends}</>
+}
 
-export default FriendList;
+export default FriendList

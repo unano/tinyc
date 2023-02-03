@@ -1,78 +1,78 @@
-import { useState, useContext } from "react";
-import { loginAPI } from "../../api/api";
-import { AuthContext } from "../../contexts/authContext";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react'
+import { loginAPI } from '../../api/api'
+import { AuthContext } from '../../contexts/authContext'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-  const [usernameWord, setUsernameWord] = useState("username");
-  const [passwordWord, setPasswordWord] = useState("password");
-  const [usernameInform, setUsernameInform] = useState(false);
-  const [passwordInform, setPasswordInform] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  const navigate = useNavigate();
-  const { resetUserData } = useContext(AuthContext);
+  const [usernameWord, setUsernameWord] = useState('username')
+  const [passwordWord, setPasswordWord] = useState('password')
+  const [usernameInform, setUsernameInform] = useState(false)
+  const [passwordInform, setPasswordInform] = useState(false)
+  const [disabled, setDisabled] = useState(false)
+  const navigate = useNavigate()
+  const { resetUserData } = useContext(AuthContext)
 
   //save login data
   const [loginValues, setLoginValues] = useState({
-    username: "",
-    password: "",
-  });
+    username: '',
+    password: '',
+  })
 
   // record user login input
   const handleChange = (event) => {
-    setLoginValues({ ...loginValues, [event.target.name]: event.target.value });
-  };
+    setLoginValues({ ...loginValues, [event.target.name]: event.target.value })
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (disabled) return;
+    event.preventDefault()
+    if (disabled) return
     if (validateForm()) {
-      setDisabled(true);
-      const { username, password } = loginValues;
-      const { data } = await loginAPI(username, password);
-      if (data.status === false && data.err === "username") {
-        dealUsernameError(data.msg);
+      setDisabled(true)
+      const { username, password } = loginValues
+      const { data } = await loginAPI(username, password)
+      if (data.status === false && data.err === 'username') {
+        dealUsernameError(data.msg)
       }
-      if (data.status === false && data.err === "password") {
-        dealPasswordError(data.msg);
+      if (data.status === false && data.err === 'password') {
+        dealPasswordError(data.msg)
       }
       if (data.status === true) {
-        resetUserData(data.user);
-        navigate("/home");
+        resetUserData(data.user)
+        navigate('/home')
       }
-      setDisabled(false);
+      setDisabled(false)
     }
-  };
+  }
 
   const dealUsernameError = (error) => {
-    setUsernameInform(true);
-    setUsernameWord(error);
+    setUsernameInform(true)
+    setUsernameWord(error)
     setTimeout(() => {
-      setUsernameInform(false);
-      setUsernameWord("username");
-    }, 2000);
-  };
+      setUsernameInform(false)
+      setUsernameWord('username')
+    }, 2000)
+  }
   // password error alert
   const dealPasswordError = (error) => {
-    setPasswordInform(true);
-    setPasswordWord(error);
+    setPasswordInform(true)
+    setPasswordWord(error)
     setTimeout(() => {
-      setPasswordInform(false);
-      setPasswordWord("password");
-    }, 2000);
-  };
+      setPasswordInform(false)
+      setPasswordWord('password')
+    }, 2000)
+  }
 
   const validateForm = () => {
-    const { username, password } = loginValues;
-    if (username === "") {
-      dealUsernameError("please enter username");
-      return false;
-    } else if (password === "") {
-      dealPasswordError("please enter password");
-      return false;
+    const { username, password } = loginValues
+    if (username === '') {
+      dealUsernameError('please enter username')
+      return false
+    } else if (password === '') {
+      dealPasswordError('please enter password')
+      return false
     }
-    return true;
-  };
+    return true
+  }
   return (
     <>
       {/* Login Form */}
@@ -84,11 +84,7 @@ const Login = () => {
         {/* username */}
         <div className="loginInputContiner">
           <div
-            className={
-              usernameInform
-                ? "loginInputInform"
-                : "loginInputName"
-            }
+            className={usernameInform ? 'loginInputInform' : 'loginInputName'}
           >
             {usernameWord}
           </div>
@@ -103,11 +99,7 @@ const Login = () => {
         {/* password */}
         <div className="loginInputContiner">
           <div
-            className={
-              passwordInform
-                ? "loginInputInform"
-                : "loginInputName"
-            }
+            className={passwordInform ? 'loginInputInform' : 'loginInputName'}
           >
             {passwordWord}
           </div>
@@ -126,6 +118,6 @@ const Login = () => {
         </div>
       </form>
     </>
-  );
-};
-export default Login;
+  )
+}
+export default Login

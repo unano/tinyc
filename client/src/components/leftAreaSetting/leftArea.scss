@@ -1,71 +1,70 @@
 @import '../../styleVariables/variables.scss';
-.chatLeftIcon{
-    background-color: white;
+.chatLeftIcon {
+  background-color: white;
+  width: 70px;
+  height: 70px;
+  border-radius: 50px 0px 50px 50px;
+  padding: 5px;
+  border: 1px solid black;
+  position: relative;
+  overflow: hidden;
+  .chatLeftIn {
+    position: absolute;
+    width: 180px;
+    transition: all 1s;
+    left: 5px;
+  }
+  .backOut {
     width: 70px;
     height: 70px;
-    border-radius: 50px 0px 50px 50px;
-    padding: 5px;
-    border:1px solid black;
+    background-color: $mainColor;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 20px;
+    box-sizing: border-box;
+    .back {
+      height: 100%;
+      position: relative;
+      border-radius: 50%;
+    }
+    .rotate {
+      transition: all 1.4s;
+      transform: rotate(0deg);
+      &:hover {
+        transform: rotate(360deg);
+      }
+    }
+    .icon {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+  .settingContainer {
+    .chatLeftIcon {
+      position: relative;
+      z-index: 3;
+      transition: all 0.5s;
+    }
     position: relative;
-    overflow: hidden;
-    .chatLeftIn{
-        position: absolute;
-        width: 180px;
-        transition: all 1s;
-        left: 5px;
+    .setting01 {
+      width: 60px;
+      height: 60px;
+      border: 1px solid black;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+      left: 10%;
+      top: 14%;
+      transition: all 1s;
+      z-index: 1;
     }
-    .backOut{
-        width: 70px;
-        height: 70px;
-        background-color: $mainColor;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 20px;
-        box-sizing: border-box;
-        .back{
-            height: 100%;
-            position: relative;
-            border-radius: 50%;                    
-        }
-        .rotate{
-            transition: all 1.4s;
-            transform: rotate(0deg);
-            &:hover{
-                transform: rotate(360deg);
-            }
-        }
-        .icon{
-            height: 100%;
-            width: 100%;
-            position: relative;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-        }
-    }
-    .settingContainer{
-        .chatLeftIcon{
-            position: relative;
-            z-index: 3;
-            transition: all 0.5s;
-        }
-        position: relative;
-        .setting01{
-            width: 60px;
-            height: 60px;
-            border: 1px solid black;
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            left: 10%;
-            top: 14%;
-            transition: all 1s;
-            z-index: 1;
-        }
-    }
-    .borderBackout{
-        border: 1px solid rgb(202, 202, 202);
-        background-color: white;
-
-    }
+  }
+  .borderBackout {
+    border: 1px solid rgb(202, 202, 202);
+    background-color: white;
+  }
 }

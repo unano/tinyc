@@ -1,11 +1,10 @@
-
 import {
   DEFAULT_AVATAR_URL_GROUP,
   DEFAULT_BG_URL_GROUP,
   DEFAULT_AVATAR_URL_SINGLE,
-} from "../common";
+} from '../common'
 
-export const getDate = (date, format = "YYYY-MM-DD HH:mm:ss") => {
+export const getDate = (date, format = 'YYYY-MM-DD HH:mm:ss') => {
   const config = {
     YYYY: date.getFullYear(),
     MM: date.getMonth() + 1,
@@ -13,37 +12,37 @@ export const getDate = (date, format = "YYYY-MM-DD HH:mm:ss") => {
     HH: date.getHours(),
     mm: date.getMinutes(),
     ss: date.getSeconds(),
-  };
-  for (const key in config) {
-    format = format.replace(key, config[key]);
   }
-  return format;
-};
+  for (const key in config) {
+    format = format.replace(key, config[key])
+  }
+  return format
+}
 
 export function blobToBase64(blob) {
   return new Promise((resolve, _) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
-  });
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.readAsDataURL(blob)
+  })
 }
 
 export const testFromCloudiary = (value) => {
-  const reg = /https:\/\/res.cloudinary.com/;
-  return reg.test(value);
-};
+  const reg = /https:\/\/res.cloudinary.com/
+  return reg.test(value)
+}
 
 export const userAvatarHandler = (value) => {
-  const url = testFromCloudiary(value) ? `${value}` : DEFAULT_AVATAR_URL_SINGLE;
-  return url;
-};
+  const url = testFromCloudiary(value) ? `${value}` : DEFAULT_AVATAR_URL_SINGLE
+  return url
+}
 
 export const groupAvatarHandler = (value) => {
-  const url = testFromCloudiary(value) ? `${value}` : DEFAULT_AVATAR_URL_GROUP;
-  return url;
-};
+  const url = testFromCloudiary(value) ? `${value}` : DEFAULT_AVATAR_URL_GROUP
+  return url
+}
 
 export const groupBgHandler = (value) => {
-  const url = testFromCloudiary(value) ? `${value}` : DEFAULT_BG_URL_GROUP;
-  return url;
-};
+  const url = testFromCloudiary(value) ? `${value}` : DEFAULT_BG_URL_GROUP
+  return url
+}

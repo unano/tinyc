@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from 'react'
 // import LoginRegister from "./pages/loginRegister";
 // import Chat from "./pages/chats";
 // import User from "./pages/user";
@@ -8,30 +8,30 @@ import React, { lazy, Suspense } from "react";
 // import UserUser from "./components/userUsers";
 // import UserChats from "./components/userChats";
 // import ChatApplication from "./pages/chatManage";
-import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import AuthProvider from "./contexts/authContext";
-import SettingProvider from "./contexts/settingContext";
-import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "./components/errorBoundary";
-import "./App.css";
-import LazyWait from "./components/lazyWait"
-const LoginRegister = lazy(() => import("./pages/loginRegister"));
-const Chat = lazy(() => import("./pages/chats"));
-const User = lazy(() => import("./pages/user"));
-const Friends = lazy(() => import("./pages/friends"));
-const NewGroup = lazy(() => import("./pages/newGroup"));
-const Groupchats = lazy(() => import("./pages/grounds"));
-const UserUser = lazy(() => import("./components/userUsers"));
-const UserChats = lazy(() => import("./components/userChats"));
-const ChatApplication = lazy(() => import("./pages/chatManage"));
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
+import AuthProvider from './contexts/authContext'
+import SettingProvider from './contexts/settingContext'
+import { ErrorBoundary } from 'react-error-boundary'
+import ErrorFallback from './components/errorBoundary'
+import './App.css'
+import LazyWait from './components/lazyWait'
+const LoginRegister = lazy(() => import('./pages/loginRegister'))
+const Chat = lazy(() => import('./pages/chats'))
+const User = lazy(() => import('./pages/user'))
+const Friends = lazy(() => import('./pages/friends'))
+const NewGroup = lazy(() => import('./pages/newGroup'))
+const Groupchats = lazy(() => import('./pages/grounds'))
+const UserUser = lazy(() => import('./components/userUsers'))
+const UserChats = lazy(() => import('./components/userChats'))
+const ChatApplication = lazy(() => import('./pages/chatManage'))
 
 function App() {
-  const location = useLocation();
+  const location = useLocation()
   return (
     // <TransitionGroup>
     //   <CSSTransition timeout={300} classNames="fadeRoute" key={location.key}>
-    <Suspense fallback={<LazyWait/>}>
-      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={()=>{}}>
+    <Suspense fallback={<LazyWait />}>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
         <AuthProvider>
           <SettingProvider>
             <Routes location={location}>
@@ -54,7 +54,7 @@ function App() {
     </Suspense>
     // </CSSTransition>
     //</TransitionGroup>
-  );
+  )
 }
 
-export default App;
+export default App

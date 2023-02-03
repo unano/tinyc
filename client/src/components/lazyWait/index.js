@@ -1,7 +1,6 @@
-import "../../pages/common.scss";
+import '../../pages/common.scss'
 
 const FriensArea = () => {
-
   return (
     <>
       <div className="chatContainer">
@@ -17,7 +16,7 @@ const FriensArea = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default FriensArea;
+export default FriensArea

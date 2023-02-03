@@ -49,6 +49,7 @@ module.exports.refreshToken = async(req, res, next) => {
 //   method:POST  route: /login
 module.exports.login = async (req, res, next) => {
   try {
+    console.log(req) 
     const { username, password } = req.body;
     const fetchedUser = await User.findOne({ username });
     if (!fetchedUser)

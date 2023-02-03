@@ -1,4 +1,4 @@
-import "../../pages/common.scss";
+import '../../pages/common.scss'
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   return (
@@ -17,7 +17,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ErrorFallback;
+export default ErrorFallback

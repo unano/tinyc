@@ -1,20 +1,20 @@
-import "./leftArea.scss";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/authContext";
-import { useNavigate } from "react-router-dom";
-import Back from "../../imgs/back2.png";
-import LeftAreaSetting from "../leftAreaSetting";
-import { userAvatarHandler } from "../../functions";
+import './leftArea.scss'
+import { useContext } from 'react'
+import { AuthContext } from '../../contexts/authContext'
+import { useNavigate } from 'react-router-dom'
+import Back from '../../imgs/back2.png'
+import LeftAreaSetting from '../leftAreaSetting'
+import { userAvatarHandler } from '../../functions'
 const LeftIcons = ({
   ischat = false,
   chatBtnSwitch = {},
   switchsBack = null,
 }) => {
-  const navigate = useNavigate();
-  const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate()
+  const { currentUser } = useContext(AuthContext)
   const navigateToUser = () => {
-    navigate("/user");
-  };
+    navigate('/user')
+  }
 
   return (
     <>
@@ -46,7 +46,7 @@ const LeftIcons = ({
       </div>
       <LeftAreaSetting />
     </>
-  );
-};
+  )
+}
 
-export default LeftIcons;
+export default LeftIcons

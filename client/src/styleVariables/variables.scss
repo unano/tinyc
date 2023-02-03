@@ -3,9 +3,9 @@ $mainColorDark: rgb(75, 192, 216);
 $warn: rgb(225, 89, 89);
 $success: rgb(117, 224, 105);
 
-@mixin hover($inform, $top){
+@mixin hover($inform, $top) {
   position: relative;
-  &:hover::after{
+  &:hover::after {
     content: $inform;
     position: absolute;
     color: white;
@@ -22,12 +22,16 @@ $success: rgb(117, 224, 105);
     margin-right: auto;
     left: 0;
     right: 0;
-    top:$top;
+    top: $top;
     text-align: center;
   }
 }
 
 @keyframes showInform {
-    0% {opacity: 0;} 
-    100% {opacity: 1;}
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

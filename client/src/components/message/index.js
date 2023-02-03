@@ -1,16 +1,15 @@
-import "./message.scss";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/authContext";
-import { getDate } from "../../functions";
-import { userAvatarHandler } from "../../functions";
+import './message.scss'
+import { useContext } from 'react'
+import { AuthContext } from '../../contexts/authContext'
+import { getDate, userAvatarHandler } from '../../functions'
 const Message = ({ message, scrollRef }) => {
-  const { currentUser } = useContext(AuthContext);
-  const isSender = message.sender._id === currentUser._id;
-  const date0 = new Date(message.createdAt);
-  const date = getDate(date0, "MM.DD HH:mm");
+  const { currentUser } = useContext(AuthContext)
+  const isSender = message.sender._id === currentUser._id
+  const date0 = new Date(message.createdAt)
+  const date = getDate(date0, 'MM.DD HH:mm')
   return (
     <div ref={scrollRef}>
-      <div className={`message ${isSender ? "sended" : "recieved"}`}>
+      <div className={`message ${isSender ? 'sended' : 'recieved'}`}>
         {!isSender && (
           <img
             src={userAvatarHandler(message.sender.avatarImage)}
@@ -18,7 +17,7 @@ const Message = ({ message, scrollRef }) => {
             className="avatar"
           ></img>
         )}
-        <div className={`msgIn ${isSender ? "sendedIn" : "recievedIn"}`}>
+        <div className={`msgIn ${isSender ? 'sendedIn' : 'recievedIn'}`}>
           {!isSender && <div>{message.sender.username}</div>}
           <div className="MSGcontent ">
             <div>{message.message}</div>
@@ -27,6 +26,6 @@ const Message = ({ message, scrollRef }) => {
         </div>
       </div>
     </div>
-  );
-};
-export default Message;
+  )
+}
+export default Message

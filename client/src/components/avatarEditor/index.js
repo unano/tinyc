@@ -1,27 +1,27 @@
-import Avatar from "react-avatar-edit";
-import { useState } from "react";
-import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
-import './avatarEditor.scss';
-const AvatarEditor = ({ setPreview, setShowClipper, width, height}) => {
-  const [image, setImage] = useState("");
+import Avatar from 'react-avatar-edit'
+import { useState } from 'react'
+import { IoCheckmarkOutline, IoCloseOutline } from 'react-icons/io5'
+import './avatarEditor.scss'
+const AvatarEditor = ({ setPreview, setShowClipper, width, height }) => {
+  const [image, setImage] = useState('')
   const onCrop = (view) => {
-    setPreview(view);
-  };
+    setPreview(view)
+  }
 
   const onClose = () => {
-    setPreview(null);
-  };
+    setPreview(null)
+  }
   return (
     <div className="clipAvatar">
       <Avatar
         width={200}
         height={200}
         borderStyle={{
-          border: "1px solid black",
-          textAlign: "center",
+          border: '1px solid black',
+          textAlign: 'center',
         }}
-        labelStyle={{ fontSize: "70px", fontWeight: 200 }}
-        label={"+"}
+        labelStyle={{ fontSize: '70px', fontWeight: 200 }}
+        label={'+'}
         onCrop={onCrop}
         onClose={onClose}
         cropRadius={0}
@@ -39,7 +39,7 @@ const AvatarEditor = ({ setPreview, setShowClipper, width, height}) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AvatarEditor;
+export default AvatarEditor

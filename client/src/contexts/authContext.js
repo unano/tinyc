@@ -1,15 +1,15 @@
-import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { setOfflineAPI } from "../api/api"; //refreshTokenAPI
+import { createContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { setOfflineAPI } from '../api/api' //refreshTokenAPI
 // import axios from "axios";
 // import jwt_decode from "jwt-decode";
-export const AuthContext = createContext(null);
+export const AuthContext = createContext(null)
 
 const AuthContextProvider = (props) => {
-  const [currentUser, setCurrentUser] = useState({});
-  const [reloadStorage, setRreloadStorage] = useState();
-  const [disabled, setDisabled] = useState(false);
-  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState({})
+  const [reloadStorage, setRreloadStorage] = useState()
+  const [disabled, setDisabled] = useState(false)
+  const navigate = useNavigate()
 
   // const refreshToken = async () => {
   //   try {
@@ -87,11 +87,11 @@ const AuthContextProvider = (props) => {
 
   //用户更新头像，姓名时，更新存储的token信息
   const resetUserData = (data) => {
-    let prevUserData = JSON.parse(localStorage.getItem("token"));
-    let newData = { ...prevUserData, ...data };
-    setCurrentUser(newData);
-    localStorage.setItem("token", JSON.stringify(newData));
-  };
+    let prevUserData = JSON.parse(localStorage.getItem('token'))
+    let newData = { ...prevUserData, ...data }
+    setCurrentUser(newData)
+    localStorage.setItem('token', JSON.stringify(newData))
+  }
 
   // const resetUserData =(data)=>{
   //   setCurrentUser(data);
@@ -101,23 +101,23 @@ const AuthContextProvider = (props) => {
   //   );
   // }
   const logout = async () => {
-    if (disabled) return;
-    setDisabled(true);
-    await setOfflineAPI(currentUser._id);
-    localStorage.clear();
-    setDisabled(false);
-    navigate("/");
-  };
+    if (disabled) return
+    setDisabled(true)
+    await setOfflineAPI(currentUser._id)
+    localStorage.clear()
+    setDisabled(false)
+    navigate('/')
+  }
   useEffect(() => {
     const result = async () => {
-      if (!localStorage.getItem("token")) {
-        navigate("/login");
+      if (!localStorage.getItem('token')) {
+        navigate('/login')
       } else {
-        setCurrentUser(await JSON.parse(localStorage.getItem("token")));
+        setCurrentUser(await JSON.parse(localStorage.getItem('token')))
       }
-    };
-    result();
-  }, [reloadStorage]);
+    }
+    result()
+  }, [reloadStorage])
 
   return (
     <AuthContext.Provider
@@ -130,7 +130,7 @@ const AuthContextProvider = (props) => {
     >
       {props.children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export default AuthContextProvider;
+export default AuthContextProvider

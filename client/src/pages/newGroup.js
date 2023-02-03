@@ -1,52 +1,51 @@
-import "./chats.scss";
-import { useState, useEffect, useContext } from "react";
-import { getFriendsAPI } from "../api/api";
-import { AuthContext } from "../contexts/authContext";
-import NavBar from "../components/navBar";
-import LeftIcons from "../components/leftArea";
-import { AiOutlineSearch, AiOutlineUsergroupAdd } from "react-icons/ai";
-import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
-import "./newGroup.scss";
-import { createGroupChatsAPI } from "../api/api";
-import AvatarEditor from "../components/avatarEditor";
-import BGEditor from "../components/bgEditor";
-import { blobToBase64 } from "../functions";
-import { useNavigate } from "react-router-dom";
-import Logo from "../imgs/tinyc.png";
-import "./common.scss";
-import { userAvatarHandler } from "../functions";
+import './chats.scss'
+import { useState, useEffect, useContext } from 'react'
+import { getFriendsAPI, createGroupChatsAPI } from '../api/api'
+import { AuthContext } from '../contexts/authContext'
+import NavBar from '../components/navBar'
+import LeftIcons from '../components/leftArea'
+import { AiOutlineSearch, AiOutlineUsergroupAdd } from 'react-icons/ai'
+import { IoCheckmarkOutline, IoCloseOutline } from 'react-icons/io5'
+import './newGroup.scss'
+import AvatarEditor from '../components/avatarEditor'
+import BGEditor from '../components/bgEditor'
+import { blobToBase64, userAvatarHandler } from '../functions'
+import { useNavigate } from 'react-router-dom'
+import Logo from '../imgs/tinyc.png'
+import './common.scss'
 const NewGroup = () => {
-  const { currentUser } = useContext(AuthContext);
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
-  const [shownFriends, setShownFriends] = useState([]);
-  const [friends, setFriends] = useState([]);
-  const [chosenUsers, setChosenUsers] = useState([]); //选中的要添加进群的好友
-  const [GPName, setGPName] = useState("");
-  const [warning, SetWarning] = useState(false);
-  const [showClipper, setShowClipper] = useState(false);
-  const [showBGClipper, setShowBGClipper] = useState(false);
-  const [photoURL, setPhotoURL] = useState();
-  const [gpbgExpand, setGpbgExpand] = useState(false); //是否展开群组背景选项
-  const [disabled, setDisabled] = useState(false);
-  const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext)
+  const [image, setImage] = useState(null)
+  const [preview, setPreview] = useState()
+  const [showPreview, setShowPreview] = useState(false)
+  const [shownFriends, setShownFriends] = useState([])
+  const [friends, setFriends] = useState([])
+  const [chosenUsers, setChosenUsers] = useState([]) //选中的要添加进群的好友
+  const [GPName, setGPName] = useState('')
+  const [warning, SetWarning] = useState(false)
+  const [showClipper, setShowClipper] = useState(false)
+  const [showBGClipper, setShowBGClipper] = useState(false)
+  const [photoURL, setPhotoURL] = useState()
+  const [gpbgExpand, setGpbgExpand] = useState(false) //是否展开群组背景选项
+  const [disabled, setDisabled] = useState(false)
+  const [word, setWord] = useState('Form Group')
+  const navigate = useNavigate()
   useEffect(() => {
     const getFriendsFunc = async () => {
-      let friendList = await getFriendsAPI();
-      let { friends } = friendList.data;
-      setFriends(friends);
-      setShownFriends(friends);
-    };
-    getFriendsFunc();
-  }, [currentUser]);
+      let friendList = await getFriendsAPI()
+      let { friends } = friendList.data
+      setFriends(friends)
+      setShownFriends(friends)
+    }
+    getFriendsFunc()
+  }, [currentUser])
 
   const setInput = (input) => {
     let filtered = friends.filter((friend) => {
-      return friend.username.match(input);
-    });
-    setShownFriends(filtered);
-  };
+      return friend.username.match(input)
+    })
+    setShownFriends(filtered)
+  }
 
   // useEffect(() => {
   //   if (!image) {
@@ -60,51 +59,52 @@ const NewGroup = () => {
   // }, [image]);
 
   const uploadImage = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file) {
-      setImage(file);
-      setShowPreview(false);
-      setPhotoURL(URL.createObjectURL(file));
-      setShowBGClipper(true);
+      setImage(file)
+      setShowPreview(false)
+      setPhotoURL(URL.createObjectURL(file))
+      setShowBGClipper(true)
     }
-  };
+  }
 
   //选择组员
   const chooseOrNot = (id) => {
     if (chosenUsers.includes(id)) {
-      chosenUsers.splice(chosenUsers.indexOf(id), 1);
-      let choose = [...chosenUsers];
-      setChosenUsers(choose);
+      chosenUsers.splice(chosenUsers.indexOf(id), 1)
+      let choose = [...chosenUsers]
+      setChosenUsers(choose)
     } else {
-      chosenUsers.push(id);
-      let choose = [...chosenUsers];
-      setChosenUsers(choose);
+      chosenUsers.push(id)
+      let choose = [...chosenUsers]
+      setChosenUsers(choose)
     }
-  };
+  }
 
   //上传图片前将其转为base64
   const dealImage = async (image) => {
     if (image) {
-      let result = await blobToBase64(image);
-      return result;
+      let result = await blobToBase64(image)
+      return result
     } else {
-      let result = await null;
-      return result;
+      let result = await null
+      return result
     }
-  };
+  }
 
   //检查各项输入是否合法，合法则创建群组并进行跳转
   const check = async () => {
-    if (disabled) return;
-    setDisabled(true);
-    if (GPName === "" || chosenUsers.length < 2 || !preview) {
-      SetWarning(true);
+    if (disabled) return
+    setDisabled(true)
+    if (GPName === '' || chosenUsers.length < 2 || !preview) {
+      SetWarning(true)
       setTimeout(() => {
-        SetWarning(false);
-      }, 2000);
-      setDisabled(false);
+        SetWarning(false)
+      }, 2000)
+      setDisabled(false)
     } else {
-      const background = await dealImage(image);
+      setWord('Processing')
+      const background = await dealImage(image)
       // const formData = new FormData();
       // for (var i = 0; i < chosenUsers.length; i++) {
       //   formData.append("users[]", chosenUsers[i]);
@@ -117,20 +117,21 @@ const NewGroup = () => {
         chosenUsers,
         preview,
         background
-      );
-      setDisabled(false);
-      if (res) navigate("/home");
+      )
+      setDisabled(false)
+      setWord('Form Group')
+      if (res) navigate('/home')
     }
-  };
+  }
 
   const clearBG = () => {
-    setShowPreview(false);
-    setImage(null);
-    setPhotoURL(null);
-  };
+    setShowPreview(false)
+    setImage(null)
+    setPhotoURL(null)
+  }
   const expandGPBG = () => {
-    setGpbgExpand(!gpbgExpand);
-  };
+    setGpbgExpand(!gpbgExpand)
+  }
 
   return (
     <>
@@ -188,7 +189,7 @@ const NewGroup = () => {
                         alt=""
                         className="avatar"
                         onClick={() => {
-                          setShowClipper(true);
+                          setShowClipper(true)
                         }}
                       />
                       <div className="add">+</div>
@@ -226,11 +227,11 @@ const NewGroup = () => {
                             <IoCheckmarkOutline className="chosen" />
                           )}
                         </div>
-                      );
+                      )
                     })}
                   </div>
                   <div
-                    className={gpbgExpand ? "groupBGExpand" : "groupBG"}
+                    className={gpbgExpand ? 'groupBGExpand' : 'groupBG'}
                     onClick={expandGPBG}
                   >
                     <div className="gpbdHeadDecoreate"></div>
@@ -250,7 +251,7 @@ const NewGroup = () => {
                         id="inputTag"
                         onChange={uploadImage}
                         onClick={(event) => {
-                          event.target.value = null;
+                          event.target.value = null
                         }}
                       />
                       <div className="BGContainer">
@@ -289,7 +290,7 @@ const NewGroup = () => {
                   </div>
                   <div className="submitGP" onClick={check}>
                     <div className="submitGPInside">
-                      Form Group
+                      {word}
                       <AiOutlineUsergroupAdd className="newGPIcon" />
                     </div>
                   </div>
@@ -300,7 +301,7 @@ const NewGroup = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default NewGroup;
+export default NewGroup

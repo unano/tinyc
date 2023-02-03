@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { IoCheckmarkOutline, IoCloseOutline } from "react-icons/io5";
-import Cropper from "react-easy-crop";
-import getCroppedImg from "./utils/cropImage";
-import "./bgEditor.scss";
+import { useState } from 'react'
+import { IoCheckmarkOutline, IoCloseOutline } from 'react-icons/io5'
+import Cropper from 'react-easy-crop'
+import getCroppedImg from './utils/cropImage'
+import './bgEditor.scss'
 const BGEditor = ({
   photoURL,
   setShowClipper,
@@ -10,28 +10,28 @@ const BGEditor = ({
   setFile,
   setShowPreview,
 }) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [disabled, setDisabled] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const [disabled, setDisabled] = useState(false)
   const cropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  };
+    setCroppedAreaPixels(croppedAreaPixels)
+  }
 
   const cropImage = async () => {
-    if (disabled) return;
+    if (disabled) return
     try {
-      setDisabled(true);
-      const { file, url } = await getCroppedImg(photoURL, croppedAreaPixels);
-      setPhotoURL(url);
-      setFile(file);
-      setShowClipper(false);
-      setShowPreview(true);
-      setDisabled(false);
+      setDisabled(true)
+      const { file, url } = await getCroppedImg(photoURL, croppedAreaPixels)
+      setPhotoURL(url)
+      setFile(file)
+      setShowClipper(false)
+      setShowPreview(true)
+      setDisabled(false)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
   return (
     <div className="bgClipAvatar">
       <div className="cropperContainer">
@@ -60,13 +60,13 @@ const BGEditor = ({
         <IoCloseOutline
           className="ok close"
           onClick={() => {
-            setShowClipper(false);
-            setShowPreview(false);
+            setShowClipper(false)
+            setShowPreview(false)
           }}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BGEditor;
+export default BGEditor

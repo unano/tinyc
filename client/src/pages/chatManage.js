@@ -1,15 +1,7 @@
-import "./chatManage.scss";
-import "./common.scss";
-import { getGroupChat } from "../api/api";
-import { useContext, useState, useEffect } from "react";
+import './chatManage.scss'
+import './common.scss'
 import {
-  IoPencilOutline,
-  IoCloseOutline,
-  IoCheckmarkOutline,
-} from "react-icons/io5";
-import { AuthContext } from "../contexts/authContext";
-import { useParams, useNavigate } from "react-router-dom";
-import {
+  getGroupChat,
   dealGroupChatApplyAPI,
   refuseChatApplyAPI,
   renameGroupAPI,
@@ -18,152 +10,164 @@ import {
   changeGroupBackgroundAPI,
   deleteGroupBackgroundAPI,
   deleteGroupAPI,
-} from "../api/api";
-import { BsUpload } from "react-icons/bs";
-import AvatarEditor from "../components/avatarEditor";
-import { RiDeleteBin7Line } from "react-icons/ri";
-import BGEditor from "../components/bgEditor";
-import { blobToBase64 } from "../functions";
-import LeftAreaBack from "../components/leftAreaBackV";
-import Logo from "../imgs/tinyc.png";
-import { userAvatarHandler, groupAvatarHandler, groupBgHandler } from "../functions";
+} from '../api/api'
+import { useContext, useState, useEffect } from 'react'
+import {
+  IoPencilOutline,
+  IoCloseOutline,
+  IoCheckmarkOutline,
+} from 'react-icons/io5'
+import { AuthContext } from '../contexts/authContext'
+import { useParams, useNavigate } from 'react-router-dom'
+import { BsUpload } from 'react-icons/bs'
+import AvatarEditor from '../components/avatarEditor'
+import { RiDeleteBin7Line } from 'react-icons/ri'
+import BGEditor from '../components/bgEditor'
+import {
+  blobToBase64,
+  userAvatarHandler,
+  groupAvatarHandler,
+  groupBgHandler,
+} from '../functions'
+import LeftAreaBack from '../components/leftAreaBackV'
+import Logo from '../imgs/tinyc.png'
 
 const Application = () => {
-  const { currentUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [chat, setChat] = useState({});
-  const [refresh, setRefresh] = useState(false);
-  const [showChangeInput, setShowChangeInput] = useState(false);
-  const [input, setInput] = useState();
-  const [showInform, setShowInform] = useState(false);
-  const [preview, setPreview] = useState(null);
-  const [showClipper, setShowClipper] = useState(false);
+  const { currentUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const [chat, setChat] = useState({})
+  const [refresh, setRefresh] = useState(false)
+  const [showChangeInput, setShowChangeInput] = useState(false)
+  const [input, setInput] = useState()
+  const [showInform, setShowInform] = useState(false)
+  const [preview, setPreview] = useState(null)
+  const [showClipper, setShowClipper] = useState(false)
 
-  const [showBGClipper, setShowBGClipper] = useState(false);
-  const [photoURL, setPhotoURL] = useState();
-  const [image, setImage] = useState(null);
-  const [showPreview, setShowPreview] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const [showBGClipper, setShowBGClipper] = useState(false)
+  const [photoURL, setPhotoURL] = useState()
+  const [image, setImage] = useState(null)
+  const [showPreview, setShowPreview] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [disabled, setDisabled] = useState(false)
   useEffect(() => {
     const getChat = async () => {
-      let chat = await getGroupChat(id);
-      setChat(chat.data);
-    };
-    getChat();
-  }, [currentUser, refresh]);
+      let chat = await getGroupChat(id)
+      setChat(chat.data)
+    }
+    getChat()
+  }, [currentUser, refresh])
   //接受用户的入群申请
   const accept = async (userId) => {
-    if (disabled) return;
-    setDisabled(true);
-    await dealGroupChatApplyAPI(userId, chat._id);
-    setRefresh(!refresh);
-    setDisabled(false);
-  };
+    if (disabled) return
+    setDisabled(true)
+    await dealGroupChatApplyAPI(userId, chat._id)
+    setRefresh(!refresh)
+    setDisabled(false)
+  }
   //拒绝用户的入群申请
   const refuse = async (userId) => {
-    if (disabled) return;
-    setDisabled(true);
-    await refuseChatApplyAPI(userId, chat._id);
-    setRefresh(!refresh);
-    setDisabled(false);
-  };
+    if (disabled) return
+    setDisabled(true)
+    await refuseChatApplyAPI(userId, chat._id)
+    setRefresh(!refresh)
+    setDisabled(false)
+  }
 
   const changeUsername = async () => {
-    if (disabled) return;
-    if (input !== "") {
-      setDisabled(true);
-      await renameGroupAPI(chat._id, input);
-      setShowChangeInput(false);
-      setRefresh(!refresh);
-      setDisabled(false);
+    if (disabled) return
+    if (input !== '') {
+      setDisabled(true)
+      await renameGroupAPI(chat._id, input)
+      setShowChangeInput(false)
+      setRefresh(!refresh)
+      setDisabled(false)
     }
-  };
+  }
 
   //提交更新后的头像
   const submitAvatar = async () => {
-    setLoading(true);
-    if (disabled) return;
-    const previousImageId = chat.avatarId;
-    setDisabled(true);
-    await changeGroupAvatar(chat._id, preview);
+    setLoading(true)
+    if (disabled) return
+    const previousImageId = chat.avatarId
+    setDisabled(true)
+    await changeGroupAvatar(chat._id, preview)
     // setTimeout(() => {
-      setRefresh(!refresh);
-      setPreview(null);
-      setLoading(false);
-      if (previousImageId) {
-        setTimeout(async () => await deleteGroupAvatarAPI(previousImageId), 2000);
-      }
-    setDisabled(false);
+    setRefresh(!refresh)
+    setPreview(null)
+    setLoading(false)
+    if (previousImageId) {
+      setTimeout(async () => await deleteGroupAvatarAPI(previousImageId), 2000)
+    }
+    setDisabled(false)
     // }, 1000);
-  };
+  }
 
   //读取上传的图片以进行后续裁剪
   const uploadImage = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file) {
-      setImage(file);
-      setShowPreview(false);
-      setPhotoURL(URL.createObjectURL(file));
-      setShowBGClipper(true);
+      setImage(file)
+      setShowPreview(false)
+      setPhotoURL(URL.createObjectURL(file))
+      setShowBGClipper(true)
     }
-  };
+  }
 
   // 提交更新后的背景
   const submitBg = async () => {
-    if (disabled) return;
-    setDisabled(true);
-    const previousImageId = chat.backgroundId;
-    const background = await dealImage(image);
-    setLoading(true);
-    await changeGroupBackgroundAPI(chat._id, background);
+    if (disabled) return
+    setDisabled(true)
+    const previousImageId = chat.backgroundId
+    const background = await dealImage(image)
+    setLoading(true)
+    await changeGroupBackgroundAPI(chat._id, background)
     // setTimeout(() => {
-    setShowPreview(false);
-    setRefresh(!refresh);
-    setPreview(null);
-    setLoading(false);
+    setShowPreview(false)
+    setRefresh(!refresh)
+    setPreview(null)
+    setLoading(false)
     if (previousImageId) {
       setTimeout(
         async () => await deleteGroupBackgroundAPI(previousImageId),
         2000
-      );
+      )
     }
-    setDisabled(false);
+    setDisabled(false)
     // }, 1000);
-  };
+  }
 
   //将图像从Blob转为base64
   const dealImage = async (image) => {
     if (image) {
-      let result = await blobToBase64(image);
-      return result;
+      let result = await blobToBase64(image)
+      return result
     } else {
-      let result = await null;
-      return result;
+      let result = await null
+      return result
     }
-  };
+  }
 
   const confirmAndDelete = () => {
-    setShowInform(true);
-  };
+    setShowInform(true)
+  }
 
   //删除群组并跳转回上个页面
   const deleteGroup = async () => {
-    if (disabled) return;
-    setDisabled(true);
-    await deleteGroupAPI(chat._id);
-    setDisabled(false);
-    navigate(-1);
-  };
+    if (disabled) return
+    setDisabled(true)
+    await deleteGroupAPI(chat._id)
+    setDisabled(false)
+    navigate(-1)
+  }
 
   const hideInform = (e) => {
-    e.stopPropagation();
-    setShowInform(false);
-  };
+    e.stopPropagation()
+    setShowInform(false)
+  }
 
   //检查是否为当前群的管理员
-  const isAdmin = chat.groupAdmin && currentUser._id === chat.groupAdmin._id;
+  const isAdmin = chat.groupAdmin && currentUser._id === chat.groupAdmin._id
 
   return (
     <>
@@ -213,7 +217,7 @@ const Application = () => {
             {showPreview && !showBGClipper && (
               <div className="groupAvatarPreviewContainer">
                 <div>Preview</div>
-                  <img src={photoURL} alt="" className="previewBG" />
+                <img src={photoURL} alt="" className="previewBG" />
                 <div className="buttonsContainer">
                   <BsUpload
                     className="usernameBtn smallBtn"
@@ -239,7 +243,7 @@ const Application = () => {
                     id="inputTag"
                     onChange={uploadImage}
                     onClick={(event) => {
-                      event.target.value = null;
+                      event.target.value = null
                     }}
                   />
                   {isAdmin && <div className="changeBg">Change background</div>}
@@ -329,7 +333,10 @@ const Application = () => {
                         {chat.applyingUsers &&
                           chat.applyingUsers.map((user) => {
                             return (
-                              <div className="rowFlex memberFull">
+                              <div
+                                className="rowFlex memberFull"
+                                key={user._id}
+                              >
                                 <img
                                   src={userAvatarHandler(user.avatarImage)}
                                   alt="avatar"
@@ -351,7 +358,7 @@ const Application = () => {
                                   </div>
                                 </div>
                               </div>
-                            );
+                            )
                           })}
                       </div>
                     </div>
@@ -363,7 +370,7 @@ const Application = () => {
                       {chat.users &&
                         chat.users.map((user) => {
                           return (
-                            <div className="rowFlex member">
+                            <div className="rowFlex member" key={user._id}>
                               <img
                                 src={userAvatarHandler(user.avatarImage)}
                                 alt="avatar"
@@ -371,7 +378,7 @@ const Application = () => {
                               ></img>
                               <div className="username"> {user.username}</div>
                             </div>
-                          );
+                          )
                         })}
                     </div>
                   </div>
@@ -379,7 +386,7 @@ const Application = () => {
                   {isAdmin && (
                     <div
                       className={
-                        showInform ? "deleteGroup expandConfirm" : "deleteGroup"
+                        showInform ? 'deleteGroup expandConfirm' : 'deleteGroup'
                       }
                       onClick={confirmAndDelete}
                     >
@@ -407,6 +414,6 @@ const Application = () => {
         </div>
       </div>
     </>
-  );
-};
-export default Application;
+  )
+}
+export default Application
