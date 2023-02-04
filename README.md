@@ -10,9 +10,9 @@ tinyc，意思为tiny chat, 是一款轻量级的，基于web开发的一款即�
 
 ## See it yourself
 
-The chat app is now deployed on https://aquamarine-longma-96e11d.netlify.app and you can have a view of that.
+The chat app is now deployed on https://tinyc.netlify.app and you can have a view of that.
 
-TinyC部署于https://aquamarine-longma-96e11d.netlify.app
+TinyC部署于https://tinyc.netlify.app
 
 To quickly experience, you can use the proived accunt: 
 
